@@ -44,6 +44,8 @@ namespace TrenchBroom {
             void doUpdate(double progress);
         public:
             CameraAnimation(View::EditorView& view, const Vec3f& targetPosition, const Vec3f& targetDirection, const Vec3f& targetUp, wxLongLong duration);
+
+            Type type() const;
         };
     }
 }
