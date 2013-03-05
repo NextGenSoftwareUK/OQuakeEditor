@@ -847,6 +847,13 @@ namespace TrenchBroom {
                                     selectEntities.push_back(&entity);
                             }
 
+                            // correct vertex rounding errors
+                            Model::BrushList::iterator brushIt, brushEnd;
+                            for (brushIt = selectBrushes.begin(), brushEnd = selectBrushes.end(); brushIt != brushEnd; ++brushIt) {
+                                Model::Brush& brush = **brushIt;
+                                brush.snap(0);
+                            }
+
                             Controller::AddObjectsCommand* addObjectsCommand = Controller::AddObjectsCommand::addObjects(mapDocument(), entities, brushes);
                             Controller::ChangeEditStateCommand* changeEditStateCommand = Controller::ChangeEditStateCommand::replace(mapDocument(), selectEntities, selectBrushes);
                             Controller::MoveObjectsCommand* moveObjectsCommand = NULL;
@@ -1266,7 +1273,7 @@ namespace TrenchBroom {
             CommandProcessor::EndGroup(commandProcessor);
             
             EditorFrame* editorFrame = static_cast<EditorFrame*>(GetFrame());
-            FlashSelectionAnimation* animation = new FlashSelectionAnimation(*m_renderer, editorFrame->mapCanvas(), 100);
+            FlashSelectionAnimation* animation = new FlashSelectionAnimation(*m_renderer, editorFrame->mapCanvas(), 150);
             m_animationManager->runAnimation(animation, true);
         }
 
