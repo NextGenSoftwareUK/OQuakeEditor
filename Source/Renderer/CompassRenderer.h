@@ -37,8 +37,9 @@ namespace TrenchBroom {
             static const float m_headLength;
             static const float m_headRadius;
             
-            IndexedVertexArray* m_fans;
             VertexArray* m_strip;
+            VertexArray* m_set;
+            IndexedVertexArray* m_fans;
         public:
             CompassRenderer();
             ~CompassRenderer();
