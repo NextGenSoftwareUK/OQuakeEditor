@@ -20,9 +20,11 @@
 #ifndef TrenchBroom_FaceTypes_h
 #define TrenchBroom_FaceTypes_h
 
+#include "Utility/GeometryPrecision.h"
+#include "Utility/Vec.h"
+
 #include <set>
 #include <vector>
-#include "Utility/Vec.h"
 
 namespace TrenchBroom {
     namespace Model {
