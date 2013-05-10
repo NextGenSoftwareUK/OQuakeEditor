@@ -28,10 +28,14 @@ namespace TrenchBroom {
     namespace Model {
         class Face {
         public:
-            typedef Vec3f PlanePoints[3];
+            typedef Vec3f FacePoints[3];
             typedef std::vector<Face*> FaceList;
         private:
-            PlanePoints m_points;
+            FacePoints m_points;
+        public:
+            Face(const FacePoints& points);
+            
+            const FacePoints& facePoints();
         };
     }
 }
