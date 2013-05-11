@@ -20,7 +20,7 @@
 #ifndef __TrenchBroom__MapDocument__
 #define __TrenchBroom__MapDocument__
 
-#include "StringUtilities.h"
+#include "StringUtils.h"
 
 namespace TrenchBroom {
     namespace View {
