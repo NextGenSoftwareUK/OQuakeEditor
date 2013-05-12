@@ -25,5 +25,7 @@ namespace TrenchBroom {
 
         MapFrame::MapFrame() :
         wxFrame(NULL, wxID_ANY, wxT("unnamed.map")) {}
+
+        MapFrame::~MapFrame() {}
     }
 }
