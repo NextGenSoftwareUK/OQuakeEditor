@@ -35,7 +35,9 @@ namespace TrenchBroom {
             const EntityList& entities() const;
             void addEntity(Entity& entity);
             
-            Entity& createOrGetWorldspawn();
+            Entity* worldspawn();
+        private:
+            Entity* findWorldspawn() const;
         };
     }
 }
