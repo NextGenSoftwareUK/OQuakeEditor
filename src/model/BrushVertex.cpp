@@ -23,9 +23,5 @@ namespace TrenchBroom {
     namespace Model {
         BrushVertex::BrushVertex(const Vec3& position) :
         m_position(position) {}
-        
-        const Vec3& BrushVertex::position() const {
-            return m_position;
-        }
     }
 }

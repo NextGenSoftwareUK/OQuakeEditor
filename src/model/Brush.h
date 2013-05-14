@@ -33,16 +33,13 @@ namespace TrenchBroom {
         class Brush : public Object {
         private:
             BrushFaceList m_faces;
-            BrushVertexList m_vertices;
-            BrushEdgeList m_edges;
         public:
             Brush(const BrushFaceList& faces);
             ~Brush();
             
-            const BrushFaceList& faces() const;
-        private:
-            void buildGeometry(const BBox3& bounds);
-            void clearAndDeleteGeometry();
+            inline const BrushFaceList& faces() const {
+                return m_faces;
+            }
         };
     }
 }
