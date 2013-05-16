@@ -20,13 +20,16 @@
 #ifndef TrenchBroom_EntityTypes_h
 #define TrenchBroom_EntityTypes_h
 
+#include "SharedPointer.h"
+
 #include <vector>
 
 namespace TrenchBroom {
     namespace Model {
         class Entity;
         
-        typedef std::vector<Entity*> EntityList;
+        typedef std::tr1::shared_ptr<Entity> EntityPtr;
+        typedef std::vector<EntityPtr> EntityList;
         static const EntityList EmptyEntityList;
     }
 }
