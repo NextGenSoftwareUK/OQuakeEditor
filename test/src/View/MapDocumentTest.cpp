@@ -24,20 +24,18 @@
 
 namespace TrenchBroom {
     namespace View {
-        TEST(MapDocumentTest, newDocumentCreatesFrame) {
+        TEST(MapDocumentTest, newDocument) {
             MapDocument::Ptr document = MapDocument::newMapDocument();
             document->newDocument();
             ASSERT_EQ(IO::Path(""), document->path());
             ASSERT_EQ(String(""), document->filename());
-            ASSERT_TRUE(document->frame() != NULL);
         }
         
-        TEST(MapDocumentTest, openDocumentCreatesFrame) {
+        TEST(MapDocumentTest, openDocument) {
             MapDocument::Ptr document = MapDocument::newMapDocument();
             document->openDocument(IO::Path("/test/blah/hey.map"));
             ASSERT_EQ(IO::Path("/test/blah/hey.map"), document->path());
             ASSERT_EQ(String("hey.map"), document->filename());
-            ASSERT_TRUE(document->frame() != NULL);
         }
     }
 }

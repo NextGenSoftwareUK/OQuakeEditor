@@ -26,9 +26,17 @@
 
 namespace TrenchBroom {
     namespace View {
+        class Console;
+        class MapView;
+        class NavBar;
+        
         class MapFrame : public wxFrame {
         private:
             MapDocument::Ptr m_document;
+
+            Console* m_console;
+            NavBar* m_navBar;
+            MapView* m_mapView;
         public:
             MapFrame();
             MapFrame(MapDocument::Ptr document);
