@@ -26,7 +26,7 @@
 
 int main(int argc, char **argv) {
 
-    wxApp* pApp = new TrenchBroomApp();
+    wxApp* pApp = new TrenchBroom::View::TrenchBroomApp();
     wxApp::SetInstance(pApp);
     wxEntryStart(argc, argv);
     
