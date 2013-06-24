@@ -23,6 +23,7 @@
 #include "SharedPointer.h"
 #include "IO/Path.h"
 #include "Model/Map.h"
+#include "Model/TextureCollection.h"
 
 namespace TrenchBroom {
     namespace Model {
@@ -32,11 +33,13 @@ namespace TrenchBroom {
         public:
             virtual ~Game();
             
-            Map::Ptr openMap(const IO::Path& path) const;
+            Map::Ptr loadMap(const IO::Path& path) const;
+            TextureCollection::Ptr loadTextureCollection(const IO::Path& path) const;
         protected:
             Game();
         private:
-            virtual Map::Ptr doOpenMap(const IO::Path& path) const = 0;
+            virtual Map::Ptr doLoadMap(const IO::Path& path) const = 0;
+            virtual TextureCollection::Ptr doLoadTextureCollection(const IO::Path& path) const = 0;
         };
     }
 }
