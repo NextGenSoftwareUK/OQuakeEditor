@@ -31,19 +31,24 @@ namespace TrenchBroom {
         public:
             typedef std::tr1::shared_ptr<Command> Ptr;
             typedef std::vector<Ptr> List;
+            typedef size_t CommandType;
         private:
+            CommandType m_type;
             String m_name;
             bool m_undoable;
         public:
-            Command(const String& name, const bool undoable);
+            static CommandType freeType();
             
-            bool undoable() const;
+            Command(const CommandType type, const String& name, const bool undoable);
+
+            CommandType type() const;
             const String& name() const;
+            bool undoable() const;
             bool performDo();
             bool performUndo();
         private:
             virtual bool doPerformDo() = 0;
-            virtual bool doPerformUndo() = 0;
+            virtual bool doPerformUndo();
         };
     }
 }
