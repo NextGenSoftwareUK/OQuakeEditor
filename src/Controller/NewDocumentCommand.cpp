@@ -29,6 +29,7 @@ namespace TrenchBroom {
         m_game(game) {}
 
         bool NewDocumentCommand::doPerformDo() {
+            m_document->newDocument(m_game);
             return true;
         }
     }

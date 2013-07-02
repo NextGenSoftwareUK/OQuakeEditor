@@ -38,6 +38,8 @@ namespace TrenchBroom {
             MapView(wxWindow* parent, Console& console);
             ~MapView();
             
+            void makeCurrent();
+            
             void OnPaint(wxPaintEvent& event);
         private:
             void initializeGL();

@@ -20,6 +20,8 @@
 #include <gtest/gtest.h>
 
 #include "Controller/NewDocumentCommand.h"
+#include "IO/Path.h"
+#include "Model/Map.h"
 #include "Model/QuakeGame.h"
 #include "View/MapDocument.h"
 
@@ -32,6 +34,24 @@ namespace TrenchBroom {
             Command::Ptr command = Command::Ptr(new NewDocumentCommand(doc, game));
             ASSERT_FALSE(command->undoable());
             ASSERT_TRUE(command->performDo());
+            ASSERT_EQ(IO::Path(""), doc->path());
+            ASSERT_FALSE(doc->modified());
+        }
+
+        TEST(NewDocumentCommandTest, newDocumentInExistingDocument) {
+            View::MapDocument::Ptr doc = View::MapDocument::newMapDocument();
+            Model::Game::Ptr game = Model::QuakeGame::newGame();
+            doc->openDocument(game, IO::Path("data/Controller/NewDocumentCommandTest/Cube.map"));
+            
+            Command::Ptr command = Command::Ptr(new NewDocumentCommand(doc, game));
+            ASSERT_FALSE(command->undoable());
+            ASSERT_TRUE(command->performDo());
+            ASSERT_EQ(IO::Path(""), doc->path());
+            ASSERT_FALSE(doc->modified());
+            
+            Model::Map::Ptr map = doc->map();
+            ASSERT_TRUE(map->entities().empty());
+            ASSERT_TRUE(map->worldspawn() == NULL);
         }
     }
 }
