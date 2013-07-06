@@ -28,6 +28,10 @@ namespace TrenchBroom {
         m_document(document),
         m_game(game) {}
 
+        Model::Map::Ptr NewDocumentCommand::map() const {
+            return m_document->map();
+        }
+
         bool NewDocumentCommand::doPerformDo() {
             m_document->newDocument(m_game);
             return true;
