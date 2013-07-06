@@ -30,5 +30,6 @@ typedef Quat<FloatType> Quat3;
 typedef Mat<FloatType, 4, 4> Mat4x4;
 typedef Mat<FloatType, 3, 3> Mat3x3;
 typedef Mat<FloatType, 2, 2> Mat2x2;
+typedef Line<FloatType, 3> Line3;
 
 #endif
