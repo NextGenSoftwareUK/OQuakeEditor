@@ -24,6 +24,9 @@
 
 class Color : public Vec<float, 4> {
 public:
+    Color() :
+    Vec<float, 4>(0.0f, 0.0f, 0.0f, 0.0f) {}
+    
     Color(const float r, const float g, const float b, const float a) :
     Vec<float, 4>(r, g, b, a) {}
     
