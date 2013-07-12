@@ -38,7 +38,7 @@ namespace TrenchBroom {
             QuakeGame();
             
             Map::Ptr doLoadMap(const IO::Path& path) const;
-            IO::Path::List doExtractTexturePaths(Model::Map::Ptr map) const;
+            IO::Path::List doExtractTexturePaths(Map::Ptr map) const;
             TextureCollection::Ptr doLoadTextureCollection(const IO::Path& path) const;
             void doUploadTextureCollection(TextureCollection::Ptr collection) const;
         };
