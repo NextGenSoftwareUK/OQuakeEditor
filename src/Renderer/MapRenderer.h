@@ -22,9 +22,8 @@
 
 #include "Controller/Command.h"
 #include "Model/Map.h"
-#include "Renderer/FaceRenderer.h"
+#include "Renderer/BrushRenderer.h"
 #include "Renderer/Vbo.h"
-#include "Renderer/VertexArray.h"
 
 namespace TrenchBroom {
     namespace Renderer {
@@ -33,10 +32,8 @@ namespace TrenchBroom {
         class MapRenderer {
         private:
             Vbo m_auxVbo;
-            Vbo m_faceVbo;
-            Vbo m_edgeVbo;
-            VertexArray m_edgeArray;
-            FaceRenderer m_faceRenderer;
+            Vbo m_geometryVbo;
+            BrushRenderer m_brushRenderer;
         public:
             MapRenderer();
             
@@ -48,8 +45,7 @@ namespace TrenchBroom {
             void setupGL(RenderContext& context);
             void clearBackground(RenderContext& context);
             void renderCoordinateSystem(RenderContext& context);
-            void renderFaces(RenderContext& context);
-            void renderEdges(RenderContext& context);
+            void renderGeometry(RenderContext& context);
             void clearState();
             void loadMap(Model::Map::Ptr map);
         };
