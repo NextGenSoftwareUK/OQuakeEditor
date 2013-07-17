@@ -34,5 +34,6 @@
 #include "Plane.h"
 #include "Quat.h"
 #include "Vec.h"
+#include "CoordinatePlane.h"
 
 #endif

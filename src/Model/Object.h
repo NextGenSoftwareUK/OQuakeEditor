@@ -22,24 +22,33 @@
 
 #include "TrenchBroom.h"
 #include "SharedPointer.h"
+#include "Controller/Pickable.h"
 
 #include <vector>
 
 namespace TrenchBroom {
     namespace Model {
-        class Object {
+        class Object : public Controller::Pickable {
         public:
             typedef std::tr1::shared_ptr<Object> Ptr;
             typedef std::vector<Ptr> List;
+            
+            typedef enum {
+                OTEntity,
+                OTBrush
+            } Type;
         private:
+            Type m_type;
             size_t m_lineNumber;
             size_t m_lineCount;
         public:
             virtual ~Object();
             
-            virtual BBox3 bounds() const = 0;
+            Type type() const;
 
             void setFilePosition(const size_t lineNumber, const size_t lineCount);
+        protected:
+            Object(const Type type);
         };
     }
 }
