@@ -24,6 +24,10 @@
 
 namespace TrenchBroom {
     namespace Renderer {
+        void VertexArray::prepare() {
+            m_holder->setup();
+        }
+
         void VertexArray::render() {
             if (m_holder == NULL || m_holder->size() == 0)
                 return;
