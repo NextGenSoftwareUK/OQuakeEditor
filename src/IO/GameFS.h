@@ -29,9 +29,9 @@ namespace TrenchBroom {
         public:
             virtual ~GameFS();
             
-            const MappedFile::Ptr findFile(const Path& path);
+            const MappedFile::Ptr findFile(const Path& path) const;
         private:
-            virtual const MappedFile::Ptr doFindFile(const Path& path) = 0;
+            virtual const MappedFile::Ptr doFindFile(const Path& path) const = 0;
         };
     }
 }
