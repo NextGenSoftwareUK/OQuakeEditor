@@ -39,84 +39,8 @@ namespace TrenchBroom {
             const EntityList& entities() const;
             void addEntity(Entity* entity);
             Entity* worldspawn() const;
-
-            template <class Operator, class Filter>
-            inline void eachObject(const Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    if (filter(entity))
-                        op(entity);
-                    entity->eachBrush(op, filter);
-                }
-            }
             
-            template <class Operator, class Filter>
-            inline void eachObject(Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    if (filter(entity))
-                        op(entity);
-                    entity->eachBrush(op, filter);
-                }
-            }
-            
-            template <class Operator, class Filter>
-            inline void eachEntity(const Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    if (filter(entity))
-                        op(entity);
-                }
-            }
-            
-            template <class Operator, class Filter>
-            inline void eachEntity(Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    if (filter(entity))
-                        op(entity);
-                }
-            }
-            
-            template <class Operator, class Filter>
-            inline void eachBrush(const Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    entity->eachBrush(op, filter);
-                }
-            }
-            
-            template <class Operator, class Filter>
-            inline void eachBrush(Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    entity->eachBrush(op, filter);
-                }
-            }
-            
-            template <class Operator, class Filter>
-            inline void eachBrushFace(const Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    entity->eachBrushFace(op, filter);
-                }
-            }
-
-            template <class Operator, class Filter>
-            inline void eachBrushFace(Operator& op, const Filter& filter) {
-                EntityList::const_iterator it, end;
-                for (it = m_entities.begin(), end = m_entities.end(); it != end; ++it) {
-                    Entity* entity = *it;
-                    entity->eachBrushFace(op, filter);
-                }
-            }
+            const BrushList brushes() const;
         private:
             Entity* findWorldspawn() const;
         };
