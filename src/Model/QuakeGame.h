@@ -38,12 +38,12 @@ namespace TrenchBroom {
         private:
             IO::QuakeFS m_fs;
             Color m_defaultEntityColor;
-            View::Logger* m_logger;
             Assets::Palette m_palette;
         public:
-            static GamePtr newGame(const IO::Path& quakePath, const Color& defaultEntityColor, View::Logger* logger = NULL);
+            static GamePtr newGame(const IO::Path& gamePath, const Color& defaultEntityColor);
         private:
-            QuakeGame(const IO::Path& quakePath, const Color& defaultEntityColor, View::Logger* logger);
+            QuakeGame(const IO::Path& gamePath, const Color& defaultEntityColor);
+
             static const BBox3 WorldBounds;
             static IO::Path palettePath();
             
