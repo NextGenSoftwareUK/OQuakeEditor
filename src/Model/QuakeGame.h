@@ -29,9 +29,7 @@
 #include "VecMath.h"
 
 namespace TrenchBroom {
-    namespace View {
-        class Logger;
-    }
+    class Logger;
     
     namespace Model {
         class QuakeGame : public Game {

@@ -20,10 +20,8 @@
 #include "QuakeGame.h"
 
 #include "StringUtils.h"
-#include "IO/Bsp29Parser.h"
 #include "IO/FileSystem.h"
 #include "IO/GameFS.h"
-#include "IO/MdlParser.h"
 #include "IO/Path.h"
 #include "IO/QuakeMapParser.h"
 #include "IO/WadTextureLoader.h"
@@ -39,7 +37,7 @@ namespace TrenchBroom {
         }
 
         QuakeGame::QuakeGame(const IO::Path& gamePath, const Color& defaultEntityColor) :
-        m_fs(gamePath, IO::Path("")),
+        m_fs(gamePath, IO::Path("id1")),
         m_defaultEntityColor(defaultEntityColor),
         m_palette(palettePath()) {}
         
@@ -89,21 +87,8 @@ namespace TrenchBroom {
         }
 
         Assets::EntityModel* QuakeGame::doLoadModel(const IO::Path& path) const {
-            IO::MappedFile::Ptr file = m_fs.findFile(path);
-            if (file == NULL)
-                return NULL;
-            
-            if (StringUtils::caseInsensitiveEqual(path.extension(), "mdl")) {
-                IO::MdlParser parser(path.lastComponent(), file->begin(), file->end(), m_palette);
-                return parser.parseModel();
-            } else if (StringUtils::caseInsensitiveEqual(path.extension(), "bsp")) {
-                IO::Bsp29Parser parser(path.lastComponent(), file->begin(), file->end(), m_palette);
-                return parser.parseModel();
-            } else {
-                throw GameException("Unknown model type " + path.asString());
-            }
-            
-            return NULL;
+            using TrenchBroom::Model::loadModel;
+            return loadModel(m_fs, m_palette, path);
         }
     }
 }
