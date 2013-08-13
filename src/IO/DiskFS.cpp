@@ -31,7 +31,11 @@ namespace TrenchBroom {
             FileSystem fs;
             if (!fs.exists(fullPath))
                 return MappedFile::Ptr();
-            return fs.mapFile(path, std::ios::in);
+            return fs.mapFile(fullPath, std::ios::in);
+        }
+
+        String DiskFS::doGetLocation() const {
+            return m_basePath.asString();
         }
     }
 }
