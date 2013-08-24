@@ -30,10 +30,11 @@ namespace TrenchBroom {
     namespace Model {
         class Map {
         private:
+            MapFormat m_format;
             EntityList m_entities;
             mutable Entity* m_worldspawn;
         public:
-            Map();
+            Map(const MapFormat format);
             ~Map();
             
             const EntityList& entities() const;

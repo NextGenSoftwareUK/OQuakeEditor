@@ -33,6 +33,7 @@ namespace TrenchBroom {
             Vec3 m_yAxis;
         public:
             ParallelTexCoordSystem(const Vec3& xAxis, const Vec3& yAxis, const Vec3& normal, const float rotation);
+            ParallelTexCoordSystem(const Vec3& point0, const Vec3& point1, const Vec3& point2);
             void update(const Vec3& normal, const float rotation);
             const Vec3& xAxis() const;
             const Vec3& yAxis() const;
