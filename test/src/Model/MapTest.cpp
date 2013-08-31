@@ -22,12 +22,13 @@
 #include "Model/Entity.h"
 #include "Model/Map.h"
 #include "Model/ModelTypes.h"
+#include "Model/QuakeEntityRotator.h"
 
 namespace TrenchBroom {
     namespace Model {
         TEST(MapTest, addEntity) {
             Map map(MFQuake);
-            Entity* entity = new Entity();
+            Entity* entity = new ConfigurableEntity<QuakeEntityRotationPolicy>();
             map.addEntity(entity);
             
             const EntityList& entities = map.entities();
@@ -39,14 +40,14 @@ namespace TrenchBroom {
             Map map(MFQuake);
             ASSERT_EQ(NULL, map.worldspawn());
 
-            Entity* worldspawn = new Entity();
+            Entity* worldspawn = new ConfigurableEntity<QuakeEntityRotationPolicy>();
             map.addEntity(worldspawn);
             ASSERT_EQ(NULL, map.worldspawn());
         }
         
         TEST(MapTest, getExistingWorldspawn) {
             Map map(MFQuake);
-            Entity* worldspawn = new Entity();
+            Entity* worldspawn = new ConfigurableEntity<QuakeEntityRotationPolicy>();
             worldspawn->addOrUpdateProperty(PropertyKeys::Classname, PropertyValues::WorldspawnClassname);
             map.addEntity(worldspawn);
             
