@@ -20,13 +20,31 @@
 #ifndef __TrenchBroom__FaceInspector__
 #define __TrenchBroom__FaceInspector__
 
+#include "Controller/Command.h"
+#include "View/ViewTypes.h"
+
 #include <wx/panel.h>
 
 namespace TrenchBroom {
+    namespace Renderer {
+        class RenderResources;
+    }
+    
     namespace View {
+        class FaceAttribsEditor;
+        class TextureBrowser;
+        
         class FaceInspector : public wxPanel {
+        private:
+            MapDocumentPtr m_document;
+            ControllerFacade& m_controller;
+            
+            FaceAttribsEditor* m_faceAttribsEditor;
+            TextureBrowser* m_textureBrowser;
         public:
-            FaceInspector(wxWindow* parent);
+            FaceInspector(wxWindow* parent, MapDocumentPtr document, ControllerFacade& controller, Renderer::RenderResources& resources);
+
+            void update(Controller::Command::Ptr command);
         };
     }
 }

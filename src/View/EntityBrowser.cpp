@@ -20,7 +20,6 @@
 #include "EntityBrowser.h"
 
 #include "Assets/EntityDefinitionManager.h"
-#include "View/CommandIds.h"
 #include "View/EntityBrowserView.h"
 #include "View/LayoutConstants.h"
 #include "View/MapDocument.h"
@@ -89,7 +88,7 @@ namespace TrenchBroom {
         }
         
         void EntityBrowser::OnSortOrderChanged(wxCommandEvent& event) {
-            Assets::EntityDefinitionManager::SortOrder sortOrder = event.GetSelection() == 0 ? Assets::EntityDefinitionManager::Name : Assets::EntityDefinitionManager::Usage;
+            const Assets::EntityDefinitionManager::SortOrder sortOrder = event.GetSelection() == 0 ? Assets::EntityDefinitionManager::Name : Assets::EntityDefinitionManager::Usage;
             m_view->setSortOrder(sortOrder);
         }
         

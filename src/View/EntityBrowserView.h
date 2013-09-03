@@ -86,8 +86,10 @@ namespace TrenchBroom {
             void doInitLayout(Layout& layout);
             void doReloadLayout(Layout& layout);
             void addEntityToLayout(Layout& layout, Assets::PointEntityDefinition* definition, const Renderer::FontDescriptor& font);
+
             void doClear();
             void doRender(Layout& layout, const float y, const float height);
+
 
             void renderBounds(Layout& layout, const float y, const float height);
             void renderModels(Layout& layout, const float y, const float height, Renderer::Transformation& transformation);
