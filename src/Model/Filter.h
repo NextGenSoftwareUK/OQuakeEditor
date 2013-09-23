@@ -33,16 +33,6 @@ namespace TrenchBroom {
             virtual bool pickable(const Brush* brush) const;
             virtual bool pickable(const BrushFace* face) const;
         };
-
-        class MatchAllFilter : public Filter {
-        public:
-            virtual bool visible(const Entity* entity) const;
-            virtual bool visible(const Brush* brush) const;
-            virtual bool visible(const BrushFace* face) const;
-            virtual bool pickable(const Entity* entity) const;
-            virtual bool pickable(const Brush* brush) const;
-            virtual bool pickable(const BrushFace* face) const;
-        };
     }
 }
 
