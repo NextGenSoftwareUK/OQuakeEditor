@@ -76,11 +76,11 @@ namespace TrenchBroom {
             if (!m_prepared)
                 prepare();
             if (m_useColor) {
-                ActiveShader shader(context.shaderManager(), Shaders::EdgeShader);
+                ActiveShader shader(context.shaderManager(), Shaders::VaryingPUniformCShader);
                 shader.set("Color", m_color);
                 m_vertexArray.render();
             } else {
-                ActiveShader shader(context.shaderManager(), Shaders::ColoredEdgeShader);
+                ActiveShader shader(context.shaderManager(), Shaders::VaryingPCShader);
                 m_vertexArray.render();
             }
         }
