@@ -30,10 +30,6 @@
 #include "View/ViewTypes.h"
 
 namespace TrenchBroom {
-    namespace Model {
-        class Hit;
-    }
-    
     namespace View {
         class ClipTool : public Tool<ActivationPolicy, PickingPolicy, MousePolicy, MouseDragPolicy, RenderPolicy> {
         private:
