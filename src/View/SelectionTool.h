@@ -27,7 +27,7 @@ namespace TrenchBroom {
     namespace View {
         class SelectionTool : public Tool<NoActivationPolicy, NoPickingPolicy, MousePolicy, MouseDragPolicy, NoRenderPolicy> {
         public:
-            SelectionTool(BaseTool* next, MapDocumentPtr document, ControllerFacade& controller);
+            SelectionTool(BaseTool* next, MapDocumentPtr document, ControllerPtr controller);
         private:
             bool doMouseUp(const InputState& inputState);
             bool doMouseDoubleClick(const InputState& inputState);
