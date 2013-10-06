@@ -34,12 +34,13 @@ namespace TrenchBroom {
         public:
             Circle(Vbo& vbo, const float radius, const size_t segments, const bool filled);
             Circle(Vbo& vbo, const float radius, const size_t segments, const bool filled, const float startAngle, const float angleLength);
-            Circle(Vbo& vbo, const float radius, const size_t segments, const bool filled, const Vec3f& startAxis, const Vec3f& endAxis);
+            Circle(Vbo& vbo, const float radius, const size_t segments, const bool filled, const Math::Axis::Type axis, const Vec3f& startAxis, const Vec3f& endAxis);
             
             void prepare();
             void render();
         private:
-            void init(Vbo& vbo, const float radius, const size_t segments, const bool filled, const float startAngle, const float angleLength);
+            void init2D(Vbo& vbo, const float radius, const size_t segments, const bool filled, const float startAngle, const float angleLength);
+            void init3D(Vbo& vbo, const float radius, const size_t segments, const bool filled, const Math::Axis::Type axis, const float startAngle, const float angleLength);
         };
     }
 }
