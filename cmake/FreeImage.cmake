@@ -7,16 +7,19 @@
 # FREEIMAGE_LIBRARY
 # 
 
-IF (WIN32)
+IF(APPLE)
+	# We want to link freeimage statically and not dynamically on OS X
 	FIND_PATH( FREEIMAGE_INCLUDE_PATH FreeImage.h
-		${PROJECT_SOURCE_DIR}/extern/FreeImage
+		/usr/include
+		/usr/local/include
+		/sw/include
+		/opt/local/include
 		DOC "The directory where FreeImage.h resides")
-	FIND_LIBRARY( FREEIMAGE_LIBRARY
-		NAMES FreeImage freeimage
-		PATHS
-		${PROJECT_SOURCE_DIR}/FreeImage
-		DOC "The FreeImage library")
-ELSE (WIN32)
+  	SET(FREEIMAGE_LIBRARY "${LIB_BIN_DIR}/osx/libfreeimage.a")
+ELSEIF (WIN32)
+	FIND_PATH(FREEIMAGE_INCLUDE_PATH FreeImage.h "${LIB_INCLUDE_DIR}" DOC "Freeimage includes")
+	SET(FREEIMAGE_LIBRARY "${LIB_BIN_DIR}/win32/FreeImage.lib")
+ELSE()
 	FIND_PATH( FREEIMAGE_INCLUDE_PATH FreeImage.h
 		/usr/include
 		/usr/local/include
@@ -33,7 +36,7 @@ ELSE (WIN32)
 		/sw/lib
 		/opt/local/lib
 		DOC "The FreeImage library")
-ENDIF (WIN32)
+ENDIF()
 
 SET(FREEIMAGE_LIBRARIES ${FREEIMAGE_LIBRARY})
 
