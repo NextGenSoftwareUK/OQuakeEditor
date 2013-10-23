@@ -20,14 +20,14 @@
 #ifndef __TrenchBroom__NavBar__
 #define __TrenchBroom__NavBar__
 
-#include <wx/panel.h>
+#include "View/ContainerBar.h"
 
 class wxSearchCtrl;
 class wxStaticText;
 
 namespace TrenchBroom {
     namespace View {
-        class NavBar : public wxPanel {
+        class NavBar : public ContainerBar {
         private:
             wxPanel* m_navPanel;
             wxSearchCtrl* m_searchBox;
@@ -36,7 +36,6 @@ namespace TrenchBroom {
         public:
             NavBar(wxWindow* parent);
             
-            void OnPaint(wxPaintEvent& event);
             void OnSearchPatternChanged(wxCommandEvent& event);
             
             void updateBreadcrump();
