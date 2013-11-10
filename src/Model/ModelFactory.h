@@ -29,9 +29,9 @@ namespace TrenchBroom {
     namespace Model {
         class ModelFactory {
         private:
-            MapFormat m_format;
+            MapFormat::Type m_format;
         public:
-            ModelFactory(const MapFormat format);
+            ModelFactory(const MapFormat::Type format);
 
             Entity* createEntity() const;
             Brush* createBrush(const BBox3& worldBounds, const BrushFaceList& faces) const;
