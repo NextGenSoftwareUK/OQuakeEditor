@@ -35,11 +35,13 @@ namespace TrenchBroom {
     namespace View {
         class EntityInspector;
         class FaceInspector;
+        class MapInspector;
         class ViewInspector;
         
         class Inspector : public wxPanel {
         private:
             wxNotebook* m_notebook;
+            MapInspector* m_mapInspector;
             EntityInspector* m_entityInspector;
             FaceInspector* m_faceInspector;
             ViewInspector* m_viewInspector;
