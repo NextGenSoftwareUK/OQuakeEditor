@@ -29,12 +29,16 @@ class wxWindow;
 namespace TrenchBroom {
     namespace View {
         class MapTreeView;
+        class ModEditor;
         
         class MapInspector : public wxPanel {
         private:
             MapTreeView* m_treeView;
+            ModEditor* m_modEditor;
         public:
             MapInspector(wxWindow* parent, MapDocumentPtr document, ControllerPtr controller);
+        private:
+            void createGui(MapDocumentPtr document, ControllerPtr controller);
         };
     }
 }
