@@ -31,6 +31,7 @@ namespace TrenchBroom {
     namespace Renderer {
         class RenderResources;
     }
+    
     namespace View {
         class EntityInspector;
         class FaceInspector;
