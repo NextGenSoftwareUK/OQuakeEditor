@@ -32,13 +32,16 @@ namespace TrenchBroom {
         private:
             typedef std::vector<GLuint> TextureIdList;
             
+            bool m_loaded;
             String m_name;
             TextureList m_textures;
             TextureIdList m_textureIds;
         public:
+            TextureCollection(const String& name);
             TextureCollection(const String& name, const TextureList& textures);
             virtual ~TextureCollection();
 
+            bool loaded() const;
             const String& name() const;
             const TextureList& textures() const;
         private:
