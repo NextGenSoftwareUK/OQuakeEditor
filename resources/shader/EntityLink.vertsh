@@ -22,8 +22,10 @@
 uniform vec3 CameraPosition;
 
 varying float distance;
+varying vec4 color;
 
 void main(void) {
     gl_Position = ftransform();
     distance = length(CameraPosition - gl_Vertex.xyz);
+    color = gl_Color;
 }
