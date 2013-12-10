@@ -22,56 +22,21 @@
 
 #include "View/ViewTypes.h"
 
-#include <wx/grid.h>
 #include <wx/panel.h>
 
-class wxButton;
-class wxWindow;
-
 namespace TrenchBroom {
-    namespace Model {
-        class Object;
-        class SelectionResult;
-    }
-    
     namespace View {
-        class EntityPropertyGridTable;
+        class EntityPropertyGrid;
+        class SmartPropertyEditorManager;
         
         class EntityPropertyEditor : public wxPanel {
         private:
-            MapDocumentPtr m_document;
-            
-            EntityPropertyGridTable* m_table;
-            wxGrid* m_grid;
-            wxGridCellCoords m_lastHoveredCell;
-            wxButton* m_addPropertyButton;
-            wxButton* m_removePropertiesButton;
+            EntityPropertyGrid* m_propertyGrid;
+            SmartPropertyEditorManager* m_smartEditorManager;
         public:
             EntityPropertyEditor(wxWindow* parent, MapDocumentPtr document, ControllerPtr controller);
-            ~EntityPropertyEditor();
-            
-            void OnPropertyGridSize(wxSizeEvent& event);
-            void OnPropertyGridSelectCell(wxGridEvent& event);
-            void OnPropertyGridTab(wxGridEvent& event);
-            void OnPropertyGridMouseMove(wxMouseEvent& event);
-
-            void OnAddPropertyPressed(wxCommandEvent& event);
-            void OnRemovePropertiesPressed(wxCommandEvent& event);
-            void OnUpdatePropertyViewOrAddPropertiesButton(wxUpdateUIEvent& event);
-            void OnUpdateRemovePropertiesButton(wxUpdateUIEvent& event);
         private:
-            void createGui(MapDocumentPtr document, ControllerPtr controller);
-            void bindEvents();
-            
-            void bindObservers();
-            void unbindObservers();
-            
-            void documentWasNewed();
-            void documentWasLoaded();
-            void objectDidChange(Model::Object* object);
-            void selectionDidChange(const Model::SelectionResult& result);
-            
-            void updateControls();
+            void createGui(wxWindow* parent, MapDocumentPtr document, ControllerPtr controller);
         };
     }
 }
