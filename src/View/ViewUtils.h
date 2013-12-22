@@ -41,6 +41,7 @@ namespace TrenchBroom {
         };
 
         Assets::EntityModel* safeGetModel(Assets::EntityModelManager& manager, const Assets::ModelSpecification& spec, Logger& logger);
+        void combineFlags(const size_t numFlags, const int newFlagValue, int& setFlags, int& mixedFlags);
     }
 }
 
