@@ -25,6 +25,7 @@
 typedef double FloatType;
 typedef BBox<FloatType, 3> BBox3;
 typedef Vec<FloatType, 3> Vec3;
+typedef Vec<FloatType, 2> Vec2;
 typedef Plane<FloatType, 3> Plane3;
 typedef Quat<FloatType> Quat3;
 typedef Mat<FloatType, 4, 4> Mat4x4;
