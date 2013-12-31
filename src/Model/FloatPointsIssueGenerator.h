@@ -24,6 +24,7 @@
 
 namespace TrenchBroom {
     namespace Model {
+        class Brush;
         class Issue;
         
         class FloatPointsIssueGenerator : public IssueGenerator {
