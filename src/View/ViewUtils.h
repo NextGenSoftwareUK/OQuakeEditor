@@ -32,14 +32,6 @@ namespace TrenchBroom {
     }
     
     namespace View {
-        class SetBool {
-        private:
-            bool& m_value;
-        public:
-            SetBool(bool& value);
-            ~SetBool();
-        };
-
         Assets::EntityModel* safeGetModel(Assets::EntityModelManager& manager, const Assets::ModelSpecification& spec, Logger& logger);
         void combineFlags(const size_t numFlags, const int newFlagValue, int& setFlags, int& mixedFlags);
     }

@@ -42,7 +42,7 @@ namespace TrenchBroom {
             Model::ObjectList m_objects;
             Model::Snapshot m_snapshot;
         public:
-            static TransformObjectsCommand::Ptr transformObjects(View::MapDocumentWPtr document, const Mat4x4& transformation, const bool lockTextures, const String& action, const Model::ObjectList& objects);
+            static Ptr transformObjects(View::MapDocumentWPtr document, const Mat4x4& transformation, const bool lockTextures, const String& action, const Model::ObjectList& objects);
         private:
             TransformObjectsCommand(View::MapDocumentWPtr document, const Mat4x4& transformation, const bool lockTextures, const String& action, const Model::ObjectList& objects);
             static String makeName(const String& action, const Model::ObjectList& objects);
