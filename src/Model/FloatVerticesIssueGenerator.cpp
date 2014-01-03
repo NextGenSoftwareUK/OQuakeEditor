@@ -23,6 +23,8 @@
 #include "Model/BrushVertex.h"
 #include "Model/Issue.h"
 #include "Model/Object.h"
+#include "Model/QuickFix.h"
+#include "Model/SharedQuickFixes.h"
 #include "View/ControllerFacade.h"
 #include "View/ViewTypes.h"
 
@@ -30,42 +32,22 @@
 
 namespace TrenchBroom {
     namespace Model {
-        class FloatVerticesIssue : public Issue {
+        class FloatVerticesIssue : public BrushIssue {
         public:
             static const IssueType Type;
-        private:
-            static const QuickFixType SnapVerticesToIntegerFix = 0;
-            
-            Brush* m_brush;
         public:
             FloatVerticesIssue(Brush* brush) :
-            Issue(Type),
-            m_brush(brush) {
-                addQuickFix(QuickFix(SnapVerticesToIntegerFix, Type, "Snap vertices to integer"));
+            BrushIssue(Type, brush) {
+                addSharedQuickFix(SnapVerticesToIntegerQuickFix::instance());
             }
             
-            size_t filePosition() const {
-                return m_brush->filePosition();
-            }
-
             String description() const {
                 return "Brush has non-integer vertices";
             }
             
-            void select(View::ControllerSPtr controller) {
-                controller->selectObject(*m_brush);
-            }
-            
-            void applyQuickFix(const QuickFixType fixType, View::ControllerSPtr controller) {
-            }
-        private:
-            
-            bool doIsHidden(const IssueType type) const {
-                return m_brush->isIssueHidden(this);
-            }
-            
-            void doSetHidden(const IssueType type, const bool hidden) {
-                m_brush->setIssueHidden(type, hidden);
+            void applyQuickFix(const QuickFix* quickFix, View::ControllerSPtr controller) {
+                if (quickFix->type() == FindIntegerPlanePointsQuickFix::Type)
+                    static_cast<const SnapVerticesToIntegerQuickFix*>(quickFix)->apply(brush(), controller);
             }
         };
         
