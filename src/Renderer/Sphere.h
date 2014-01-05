@@ -30,7 +30,9 @@ namespace TrenchBroom {
         private:
             VertexArray m_array;
         public:
-            Sphere(const float radius, const size_t iterations);
+            Sphere(float radius, size_t iterations);
+
+            bool prepared() const;
             void prepare(Vbo& vbo);
             void render();
         };
