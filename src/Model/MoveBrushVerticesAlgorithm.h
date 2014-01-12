@@ -22,6 +22,8 @@
 
 #include "Model/MoveBrushVertexAlgorithm.h"
 
+#include "TrenchBroom.h"
+#include "VecMath.h"
 #include "Model/BrushGeometry.h"
 
 namespace TrenchBroom {

@@ -68,7 +68,7 @@ namespace TrenchBroom {
         
         MoveVerticesResult MoveBrushVerticesAlgorithm::doExecute(BrushGeometry& geometry) {
             if (m_delta.null())
-                return MoveVerticesResult(m_vertexPositions, m_addedFaces, m_removedFaces);
+                return MoveVerticesResult(m_vertexPositions);
             
             BrushVertexList movedVertices;
             Vec3::List sortedVertexPositions = m_vertexPositions;
@@ -91,10 +91,9 @@ namespace TrenchBroom {
                 updateFacePoints(geometry);
             }
             
-            Vec3::List newVertexPositions;
-            newVertexPositions.reserve(movedVertices.size());
-            for (unsigned int i = 0; i < movedVertices.size(); i++)
-                newVertexPositions.push_back(movedVertices[i]->position);
+            Vec3::List newVertexPositions(movedVertices.size());
+            for (size_t i = 0; i < movedVertices.size(); ++i)
+                newVertexPositions[i] = movedVertices[i]->position;
             
             updateNewAndDroppedFaces();
             return MoveVerticesResult(newVertexPositions, m_addedFaces, m_removedFaces);
