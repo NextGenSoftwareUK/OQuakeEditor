@@ -21,6 +21,7 @@
 #define __TrenchBroom__Console__
 
 #include "StringUtils.h"
+#include "Notifier.h"
 #include "Logger.h"
 
 #include <wx/textctrl.h>
@@ -31,11 +32,13 @@ namespace TrenchBroom {
     namespace View {
         class Console : public wxTextCtrl, public Logger {
         public:
+            Notifier2<LogLevel, const String&> logNotifier;
+        public:
             Console(wxWindow* parent, wxSimplebook* extraBook);
-            void log(const LogLevel level, const String& message);
         private:
-            void logToDebugOut(const LogLevel level, const String& message);
-            void logToConsole(const LogLevel level, const String& message);
+            void doLog(LogLevel level, const String& message);
+            void logToDebugOut(LogLevel level, const String& message);
+            void logToConsole(LogLevel level, const String& message);
         };
     }
 }
