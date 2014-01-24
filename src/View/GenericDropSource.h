@@ -17,35 +17,23 @@
  along with TrenchBroom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TrenchBroom_GenericDropSource_h
-#define TrenchBroom_GenericDropSource_h
+#ifndef __TrenchBroom__GenericDropSource__
+#define __TrenchBroom__GenericDropSource__
 
 #include <wx/dnd.h>
-#include <wx/frame.h>
-#include <wx/dragimag.h>
 
-class MacScreenDC;
+class wxWindow;
 
 namespace TrenchBroom {
     namespace View {
         class GenericDropSource : public wxDropSource {
-        private:
-            wxWindow* m_window;
-            wxDragImage* m_dragImage;
-            wxBitmap m_feedbackImage;
-            wxPoint m_imageOffset;
-            bool m_showFeedback;
         public:
-            GenericDropSource(wxWindow* window, const wxImage* image, const wxPoint& imageOffset);
-            virtual ~GenericDropSource();
-            
-            bool GiveFeedback(wxDragResult effect);
-            void setShowFeedback(bool showFeedback);
+            GenericDropSource(wxDataObject& data, wxWindow* window);
+            ~GenericDropSource();
         };
-        
-        
+
         extern GenericDropSource* CurrentDropSource;
     }
 }
 
-#endif
+#endif /* defined(__TrenchBroom__GenericDropSource__) */
