@@ -22,6 +22,7 @@
 
 #include "Model/ModelTypes.h"
 #include "Renderer/BrushRenderer.h"
+#include "Renderer/EdgeRenderer.h"
 #include "Renderer/EntityRenderer.h"
 #include "Renderer/EntityLinkRenderer.h"
 #include "Renderer/Vbo.h"
