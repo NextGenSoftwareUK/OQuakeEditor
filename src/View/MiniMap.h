@@ -20,6 +20,7 @@
 #ifndef __TrenchBroom__MiniMap__
 #define __TrenchBroom__MiniMap__
 
+#include "Renderer/MiniMapRenderer.h"
 #include "View/ViewTypes.h"
 
 #include <wx/panel.h>
@@ -33,16 +34,16 @@ namespace TrenchBroom {
     }
 
     namespace View {
-        class MiniMapView;
+        class MiniMapXYView;
+        class MiniMapZView;
         
         class MiniMap : public wxPanel {
         private:
-            wxSlider* m_zSlider;
-            MiniMapView* m_miniMapView;
+            Renderer::MiniMapRenderer m_renderer;
+            MiniMapZView* m_miniMapZView;
+            MiniMapXYView* m_miniMapXYView;
         public:
             MiniMap(wxWindow* parent, View::MapDocumentWPtr document, Renderer::RenderResources& renderResources);
-            
-            void OnZSliderChanged(wxScrollEvent& event);
         private:
             void createGui(View::MapDocumentWPtr document, Renderer::RenderResources& renderResources);
             void bindEvents();
