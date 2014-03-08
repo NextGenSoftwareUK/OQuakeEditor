@@ -21,18 +21,17 @@
 #define TrenchBroom_Pickable_h
 
 #include "TrenchBroom.h"
-#include "SharedPointer.h"
 #include "VecMath.h"
 
 namespace TrenchBroom {
+    class Hits;
     namespace Model {
-        class PickResult;
         
         class Pickable {
         public:
             virtual ~Pickable() {}
             virtual const BBox3& bounds() const = 0;
-            virtual void pick(const Ray3& ray, PickResult& result) = 0;
+            virtual void pick(const Ray3& ray, Hits& hits) = 0;
         };
     }
 }
