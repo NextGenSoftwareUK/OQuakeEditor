@@ -17,7 +17,6 @@
  along with TrenchBroom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef __TrenchBroom__CameraTool__
 #define __TrenchBroom__CameraTool__
 
