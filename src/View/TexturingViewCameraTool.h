@@ -20,7 +20,6 @@
 #ifndef __TrenchBroom__TexturingViewCameraTool__
 #define __TrenchBroom__TexturingViewCameraTool__
 
-#include "Model/Picker.h"
 #include "View/Tool.h"
 #include "View/ViewTypes.h"
 
@@ -41,9 +40,6 @@ namespace TrenchBroom {
             bool doMouseDrag(const InputState& inputState);
             void doEndMouseDrag(const InputState& inputState);
             void doCancelMouseDrag(const InputState& inputState);
-            
-            bool pan(const InputState& inputState) const;
-            bool zoom(const InputState& inputState) const;
         };
     }
 }
