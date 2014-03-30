@@ -25,10 +25,6 @@
 #include "View/ViewTypes.h"
 
 namespace TrenchBroom {
-    namespace Renderer {
-        class OrthographicCamera;
-    }
-    
     namespace View {
         class TexturingViewHelper;
         
@@ -43,6 +39,8 @@ namespace TrenchBroom {
             bool doMouseDrag(const InputState& inputState);
             void doEndMouseDrag(const InputState& inputState);
             void doCancelMouseDrag(const InputState& inputState);
+            
+            Vec3 computeTexPoint(const Ray3& ray, const Model::BrushFace* face) const;
         };
     }
 }
