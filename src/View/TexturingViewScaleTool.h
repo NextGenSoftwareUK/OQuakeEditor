@@ -26,6 +26,10 @@
 #include "View/ViewTypes.h"
 
 namespace TrenchBroom {
+    namespace Assets {
+        class Texture;
+    }
+    
     namespace Renderer {
         class OrthographicCamera;
         class RenderContext;
@@ -35,36 +39,42 @@ namespace TrenchBroom {
         class TexturingViewHelper;
         
         class TexturingViewScaleTool : public ToolImpl<NoActivationPolicy, PickingPolicy, NoMousePolicy, MouseDragPolicy, NoDropPolicy, RenderPolicy> {
+        public:
+            static const Hit::HitType XHandleHit;
+            static const Hit::HitType YHandleHit;
         private:
-            static const Hit::HitType XOriginHit;
-            static const Hit::HitType YOriginHit;
-            static const Hit::HitType XScaleHit;
-            static const Hit::HitType YScaleHit;
             static const FloatType MaxPickDistance;
             
             typedef Renderer::VertexSpecs::P3C4::Vertex EdgeVertex;
-
-            typedef enum {
-                None,
-                Handle,
-                Scale
-            } DragMode;
+            
+            class ScaleHandle {
+            private:
+                Vec2i m_index;
+                Vec2f m_position;
+                bool m_dragging[2];
+            public:
+                ScaleHandle();
+                
+                void reset();
+                void setX(int index, const Assets::Texture* texture, const Vec2i& subDivisions);
+                void setY(int index, const Assets::Texture* texture, const Vec2i& subDivisions);
+            private:
+                void set(size_t coord, int index, float position);
+            public:
+                const Vec2f& position() const;
+                const Vec2f selector() const;
+            };
             
             TexturingViewHelper& m_helper;
             Renderer::OrthographicCamera& m_camera;
             
+            ScaleHandle m_scaleHandle;
             Vec2f m_lastPoint;
-            
-            DragMode m_dragMode;
-            Vec2f m_originSelector;
-            Vec2f m_scaleSelector;
             Vec2f m_lastScaleDistance;
         public:
             TexturingViewScaleTool(MapDocumentWPtr document, ControllerWPtr controller, TexturingViewHelper& helper, Renderer::OrthographicCamera& camera);
         private:
             void doPick(const InputState& inputState, Hits& hits);
-            void pickOriginHandles(const Ray3& ray, Hits& hits) const;
-            void pickScaleHandles(const Ray3& ray, Hits& hits) const;
 
             bool doStartMouseDrag(const InputState& inputState);
             bool doMouseDrag(const InputState& inputState);
@@ -72,8 +82,7 @@ namespace TrenchBroom {
             void doCancelMouseDrag(const InputState& inputState);
             
             void doRender(const InputState& inputState, Renderer::RenderContext& renderContext);
-            void getOriginHandleVertices(const Hits& hits, EdgeVertex::List& vertices) const;
-            void getScaleHandleVertices(const Hits& hits, EdgeVertex::List& vertices) const;
+            EdgeVertex::List getHandleVertices(const Hits& hits) const;
         };
     }
 }
