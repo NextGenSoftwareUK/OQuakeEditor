@@ -21,6 +21,7 @@
 #define __TrenchBroom__Inspector__
 
 #include "Controller/Command.h"
+#include "View/GLContextHolder.h"
 #include "View/ViewTypes.h"
 
 #include <wx/panel.h>
@@ -30,7 +31,6 @@ class wxNotebook;
 namespace TrenchBroom {
     namespace Renderer {
         class Camera;
-        class RenderResources;
     }
     
     namespace View {
@@ -47,7 +47,7 @@ namespace TrenchBroom {
             FaceInspector* m_faceInspector;
             ViewInspector* m_viewInspector;
         public:
-            Inspector(wxWindow* parent, MapDocumentWPtr document, ControllerWPtr controller, Renderer::RenderResources& resources, Renderer::Camera& camera);
+            Inspector(wxWindow* parent, GLContextHolder::Ptr sharedContext, MapDocumentWPtr document, ControllerWPtr controller, Renderer::Camera& camera);
             void switchToPage(InspectorPage page);
         };
     }
