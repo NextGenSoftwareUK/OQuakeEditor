@@ -26,6 +26,9 @@
 namespace TrenchBroom {
     namespace Model {
         namespace MapEntitiesIterator {
+            EntityList::const_iterator begin(Map& map);
+            EntityList::const_iterator end(Map& map);
+
             EntityList::const_iterator begin(Map& map) {
                 return map.entities().begin();
             }
