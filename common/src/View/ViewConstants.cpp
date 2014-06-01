@@ -34,6 +34,16 @@ namespace TrenchBroom {
 #endif
                 return col;
             }
+            
+            const wxColour& borderColor() {
+                static const wxColour col =
+#if defined __APPLE__
+                wxColour(67, 67, 67);
+#else
+                *wxBLACK;
+#endif
+                return col;
+            }
         }
     }
 }
