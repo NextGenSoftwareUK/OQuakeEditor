@@ -37,27 +37,18 @@ namespace TrenchBroom {
     namespace View {
         class Console;
         class IssueBrowser;
+        class TabBook;
         
         class InfoPanel : public wxPanel {
         private:
-            wxBitmap m_consoleInactiveBitmap;
-            wxBitmap m_consoleActiveBitmap;
-            wxBitmap m_issueBrowserActiveBitmap;
-            wxBitmap m_issueBrowserInactiveBitmap;
-            
-            wxSimplebook* m_mainBook;
-            wxSimplebook* m_extraBook;
+            TabBook* m_tabBook;
             Console* m_console;
             IssueBrowser* m_issueBrowser;
-            wxButton* m_consoleButton;
-            wxButton* m_issueBrowserButton;
         public:
             InfoPanel(wxWindow* parent, MapDocumentWPtr document, ControllerWPtr controller);
-            Console* console();
             
-            void OnConsoleButtonPressed(wxCommandEvent& event);
-            void OnIssueBrowserButtonPressed(wxCommandEvent& event);
-            void OnNotebookPageChanged(wxBookCtrlEvent& event);
+            wxWindow* tabBar() const;
+            Console* console() const;
         };
     }
 }
