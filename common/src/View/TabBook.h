@@ -41,9 +41,7 @@ namespace TrenchBroom {
             TabBar* m_tabBar;
             wxSimplebook* m_tabBook;
         public:
-            TabBook(wxWindow* bookParent, wxWindow* barParent);
-            
-            TabBar* tabBar() const;
+            TabBook(wxWindow* parent);
             
             void addPage(TabBookPage* page, const wxString& title);
             void switchToPage(size_t index);
