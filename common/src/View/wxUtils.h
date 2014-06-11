@@ -37,6 +37,8 @@ namespace TrenchBroom {
         wxColor toWxColor(const Color& color);
         
         wxSizer* wrapDialogButtonSizer(wxSizer* buttonSizer, wxWindow* parent);
+
+        wxArrayString filterBySuffix(const wxArrayString& strings, const wxString& suffix, bool caseSensitive = false);
     }
 }
 
