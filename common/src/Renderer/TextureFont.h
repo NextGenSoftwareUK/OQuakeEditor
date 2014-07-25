@@ -22,10 +22,10 @@
 
 #include "VecMath.h"
 #include "FreeType.h"
-#include "Renderer/GL.h"
+#include "Renderer/FontGlyph.h"
+#include "Renderer/FontGlyphBuilder.h"
 
 #include <vector>
-
 
 namespace TrenchBroom {
     namespace Renderer {
@@ -33,34 +33,17 @@ namespace TrenchBroom {
         
         class TextureFont {
         private:
-            static const int Border = 3;
-            
-            struct Char {
-                int x, y, w, h, a;
-                Char(const int i_x, const int i_y, const int i_w, const int i_h, const int i_a);
-                
-                void append(Vec2f::List& vertices, const int xOffset, const int yOffset, const int textureLength, const bool clockwise) const;
-                float sMin(const size_t textureWidth) const;
-                float sMax(const size_t textureWidth) const;
-                float tMin(const size_t textureHeight) const;
-                float tMax(const size_t textureHeight) const;
-            };
-            
-            typedef std::vector<Char> CharList;
-            CharList m_chars;
-            
-            unsigned char m_minChar;
-            unsigned char m_maxChar;
-            int m_lineHeight;
-            
-            GLuint m_textureId;
-            int m_textureLength;
             FontTexture* m_texture;
+            FontGlyph::List m_glyphs;
+            size_t m_lineHeight;
+            
+            unsigned char m_firstChar;
+            unsigned char m_charCount;
         public:
-            TextureFont(FT_Face face, const unsigned char minChar = ' ', const unsigned char maxChar = '~');
+            TextureFont(FontTexture* texture, const FontGlyph::List& glyphs, size_t lineHeight, unsigned char firstChar, unsigned char charCount);
             ~TextureFont();
             
-            Vec2f::List quads(const String& string, const bool clockwise, const Vec2f& offset = Vec2f());
+            Vec2f::List quads(const String& string, const bool clockwise, const Vec2f& offset = Vec2f::Null);
             Vec2f measure(const String& string);
             
             void activate();

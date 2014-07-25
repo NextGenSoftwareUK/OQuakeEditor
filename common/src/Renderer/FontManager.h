@@ -20,20 +20,20 @@
 #ifndef __TrenchBroom__FontManager__
 #define __TrenchBroom__FontManager__
 
-#include "FreeType.h"
 #include "Renderer/FontDescriptor.h"
 
 #include <map>
 
 namespace TrenchBroom {
     namespace Renderer {
+        class FontFactory;
         class TextureFont;
         
         class FontManager {
         private:
             typedef std::map<FontDescriptor, TextureFont*> FontCache;
             
-            FT_Library m_library;
+            FontFactory* m_factory;
             FontCache m_cache;
         public:
             FontManager();
