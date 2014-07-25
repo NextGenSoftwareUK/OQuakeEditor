@@ -28,16 +28,19 @@ namespace TrenchBroom {
         private:
             String m_name;
             size_t m_size;
-            long m_nameHash;
+            unsigned char m_minChar;
+            unsigned char m_maxChar;
         public:
-            FontDescriptor(const String& name, const size_t size);
+            FontDescriptor(const String& name, const size_t size, unsigned char minChar = ' ', unsigned char maxChar = '~');
             
             int compare(const FontDescriptor& other) const;
             bool operator< (const FontDescriptor& other) const;
             
-            long nameHash() const;
             const String& name() const;
             size_t size() const;
+            unsigned char minChar() const;
+            unsigned char maxChar() const;
+            unsigned char charCount() const;
         };
     }
 }
