@@ -24,22 +24,12 @@
 #include "Renderer/FontFactory.h"
 
 namespace TrenchBroom {
-    namespace IO {
-        class Path;
-    }
-    
     namespace Renderer {
         class FontDescriptor;
         class TextureFont;
         
         class FreeTypeFontFactory : public FontFactory {
         private:
-            struct Metrics {
-                size_t cellSize;
-                size_t maxAscend;
-                size_t lineHeight;
-            };
-            
             FT_Library m_library;
         public:
             FreeTypeFontFactory();
