@@ -22,6 +22,7 @@
 
 #include "View/ContainerBar.h"
 
+class wxBookCtrlBase;
 class wxSearchCtrl;
 class wxStaticText;
 
@@ -29,16 +30,16 @@ namespace TrenchBroom {
     namespace View {
         class NavBar : public ContainerBar {
         private:
-            wxPanel* m_navPanel;
+            wxBookCtrlBase* m_toolBook;
             wxSearchCtrl* m_searchBox;
             
             wxStaticText* makeBreadcrump(const wxString& text, bool link);
         public:
             NavBar(wxWindow* parent);
             
-            void OnSearchPatternChanged(wxCommandEvent& event);
+            wxBookCtrlBase* toolBook();
             
-            void updateBreadcrump();
+            void OnSearchPatternChanged(wxCommandEvent& event);
         };
     }
 }
