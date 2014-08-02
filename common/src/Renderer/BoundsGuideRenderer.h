@@ -24,6 +24,7 @@
 #include "TrenchBroom.h"
 #include "VecMath.h"
 #include "Renderer/BoundsInfoRenderer.h"
+#include "Renderer/SpikeGuideRenderer.h"
 #include "Renderer/Vbo.h"
 #include "Renderer/VertexArray.h"
 #include "View/ViewTypes.h"
@@ -41,6 +42,7 @@ namespace TrenchBroom {
         private:
             static const FloatType SpikeLength;
 
+            View::MapDocumentWPtr m_document;
             Color m_color;
             BBox3 m_bounds;
 
@@ -48,24 +50,23 @@ namespace TrenchBroom {
             
             Vbo m_vbo;
             VertexArray m_boxArray;
-            VertexArray m_spikeArray;
-            VertexArray m_pointArray;
+            SpikeGuideRenderer m_spikeRenderer;
             BoundsInfoRenderer m_infoRenderer;
             
             bool m_valid;
         public:
-            BoundsGuideRenderer(TextureFont& font);
+            BoundsGuideRenderer(View::MapDocumentWPtr document, TextureFont& font);
             
             void setColor(const Color& color);
             void setBounds(const BBox3& bounds);
             void setShowSizes(bool showSizes);
             
-            void render(RenderContext& renderContext, View::MapDocumentSPtr document);
+            void render(RenderContext& renderContext);
         private:
             void validate(View::MapDocumentSPtr document);
             void validateBox();
-            void validateSpikes();
-            void validatePoints(View::MapDocumentSPtr document);
+            void validateSpikes(View::MapDocumentSPtr document);
+            void addSpike(const Vec3& origin, const Vec3& direction, FloatType length, View::MapDocumentSPtr document);
         };
     }
 }
