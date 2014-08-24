@@ -20,7 +20,7 @@
 #ifndef __TrenchBroom__BrushContentTypeEvaluator__
 #define __TrenchBroom__BrushContentTypeEvaluator__
 
-#include "StringUtils.h"
+#include "Model/ModelTypes.h"
 
 namespace TrenchBroom {
     namespace Model {
@@ -32,7 +32,6 @@ namespace TrenchBroom {
             
             static BrushContentTypeEvaluator* textureNameEvaluator(const String& pattern);
             static BrushContentTypeEvaluator* contentFlagsEvaluator(int value);
-            static BrushContentTypeEvaluator* entityClassnameEvaluator(const String& classname);
             
             bool evaluate(const Brush* brush) const;
         private:
