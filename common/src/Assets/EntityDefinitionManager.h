@@ -22,6 +22,7 @@
 
 #include "Assets/AssetTypes.h"
 #include "Assets/EntityDefinition.h"
+#include "Assets/EntityDefinitionGroup.h"
 #include "Model/ModelTypes.h"
 
 #include <map>
@@ -33,16 +34,10 @@ namespace TrenchBroom {
     
     namespace Assets {
         class EntityDefinitionManager {
-        public:
-            enum SortOrder {
-                Name,
-                Usage
-            };
-
         private:
             typedef std::map<String, EntityDefinition*> Cache;
             EntityDefinitionList m_definitions;
-            
+            EntityDefinitionGroup::List m_groups;
             Cache m_cache;
         public:
             ~EntityDefinitionManager();
@@ -52,11 +47,15 @@ namespace TrenchBroom {
             
             EntityDefinition* definition(const Model::Entity* entity) const;
             EntityDefinition* definition(const Model::PropertyValue& classname) const;
-            EntityDefinitionList definitions(const EntityDefinition::Type type, const SortOrder order = Name) const;
-            EntityDefinitionGroups groups(const EntityDefinition::Type type, const SortOrder order = Name) const;
+            EntityDefinitionList definitions(EntityDefinition::Type type, const EntityDefinition::SortOrder order = EntityDefinition::Name) const;
+
+            const EntityDefinitionGroup::List& groups() const;
         private:
+            void updateIndices();
+            void updateGroups();
             void updateCache();
             void clearCache();
+            void clearGroups();
         };
     }
 }
