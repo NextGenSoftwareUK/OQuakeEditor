@@ -20,58 +20,29 @@
 #ifndef __TrenchBroom__Layer__
 #define __TrenchBroom__Layer__
 
-#include "Notifier.h"
 #include "StringUtils.h"
 #include "Model/ModelTypes.h"
-#include "Model/Object.h"
-#include "Model/ObjectParent.h"
-#include "Model/ObjectSection.h"
+#include "Model/Node.h"
 
 namespace TrenchBroom {
     namespace Model {
-        class Layer : public ObjectSection, public ObjectParent {
-        public:
-            typedef int Attr_Type;
-            static const Attr_Type Attr_Name        = 1 << 0;
-            static const Attr_Type Attr_Objects     = 1 << 1;
-            static const Attr_Type Attr_Visible     = 1 << 2;
-            static const Attr_Type Attr_Locked      = 1 << 3;
-            static const Attr_Type Attr_Any         = Attr_Name | Attr_Objects | Attr_Visible | Attr_Locked;
-            static const Attr_Type Attr_Editing     = Attr_Visible | Attr_Locked;
+        class Layer : public Node {
         private:
             String m_name;
-            bool m_visible;
-            bool m_locked;
-            ObjectList m_objects;
-            EntityList m_entities;
-            BrushList m_worldBrushes;
-        public:
-            Notifier2<Layer*, Attr_Type> layerWillChangeNotifier;
-            Notifier2<Layer*, Attr_Type> layerDidChangeNotifier;
-            Notifier2<Layer*, Object*> objectWasAddedNotifier;
-            Notifier2<Layer*, Object*> objectWasRemovedNotifier;
         public:
             Layer(const String& name);
             
             const String& name() const;
             void setName(const String& name);
-            
-            bool visible() const;
-            void setVisible(bool visible);
-            
-            bool locked() const;
-            void setLocked(bool locked);
+        private: // implement methods inherited from Node
+            bool doCanAddChild(Node* child) const;
+            bool doCanRemoveChild(Node* child) const;
+            void doAncestorDidChange();
+            void doAccept(NodeVisitor& visitor);
+            void doAccept(ConstNodeVisitor& visitor) const;
         private:
-            void entityWillBeAdded(Entity* entity);
-            void entityWasAdded(Entity* entity);
-            void entityWillBeRemoved(Entity* entity);
-            void entityWasRemoved(Entity* entity);
-            void brushWillBeAdded(Brush* brush);
-            void brushWasAdded(Brush* brush);
-            void brushWillBeRemoved(Brush* brush);
-            void brushWasRemoved(Brush* brush);
-            
-            Layer* doGetLayerForChild();
+            Layer(const Layer&);
+            Layer& operator=(const Layer&);
         };
     }
 }

@@ -23,10 +23,8 @@
 #include <gtest/gtest.h>
 
 #include "VecMath.h"
-#include "View/MapDocument.h"
 
 namespace TrenchBroom {
-    View::MapDocumentSPtr makeDocument(const BBox3d& worldBounds);
     bool texCoordsEqual(const Vec2f& tc1, const Vec2f& tc2);
 }
 
