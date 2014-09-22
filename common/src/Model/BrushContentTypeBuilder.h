@@ -33,7 +33,6 @@ namespace TrenchBroom {
                 bool transparent;
                 Result(BrushContentType::FlagType i_contentType, bool i_transparent);
             };
-            typedef std::tr1::shared_ptr<BrushContentTypeBuilder> Ptr;
         private:
             BrushContentType::List m_contentTypes;
         public:
