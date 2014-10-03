@@ -30,7 +30,9 @@ namespace TrenchBroom {
         class Entity;
         class Group;
         class Object;
+        class Node;
         
+        Node* hitToNode(const Hit& hit);
         Object* hitToObject(const Hit& hit);
         Group* hitToGroup(const Hit& hit);
         Entity* hitToEntity(const Hit& hit);
