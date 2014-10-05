@@ -35,8 +35,6 @@ namespace TrenchBroom {
         private:
             SnapshotList m_snapshots;
         public:
-            Snapshot();
-            
             template <typename I>
             Snapshot(I cur, I end) {
                 while (cur != end) {
