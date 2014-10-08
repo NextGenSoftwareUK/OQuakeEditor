@@ -20,24 +20,12 @@
 #ifndef __TrenchBroom__CollectNodesVisitor__
 #define __TrenchBroom__CollectNodesVisitor__
 
-#include "Model/NodeVisitor.h"
+#include "Model/CollectMatchingNodesVisitor.h"
+#include "Model/NodePredicates.h"
 
 namespace TrenchBroom {
     namespace Model {
-        class CollectNodesVisitor : public NodeVisitor {
-        private:
-            NodeSet m_nodes;
-        public:
-            const NodeSet& nodeSet() const;
-            NodeList nodeList() const;
-        private:
-            void doVisit(World* world);
-            void doVisit(Layer* layer);
-            void doVisit(Group* group);
-            void doVisit(Entity* entity);
-            void doVisit(Brush* brush);
-            void handleNode(Node* node);
-        };
+        typedef CollectMatchingNodesVisitor<True> CollectNodesVisitor;
     }
 }
 
