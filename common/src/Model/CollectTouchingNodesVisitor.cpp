@@ -29,12 +29,12 @@ namespace TrenchBroom {
         m_object(object) {
             assert(m_object != NULL);
         }
-        
+
         bool MatchTouchingNodes::operator()(const Node* node) const {
             return m_object->intersects(node);
         }
 
         CollectTouchingNodesVisitor::CollectTouchingNodesVisitor(const Object* object) :
-        CollectMatchingNodesVisitor(MatchTouchingNodes(object)) {}
+        CollectMatchingUniqueNodesVisitor(And<Not<EqualsObject>, MatchTouchingNodes>(Not<EqualsObject>(EqualsObject(object)), MatchTouchingNodes(object))) {}
     }
 }
