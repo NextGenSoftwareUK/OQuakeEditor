@@ -19,6 +19,7 @@
 
 #include "SnapBrushVerticesCommand.h"
 
+#include "Model/Brush.h"
 #include "Model/Snapshot.h"
 #include "View/MapDocument.h"
 #include "View/MapDocumentCommandFacade.h"
@@ -33,7 +34,8 @@ namespace TrenchBroom {
         }
 
         SnapBrushVerticesCommand::~SnapBrushVerticesCommand() {
-            deleteSnapshot();
+            if (m_snapshot != NULL)
+                deleteSnapshot();
         }
 
         SnapBrushVerticesCommand::SnapBrushVerticesCommand(VertexHandleManager& handleManager, const size_t snapTo) :
@@ -108,6 +110,7 @@ namespace TrenchBroom {
 
         void SnapBrushVerticesCommand::deleteSnapshot() {
             delete m_snapshot;
+            m_snapshot = NULL;
         }
         
         bool SnapBrushVerticesCommand::doIsRepeatable(MapDocumentCommandFacade* document) const {
