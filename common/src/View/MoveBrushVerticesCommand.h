@@ -55,4 +55,5 @@ namespace TrenchBroom {
         };
     }
 }
+
 #endif /* defined(__TrenchBroom__MoveBrushVerticesCommand__) */
