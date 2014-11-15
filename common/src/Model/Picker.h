@@ -38,7 +38,7 @@ namespace TrenchBroom {
             void addObject(Pickable* object);
             void removeObject(Pickable* object);
             
-            Hits pick(const Ray3& ray) const;
+            void pick(const Ray3& ray, Hits& hits) const;
         };
     }
 }
