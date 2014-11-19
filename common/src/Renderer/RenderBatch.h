@@ -20,7 +20,9 @@
 #ifndef __TrenchBroom__RenderBatch__
 #define __TrenchBroom__RenderBatch__
 
-#include "Renderer/Vbo.h"
+#include "TrenchBroom.h"
+#include "VecMath.h"
+#include "Color.h"
 
 #include <vector>
 
@@ -28,6 +30,7 @@ namespace TrenchBroom {
     namespace Renderer {
         class Renderable;
         class RenderContext;
+        class Vbo;
         
         class RenderBatch {
         private:
