@@ -39,7 +39,7 @@ namespace TrenchBroom {
         public:
             PointHandle(const Vec3& position, const Color& color);
             
-            bool pick(const Ray3& pickRay, const Renderer::Camera& camera) const;
+            bool pick(const Ray3& pickRay, const Vec3& viewRay) const;
             void render(const Renderer::RenderContext& renderContext, Renderer::RenderBatch& renderBatch, bool highlight) const;
         };
     }
