@@ -21,7 +21,7 @@
 
 #include "PreferenceManager.h"
 #include "Preferences.h"
-#include "View/PickRay.h"
+#include "Renderer/Camera.h"
 
 namespace TrenchBroom {
     namespace View {
@@ -29,9 +29,10 @@ namespace TrenchBroom {
         m_position(position),
         m_color(color) {}
         
-        FloatType PointHandle::pick(const PickRay& pickRay) const {
+        FloatType PointHandle::pick(const Ray3& pickRay, const Renderer::Camera& camera) const {
             const FloatType radius = static_cast<FloatType>(pref(Preferences::HandleRadius));
-            return pickRay.perpendicularIntersectWithSphere(m_position, radius);
+            const FloatType scaling = static_cast<FloatType>(camera.perspectiveScalingFactor(m_position));
+            return pickRay.intersectWithSphere(m_position, 2.0 * radius * scaling);
         }
         
         void PointHandle::render(const Renderer::RenderContext& renderContext, Renderer::RenderBatch& renderBatch, const bool highlight) const {
