@@ -20,7 +20,6 @@
 #ifndef __TrenchBroom__MapInspector__
 #define __TrenchBroom__MapInspector__
 
-#include "View/GLContextHolder.h"
 #include "View/TabBook.h"
 #include "View/ViewTypes.h"
 
@@ -33,14 +32,15 @@ namespace TrenchBroom {
     }
     
     namespace View {
+        class GLContextManager;
         class MapTreeView;
         class ModEditor;
         
         class MapInspector : public TabBookPage {
         public:
-            MapInspector(wxWindow* parent, GLContextHolder::Ptr sharedContext, MapDocumentWPtr document);
+            MapInspector(wxWindow* parent, MapDocumentWPtr document, GLContextManager& contextManager);
         private:
-            void createGui(GLContextHolder::Ptr sharedContext, MapDocumentWPtr document);
+            void createGui(MapDocumentWPtr document, GLContextManager& contextManager);
             wxWindow* createLayerEditor(wxWindow* parent, MapDocumentWPtr document);
             wxWindow* createModEditor(wxWindow* parent, MapDocumentWPtr document);
         };
