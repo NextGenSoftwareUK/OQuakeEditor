@@ -30,29 +30,16 @@
 namespace TrenchBroom {
     class Logger;
     
-    namespace Renderer {
-        class MapRenderer;
-        class Vbo;
-    }
-    
     namespace View {
         class MapViewBase;
         class MapView2D;
         class MapView3D;
-        class MapViewBar;
-        class MapViewToolBox;
-        class MovementRestriction;
         
         class CyclingMapView : public wxPanel {
         private:
             Logger* m_logger;
             MapDocumentWPtr m_document;
             
-            MapViewToolBox* m_toolBox;
-
-            Renderer::MapRenderer* m_mapRenderer;
-            Renderer::Vbo* m_vbo;
-            MapViewBar* m_mapViewBar;
             MapViewBase* m_mapViews[4];
             MapViewBase* m_currentMapView;
         public:
