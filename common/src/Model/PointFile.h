@@ -44,8 +44,8 @@ namespace TrenchBroom {
             const Vec3f::List& points() const;
             const Vec3f& currentPoint() const;
             const Vec3f currentDirection() const;
-            const Vec3f& nextPoint();
-            const Vec3f& previousPoint();
+            void advance();
+            void retreat();
 
             static IO::Path pointFilePath(const IO::Path& mapFilePath);
         private:

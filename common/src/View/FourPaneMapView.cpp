@@ -23,7 +23,6 @@
 #include "Model/Brush.h"
 #include "Model/HitAdapter.h"
 #include "Model/ModelHitFilters.h"
-#include "Model/PointFile.h"
 #include "Renderer/Camera.h"
 #include "View/CommandIds.h"
 #include "View/Grid.h"
@@ -105,30 +104,8 @@ namespace TrenchBroom {
             currentMapView()->moveCameraToPosition(position);
         }
         
-        bool FourPaneMapView::doCanMoveCameraToNextTracePoint() const {
-            MapDocumentSPtr document = lock(m_document);
-            if (!document->isPointFileLoaded())
-                return false;
-            
-            Model::PointFile* pointFile = document->pointFile();
-            return pointFile->hasNextPoint();
-        }
-        
-        bool FourPaneMapView::doCanMoveCameraToPreviousTracePoint() const {
-            MapDocumentSPtr document = lock(m_document);
-            if (!document->isPointFileLoaded())
-                return false;
-            
-            Model::PointFile* pointFile = document->pointFile();
-            return pointFile->hasPreviousPoint();
-        }
-        
-        void FourPaneMapView::doMoveCameraToNextTracePoint() {
-            m_mapView3D->moveCameraToNextTracePoint();
-        }
-        
-        void FourPaneMapView::doMoveCameraToPreviousTracePoint() {
-            m_mapView3D->moveCameraToPreviousTracePoint();
+        void FourPaneMapView::doMoveCameraToCurrentTracePoint() {
+            m_mapView3D->moveCameraToCurrentTracePoint();
         }
     }
 }

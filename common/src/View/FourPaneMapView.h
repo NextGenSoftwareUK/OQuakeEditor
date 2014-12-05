@@ -23,6 +23,8 @@
 #include "View/MapViewContainer.h"
 #include "View/ViewTypes.h"
 
+#include <wx/panel.h>
+
 namespace TrenchBroom {
     class Logger;
     
@@ -56,16 +58,13 @@ namespace TrenchBroom {
             void OnIdleSetFocus(wxIdleEvent& event);
         private:
             MapViewBase* currentMapView() const;
-        private: // implement MapViewContainer interface
+        private: // implement MapView interface
             Vec3 doGetPasteObjectsDelta(const BBox3& bounds) const;
             
             void doCenterCameraOnSelection();
             void doMoveCameraToPosition(const Vec3& position);
             
-            bool doCanMoveCameraToNextTracePoint() const;
-            bool doCanMoveCameraToPreviousTracePoint() const;
-            void doMoveCameraToNextTracePoint();
-            void doMoveCameraToPreviousTracePoint();
+            void doMoveCameraToCurrentTracePoint();
         };
     }
 }

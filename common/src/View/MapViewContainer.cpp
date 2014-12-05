@@ -19,43 +19,12 @@
 
 #include "MapViewContainer.h"
 
-#include <cassert>
-
 namespace TrenchBroom {
     namespace View {
         MapViewContainer::MapViewContainer(wxWindow* parent) :
-        wxPanel(parent) {}
+        wxPanel(parent),
+        MapView() {}
         
         MapViewContainer::~MapViewContainer() {}
-        
-        Vec3 MapViewContainer::pasteObjectsDelta(const BBox3& bounds) const {
-            return doGetPasteObjectsDelta(bounds);
-        }
-        
-        void MapViewContainer::centerCameraOnSelection() {
-            doCenterCameraOnSelection();
-        }
-        
-        void MapViewContainer::moveCameraToPosition(const Vec3& position) {
-            doMoveCameraToPosition(position);
-        }
-        
-        bool MapViewContainer::canMoveCameraToNextTracePoint() const {
-            return doCanMoveCameraToNextTracePoint();
-        }
-        
-        bool MapViewContainer::canMoveCameraToPreviousTracePoint() const {
-            return doCanMoveCameraToPreviousTracePoint();
-        }
-        
-        void MapViewContainer::moveCameraToNextTracePoint() {
-            assert(canMoveCameraToNextTracePoint());
-            doMoveCameraToNextTracePoint();
-        }
-        
-        void MapViewContainer::moveCameraToPreviousTracePoint() {
-            assert(canMoveCameraToPreviousTracePoint());
-            doMoveCameraToPreviousTracePoint();
-        }
     }
 }
