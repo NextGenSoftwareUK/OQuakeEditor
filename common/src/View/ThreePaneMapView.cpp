@@ -32,6 +32,7 @@
 #include "View/MapView3D.h"
 #include "View/SplitterWindow2.h"
 
+#include <wx/persist.h>
 #include <wx/sizer.h>
 
 namespace TrenchBroom {
@@ -68,6 +69,9 @@ namespace TrenchBroom {
             sizer->Add(hSplitter, 1, wxEXPAND);
             
             SetSizer(sizer);
+
+            wxPersistenceManager::Get().RegisterAndRestore(hSplitter);
+            wxPersistenceManager::Get().RegisterAndRestore(vSplitter);
         }
         
         void ThreePaneMapView::bindEvents() {

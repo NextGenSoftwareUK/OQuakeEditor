@@ -36,7 +36,7 @@ namespace TrenchBroom {
         }
         
         bool PersistentSplitterWindow2::Restore() {
-            int sashPosition = 0;
+            int sashPosition = -1;
             if (!RestoreValue("SashPosition", &sashPosition))
                 return false;
             
