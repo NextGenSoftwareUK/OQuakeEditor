@@ -19,14 +19,14 @@
 
 #include "SmartChoiceEditorMatcher.h"
 
-#include "Assets/PropertyDefinition.h"
-#include "Model/ModelUtils.h"
+#include "Assets/AttributeDefinition.h"
+#include "Model/Attributable.h"
 
 namespace TrenchBroom {
     namespace View {
-        bool SmartChoiceEditorMatcher::doMatches(const Model::PropertyKey& key, const Model::EntityList& entities) const {
-            const Assets::PropertyDefinition* propDef = Model::selectPropertyDefinition(key, entities);
-            return propDef != NULL && propDef->type() == Assets::PropertyDefinition::Type_ChoiceProperty;
+        bool SmartChoiceEditorMatcher::doMatches(const Model::AttributeName& name, const Model::AttributableList& attributables) const {
+            const Assets::AttributeDefinition* attrDef = Model::Attributable::selectAttributeDefinition(name, attributables);
+            return attrDef != NULL && attrDef->type() == Assets::AttributeDefinition::Type_ChoiceAttribute;
         }
     }
 }
