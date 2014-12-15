@@ -20,19 +20,11 @@
 #ifndef __TrenchBroom__ChangeEntityAttributesCommand__
 #define __TrenchBroom__ChangeEntityAttributesCommand__
 
-#include "TrenchBroom.h"
-#include "VecMath.h"
 #include "Model/EntityAttributes.h"
 #include "Model/ModelTypes.h"
 #include "View/DocumentCommand.h"
 
-#include <map>
-
 namespace TrenchBroom {
-    namespace Model {
-        class Snapshot;
-    }
-    
     namespace View {
         class MapDocumentCommandFacade;
         
