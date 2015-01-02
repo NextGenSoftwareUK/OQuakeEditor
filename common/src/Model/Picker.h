@@ -22,12 +22,12 @@
 
 #include "TrenchBroom.h"
 #include "VecMath.h"
-#include "Hit.h"
 #include "Model/Octree.h"
 
 namespace TrenchBroom {
     namespace Model {
         class Pickable;
+        class PickResult;
         
         class Picker {
         private:
@@ -38,7 +38,7 @@ namespace TrenchBroom {
             void addObject(Pickable* object);
             void removeObject(Pickable* object);
             
-            void pick(const Ray3& ray, Hits& hits) const;
+            void pick(const Ray3& ray, PickResult& pickResult) const;
         };
     }
 }
