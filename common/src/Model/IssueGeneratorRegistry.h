@@ -35,6 +35,8 @@ namespace TrenchBroom {
             ~IssueGeneratorRegistry();
             
             const IssueGeneratorList& registeredGenerators() const;
+            IssueQuickFixList quickFixes(IssueType issueTypes) const;
+            
             void registerGenerator(IssueGenerator* generator);
             void unregisterAllGenerators();
         private:
