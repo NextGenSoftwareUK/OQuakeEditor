@@ -19,6 +19,10 @@
 
 #include "MapFacade.h"
 
+#include "Model/NodeCollection.h"
+
+#include <cassert>
+
 namespace TrenchBroom {
     namespace Model {
         MapFacade::~MapFacade() {}
@@ -26,5 +30,18 @@ namespace TrenchBroom {
         MapFacade::MoveVerticesResult::MoveVerticesResult(const bool i_success, const bool i_hasRemainingVertices) :
         success(i_success),
         hasRemainingVertices(i_hasRemainingVertices) {}
+
+        PushSelection::PushSelection(MapFacade* facade) :
+        m_facade(facade),
+        m_nodes(m_facade->selectedNodes().nodes()),
+        m_faces(m_facade->selectedBrushFaces()) {}
+        
+        PushSelection::~PushSelection() {
+            m_facade->deselectAll();
+            if (!m_nodes.empty())
+                m_facade->select(m_nodes);
+            else if (!m_faces.empty())
+                m_facade->select(m_faces);
+        }
     }
 }
