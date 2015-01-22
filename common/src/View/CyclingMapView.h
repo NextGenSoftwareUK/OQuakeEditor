@@ -22,6 +22,7 @@
 
 #include "TrenchBroom.h"
 #include "VecMath.h"
+#include "View/CameraLinkHelper.h"
 #include "View/MapViewContainer.h"
 #include "View/ViewTypes.h"
 
@@ -41,7 +42,7 @@ namespace TrenchBroom {
         class MapViewBase;
         class MapViewToolBox;
         
-        class CyclingMapView : public MapViewContainer {
+        class CyclingMapView : public MapViewContainer, public CameraLinkableView {
         public:
             typedef enum {
                 View_3D  = 1,
@@ -78,6 +79,8 @@ namespace TrenchBroom {
             void doMoveCameraToPosition(const Vec3& position);
             
             void doMoveCameraToCurrentTracePoint();
+        private: // implement CameraLinkableView interface
+            void doLinkCamera(CameraLinkHelper& linkHelper);
         };
     }
 }
