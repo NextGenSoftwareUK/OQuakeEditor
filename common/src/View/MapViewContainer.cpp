@@ -26,13 +26,5 @@ namespace TrenchBroom {
         MapView() {}
         
         MapViewContainer::~MapViewContainer() {}
-
-        void MapViewContainer::setToolBoxDropTarget() {
-            doSetToolBoxDropTarget();
-        }
-        
-        void MapViewContainer::clearDropTarget() {
-            doClearDropTarget();
-        }
     }
 }
