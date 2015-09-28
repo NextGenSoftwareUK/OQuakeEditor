@@ -33,70 +33,17 @@
 namespace TrenchBroom {
     namespace View {
         CreateComplexBrushTool::CreateComplexBrushTool(MapDocumentWPtr document) :
-        Tool(false),
-        m_document(document),
-        m_brush(NULL),
-        m_brushRenderer(new Renderer::BrushRenderer(false)) {}
+        CreateBrushToolBase(false, document) {}
 
-        CreateComplexBrushTool::~CreateComplexBrushTool() {
-            delete m_brushRenderer;
-            delete m_brush;
-        }
-        
-        void CreateComplexBrushTool::updateBrush(const Polyhedron3& polyhedron) {
-            delete m_brush;
-            m_brush = NULL;
-            
+        void CreateComplexBrushTool::update(const Polyhedron3& polyhedron) {
             if (polyhedron.closed()) {
                 MapDocumentSPtr document = lock(m_document);
                 const Model::BrushBuilder builder(document->world(), document->worldBounds());
-                m_brush = builder.createBrush(polyhedron, document->currentTextureName());
+                Model::Brush* brush = builder.createBrush(polyhedron, document->currentTextureName());
+                updateBrush(brush);
+            } else {
+                updateBrush(NULL);
             }
-        }
-
-        void CreateComplexBrushTool::createBrush() {
-            if (m_brush != NULL) {
-                MapDocumentSPtr document = lock(m_document);
-                const Transaction transaction(document, "Create brush");
-                document->deselectAll();
-                document->addNode(m_brush, document->currentParent());
-                document->select(m_brush);
-                m_brush = NULL;
-            }
-        }
-
-        void CreateComplexBrushTool::cancel() {
-            delete m_brush;
-            m_brush = NULL;
-        }
-
-        void CreateComplexBrushTool::render(Renderer::RenderContext& renderContext, Renderer::RenderBatch& renderBatch) {
-            if (m_brush != NULL)
-                renderBrush(renderContext, renderBatch);
-            
-        }
-        
-        void CreateComplexBrushTool::renderBrush(Renderer::RenderContext& renderContext, Renderer::RenderBatch& renderBatch) {
-            assert(m_brush != NULL);
-            
-            m_brushRenderer->setFaceColor(pref(Preferences::FaceColor));
-            m_brushRenderer->setEdgeColor(pref(Preferences::SelectedEdgeColor));
-            m_brushRenderer->setShowEdges(true);
-            m_brushRenderer->setShowOccludedEdges(true);
-            m_brushRenderer->setOccludedEdgeColor(pref(Preferences::OccludedSelectedEdgeColor));
-            m_brushRenderer->setTint(true);
-            m_brushRenderer->setTintColor(pref(Preferences::SelectedFaceColor));
-            m_brushRenderer->render(renderContext, renderBatch);
-            
-            m_brushRenderer->setBrushes(Model::BrushList(1, m_brush));
-            m_brushRenderer->render(renderContext, renderBatch);
-            
-            Renderer::SelectionBoundsRenderer boundsRenderer(m_brush->bounds());
-            boundsRenderer.render(renderContext, renderBatch);
-        }
-
-        String CreateComplexBrushTool::doGetIconName() const {
-            return "BrushTool.png";
         }
     }
 }

@@ -24,7 +24,7 @@
 #include "VecMath.h"
 #include "Polyhedron.h"
 #include "Model/ModelTypes.h"
-#include "View/Tool.h"
+#include "View/CreateBrushToolBase.h"
 #include "View/ViewTypes.h"
 
 namespace TrenchBroom {
@@ -35,25 +35,10 @@ namespace TrenchBroom {
     }
     
     namespace View {
-        class CreateComplexBrushTool : public Tool {
-        private:
-            MapDocumentWPtr m_document;
-            Model::Brush* m_brush;
-            Renderer::BrushRenderer* m_brushRenderer;
+        class CreateComplexBrushTool : public CreateBrushToolBase {
         public:
             CreateComplexBrushTool(MapDocumentWPtr document);
-            ~CreateComplexBrushTool();
-            
-            void updateBrush(const Polyhedron3& polyhedron);
-        public:
-            void createBrush();
-            void cancel();
-            
-            void render(Renderer::RenderContext& renderContext, Renderer::RenderBatch& renderBatch);
-        private:
-            void renderBrush(Renderer::RenderContext& renderContext, Renderer::RenderBatch& renderBatch);
-        private:
-            String doGetIconName() const;
+            void update(const Polyhedron3& polyhedron);
         };
     }
 }
