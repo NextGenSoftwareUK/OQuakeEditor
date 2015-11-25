@@ -60,6 +60,10 @@ namespace TrenchBroom {
                 return m_vertices.size();
             }
             
+            const VertexList& vertices() const {
+                return m_vertices;
+            }
+            
             VertexArray vertexArray() {
                 return VertexArray::swap(m_vertices);
             }

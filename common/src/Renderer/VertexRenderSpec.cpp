@@ -18,11 +18,19 @@
  */
 
 #include "VertexRenderSpec.h"
+#include "Assets/Texture.h"
 
 namespace TrenchBroom {
     namespace Renderer {
         VertexRenderSpec::~VertexRenderSpec() {}
         
+        void VertexRenderSpec::render(VertexArray& vertexArray) const {
+            if (vertexArray.setup()) {
+                doRender(vertexArray);
+                vertexArray.cleanup();
+            }
+        }
+
         SimpleVertexRenderSpec::IndicesAndCounts::IndicesAndCounts(const size_t capacity) :
         indices(0),
         counts(0) {
@@ -63,9 +71,9 @@ namespace TrenchBroom {
             }
         }
         
-        void SimpleVertexRenderSpec::Size::inc(const PrimType primType) {
+        void SimpleVertexRenderSpec::Size::inc(const PrimType primType, const size_t count) {
             typename PrimTypeToSize::iterator primIt = MapUtils::findOrInsert(m_sizes, primType, 0);
-            ++primIt->second;
+            primIt->second += count;
         }
         
         void SimpleVertexRenderSpec::Size::initialize(PrimTypeToIndexData& data) const {
@@ -78,24 +86,27 @@ namespace TrenchBroom {
         }
 
         SimpleVertexRenderSpec::SimpleVertexRenderSpec(const Size& size) {
-            size.initialize(m_data);
+            size.initialize(*m_data);
         }
 
-        void SimpleVertexRenderSpec::render(VertexArray& vertexArray) const {
-            if (vertexArray.setup()) {
-                doRender(vertexArray);
-                vertexArray.cleanup();
-            }
-        }
-        
         void SimpleVertexRenderSpec::doRender(VertexArray& vertexArray) const {
             typename PrimTypeToIndexData::const_iterator primIt, primEnd;
-            for (primIt = m_data.begin(), primEnd = m_data.end(); primIt != primEnd; ++primIt) {
+            for (primIt = m_data->begin(), primEnd = m_data->end(); primIt != primEnd; ++primIt) {
                 const PrimType primType = primIt->first;
                 const IndicesAndCounts& indicesAndCounts = primIt->second;
                 const GLsizei primCount = static_cast<GLsizei>(indicesAndCounts.size());
                 vertexArray.render(primType, indicesAndCounts.indices, indicesAndCounts.counts, primCount);
             }
+        }
+
+        void TextureFunc::before(const Assets::Texture* texture) const {
+            if (texture != NULL)
+                texture->activate();
+        }
+        
+        void TextureFunc::after(const Assets::Texture* texture) const {
+            if (texture != NULL)
+                texture->deactivate();
         }
     }
 }
