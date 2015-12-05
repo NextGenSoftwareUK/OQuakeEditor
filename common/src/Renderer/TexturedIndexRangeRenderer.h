@@ -30,6 +30,7 @@ namespace TrenchBroom {
     
     namespace Renderer {
         class Vbo;
+        class TextureRenderFunc;
         
         class TexturedIndexRangeRenderer {
         private:
@@ -44,7 +45,7 @@ namespace TrenchBroom {
             
             void prepare(Vbo& vbo);
             void render();
-            void render(TexturedIndexRangeMap::RenderFunc& func);
+            void render(TextureRenderFunc& func);
         };
     }
 }
