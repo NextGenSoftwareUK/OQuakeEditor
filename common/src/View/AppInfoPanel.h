@@ -31,6 +31,8 @@ namespace TrenchBroom {
             AppInfoPanel(wxWindow* parent);
         private:
             void createGui();
+            
+            void OnClickVersionInfo(wxMouseEvent& event);
         };
     }
 }
