@@ -17,8 +17,9 @@
  along with TrenchBroom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CompilationDialog.hpp"
+#include "CompilationDialog.h"
 
+#include "View/CompilationTaskView.h"
 #include "View/MapFrame.h"
 
 namespace TrenchBroom {
