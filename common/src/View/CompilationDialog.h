@@ -22,6 +22,8 @@
 
 #include <wx/dialog.h>
 
+class wxTextCtrl;
+
 namespace TrenchBroom {
     namespace View {
         class MapFrame;
@@ -29,6 +31,8 @@ namespace TrenchBroom {
         class CompilationDialog : public wxDialog {
         private:
             MapFrame* m_mapFrame;
+            
+            wxTextCtrl* m_output;
         public:
             CompilationDialog(MapFrame* mapFrame);
         private:
