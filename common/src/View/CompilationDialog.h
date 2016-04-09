@@ -26,12 +26,13 @@ class wxTextCtrl;
 
 namespace TrenchBroom {
     namespace View {
+        class CompilationProfileManager;
         class MapFrame;
         
         class CompilationDialog : public wxDialog {
         private:
             MapFrame* m_mapFrame;
-            
+            CompilationProfileManager* m_profileManager;
             wxTextCtrl* m_output;
         public:
             CompilationDialog(MapFrame* mapFrame);
