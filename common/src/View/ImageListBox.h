@@ -20,37 +20,19 @@
 #ifndef TrenchBroom_ImageListBox
 #define TrenchBroom_ImageListBox
 
-#include <wx/vlbox.h>
+#include "ControlListBox.h"
 
 namespace TrenchBroom {
     namespace View {
-        class ImageListBox : public wxVListBox {
-        private:
-            wxSize m_imageSize;
-            bool m_empty;
-            wxString m_emptyText;
-			wxSize m_border;
+        class ImageListBox : public ControlListBox {
         public:
-            ImageListBox(wxWindow* parent, const wxString& emptyText, const wxSize& imageSize = wxSize(0,0), long style = wxBORDER_NONE);
-            
-            size_t selection() const;
-            bool hasSelection() const;
-			wxCoord itemWidth(const wxString& subtitle) const;
-            wxCoord itemHeight() const;
-            
-            void SetItemCount(size_t itemCount);
+            ImageListBox(wxWindow* parent, const wxString& emptyText);
         private:
-            void OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const;
-            void drawItem(wxDC& dc, const wxRect& rect, size_t n) const;
-            void drawEmptyItem(wxDC& dc, const wxRect& rect) const;
+            wxWindow* createItem(wxWindow* parent, size_t index);
             
-            void OnDrawBackground(wxDC& dc, const wxRect& rect, size_t n) const;
-            void OnDrawSeparator(wxDC& dc, wxRect& rect, size_t n) const;
-            wxCoord OnMeasureItem(size_t n) const;
-            
-            virtual const wxBitmap& image(size_t n) const;
-            virtual wxString title(size_t n) const = 0;
-            virtual wxString subtitle(size_t n) const = 0;
+            virtual const wxBitmap& image(size_t index) const;
+            virtual wxString title(size_t index) const = 0;
+            virtual wxString subtitle(size_t index) const = 0;
         };
     }
 }
