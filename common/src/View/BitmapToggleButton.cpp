@@ -19,7 +19,7 @@
 
 #include "BitmapToggleButton.h"
 
-#include <wx/dcbuffer.h>
+#include <wx/dcclient.h>
 #include <wx/log.h>
 
 #include <algorithm>
@@ -27,7 +27,7 @@
 namespace TrenchBroom {
     namespace View {
         BitmapToggleButton::BitmapToggleButton(wxWindow* parent, wxWindowID windowId, const wxBitmap& upBitmap, const wxBitmap& downBitmap) :
-        wxPanel(parent, windowId),
+        wxControl(parent, windowId),
         m_upBitmap(upBitmap),
         m_downBitmap(downBitmap),
         m_upDisabledBitmap(m_upBitmap.ConvertToDisabled()),
@@ -36,7 +36,6 @@ namespace TrenchBroom {
             assert(m_upBitmap.IsOk());
             assert(m_downBitmap.IsOk());
 
-            SetBackgroundStyle(wxBG_STYLE_PAINT);
             SetMinClientSize(bitmapSize());
             
             Bind(wxEVT_PAINT, &BitmapToggleButton::OnPaint, this);
@@ -51,10 +50,7 @@ namespace TrenchBroom {
             const wxSize delta = size - bmpSize;
             const wxPoint offset(delta.x / 2, delta.y / 2);
             
-            wxAutoBufferedPaintDC dc(this);
-            dc.SetPen(wxPen(GetBackgroundColour()));
-            dc.SetBrush(wxBrush(GetBackgroundColour()));
-            dc.DrawRectangle(GetClientRect());
+            wxPaintDC dc(this);
             dc.DrawBitmap(currentBitmap(), offset);
         }
         
