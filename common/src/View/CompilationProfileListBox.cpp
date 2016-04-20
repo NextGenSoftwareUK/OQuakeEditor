@@ -64,12 +64,12 @@ namespace TrenchBroom {
 #endif
                 
                 wxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
-                vSizer->Add(m_nameText, 0, wxEXPAND);
-                vSizer->Add(m_taskCountText, 0, wxEXPAND);
+                vSizer->Add(m_nameText, wxSizerFlags().Expand());
+                vSizer->Add(m_taskCountText, wxSizerFlags().Expand());
                 
                 wxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
                 hSizer->AddSpacer(margins.x);
-                hSizer->Add(vSizer, 1, wxEXPAND | wxTOP | wxBOTTOM, margins.y);
+                hSizer->Add(vSizer, wxSizerFlags().Expand().Proportion(1).Border(wxTOP | wxBOTTOM, margins.y));
                 hSizer->AddSpacer(margins.x);
 
                 SetSizer(hSizer);

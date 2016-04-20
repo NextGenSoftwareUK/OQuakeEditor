@@ -21,6 +21,7 @@
 #define CompilationConfigWriter_h
 
 #include "ConfigTypes.h"
+#include "Macros.h"
 
 #include <iostream>
 
@@ -45,6 +46,8 @@ namespace TrenchBroom {
             
             class WriteCompilationTaskVisitor;
             ConfigList* writeTasks(const Model::CompilationProfile* profile) const;
+            
+            deleteCopyAndAssignment(CompilationConfigWriter)
         };
     }
 }

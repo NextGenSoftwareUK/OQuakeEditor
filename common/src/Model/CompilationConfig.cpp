@@ -36,7 +36,6 @@ namespace TrenchBroom {
                 const CompilationProfile* original = *it;
                 CompilationProfile* clone = original->clone();
                 m_profiles.push_back(clone);
-                clone->profileDidChange.addObserver(profilesDidChange);
             }
         }
 
@@ -66,6 +65,7 @@ namespace TrenchBroom {
         }
         
         void CompilationConfig::addProfile(CompilationProfile* profile) {
+            assert(profile != NULL);
             m_profiles.push_back(profile);
             profilesDidChange();
         }
