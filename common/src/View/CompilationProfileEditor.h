@@ -44,12 +44,10 @@ namespace TrenchBroom {
             CompilationProfileEditor(wxWindow* parent);
             ~CompilationProfileEditor();
         private:
-            wxWindow* createDefaultPage(wxWindow* parent);
             wxWindow* createEditorPage(wxWindow* parent);
             
             void OnNameChanged(wxCommandEvent& event);
             void OnWorkDirChanged(wxCommandEvent& event);
-            void OnUpdateTxtUI(wxUpdateUIEvent& event);
             
             void OnAddTask(wxCommandEvent& event);
             void OnRemoveTask(wxCommandEvent& event);
