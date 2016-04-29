@@ -21,7 +21,9 @@
 #define TrenchBroom_WalTextureLoader
 
 #include "IO/TextureLoader.h"
+
 #include "Assets/AssetTypes.h"
+#include "IO/MappedFile.h"
 
 namespace TrenchBroom {
     namespace IO {
@@ -32,11 +34,13 @@ namespace TrenchBroom {
         private:
             const FileSystem& m_fs;
             const Assets::Palette& m_palette;
-        public:
+        protected:
             WalTextureLoader(const FileSystem& fs, const Assets::Palette& palette);
+        public:
+            virtual ~WalTextureLoader();
         private:
             Assets::TextureCollection* doLoadTextureCollection(const Assets::TextureCollectionSpec& spec) const;
-            Assets::Texture* readTexture(const Path& path) const;
+            virtual Assets::Texture* doReadTexture(const IO::Path& path, MappedFile::Ptr file, const Assets::Palette& palette) const = 0;
         };
     }
 }
