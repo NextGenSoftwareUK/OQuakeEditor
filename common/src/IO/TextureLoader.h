@@ -34,6 +34,8 @@ namespace TrenchBroom {
             Assets::TextureCollection* loadTextureCollection(const Assets::TextureCollectionSpec& spec) const;
         private:
             virtual Assets::TextureCollection* doLoadTextureCollection(const Assets::TextureCollectionSpec& spec) const = 0;
+        public:
+            static size_t mipSize(size_t width, size_t height, size_t mipLevel);
         };
     }
 }
