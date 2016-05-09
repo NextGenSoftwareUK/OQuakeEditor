@@ -55,8 +55,6 @@ namespace TrenchBroom {
             void bindObservers();
             void unbindObservers();
             
-            void documentWasNewed(MapDocument* document);
-            void documentWasLoaded(MapDocument* document);
             void textureCollectionsDidChange();
             void preferenceDidChange(const IO::Path& path);
             
