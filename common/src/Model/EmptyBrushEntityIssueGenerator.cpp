@@ -44,7 +44,7 @@ namespace TrenchBroom {
             
             const String doGetDescription() const {
                 const Entity* entity = static_cast<Entity*>(node());
-                return entity->classname() + " does not contain any brushes";
+                return "Entity '" + entity->classname() + "' does not contain any brushes";
             }
         };
         
