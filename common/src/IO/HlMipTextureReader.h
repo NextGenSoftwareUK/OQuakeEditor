@@ -20,21 +20,20 @@
 #ifndef HlMipTextureReader_h
 #define HlMipTextureReader_h
 
-#include "IO/TextureReader.h"
 #include "Assets/Palette.h"
-#include "IO/IdMipTextureReader.h"
+#include "IO/MipTextureReader.h"
 
 namespace TrenchBroom {
     namespace IO {
         class Path;
         class CharArrayReader;
         
-        class HlMipTextureReader : public IdMipTextureReader {
+        class HlMipTextureReader : public MipTextureReader {
         private:
         public:
             HlMipTextureReader(const NameStrategy& nameStrategy);
         protected:
-            virtual const Assets::Palette getPalette(CharArrayReader &reader, const size_t offset[], const size_t width, const size_t height) const;
+            Assets::Palette doGetPalette(CharArrayReader& reader, const size_t offset[], size_t width, size_t height) const;
         };
     }
 }
