@@ -31,8 +31,6 @@ class wxTextCtrl;
 namespace TrenchBroom {
     namespace View {
         class Console : public TabBookPage, public Logger {
-        public:
-            Notifier2<LogLevel, const wxString&> logNotifier;
         private:
             wxTextCtrl* m_textView;
         public:
