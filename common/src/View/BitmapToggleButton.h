@@ -20,12 +20,13 @@
 #ifndef TrenchBroom_BitmapToggleButton
 #define TrenchBroom_BitmapToggleButton
 
+#include "View/BitmapButton.h"
+
 #include <wx/bitmap.h>
-#include <wx/control.h>
 
 namespace TrenchBroom {
     namespace View {
-        class BitmapToggleButton : public wxControl {
+        class BitmapToggleButton : public BitmapButton {
         private:
             wxBitmap m_upBitmap;
             wxBitmap m_downBitmap;
@@ -34,13 +35,11 @@ namespace TrenchBroom {
             bool m_state;
         public:
             BitmapToggleButton(wxWindow* parent, wxWindowID windowId, const wxBitmap& upBitmap, const wxBitmap& downBitmap);
-            
-            void OnPaint(wxPaintEvent& event);
-            void OnMouseDown(wxMouseEvent& event);
+
             void DoUpdateWindowUI(wxUpdateUIEvent& event) override;
         private:
-            wxSize bitmapSize() const;
-            wxBitmap currentBitmap() const;
+            wxBitmap currentBitmap() const override;
+            void processClick() override;
         };
     }
 }
