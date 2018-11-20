@@ -25,20 +25,17 @@
 #include "IO/Path.h"
 
 #include <map>
+#include <memory>
 
 namespace TrenchBroom {
     namespace IO {
         class DkPakFileSystem : public ImageFileSystem {
         private:
-            class CompressedFile : public File {
-            private:
-                MappedFile::Ptr m_file;
-                const size_t m_uncompressedSize;
+            class DkCompressedFile : public CompressedFile {
             public:
-                CompressedFile(MappedFile::Ptr file, size_t uncompressedSize);
+                using CompressedFile::CompressedFile;
             private:
-                MappedFile::Ptr doOpen() override;
-                char* decompress() const;
+                std::unique_ptr<char[]> decompress(MappedFile::Ptr file, size_t uncompressedSize) const override;
             };
         public:
             DkPakFileSystem(const Path& path, MappedFile::Ptr file);
