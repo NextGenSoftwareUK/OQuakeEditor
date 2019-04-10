@@ -30,7 +30,10 @@ namespace TrenchBroom {
         private:
             int m_qtKey;
         public:
-            KeyboardShortcut(int qtKey = 0);
+            explicit KeyboardShortcut(int qtKey = 0);
+            explicit KeyboardShortcut(const QKeySequence& keySequence);
+
+            friend bool operator==(const KeyboardShortcut& lhs, const KeyboardShortcut& rhs);
 
             QKeySequence keySequence() const;
 
