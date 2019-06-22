@@ -29,6 +29,7 @@ namespace TrenchBroom {
         private:
             QWidget* m_panel;
         public:
+            // FIXME: Change parameter order, parent should be last with default to nullptr
             TitledPanel(QWidget* parent, const QString& title, bool showDivider = true, bool boldTitle = true);
 
             QWidget* getPanel() const;
