@@ -28,7 +28,7 @@ namespace TrenchBroom {
         BorderLine::BorderLine(const Direction direction, const int thickness, QWidget* parent) :
         QFrame(parent) {
             setFrameShadow(QFrame::Plain);
-            setStyleSheet("color: " + Colors::borderColor().name() + ";");
+            setStyleSheet(" BorderLine { color: " + Colors::borderColor().name() + "; }");
             setLineWidth(thickness);
             if (direction == Direction_Horizontal) {
                 setFrameShape(QFrame::HLine);
