@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include <iosfwd>
+
 namespace TrenchBroom {
     namespace Model {
         enum class VisibilityState {
@@ -26,6 +28,8 @@ namespace TrenchBroom {
             Hidden    = 2,
             Shown     = 4
         };
+
+        std::ostream& operator<<(std::ostream& str, VisibilityState state);
     }
 }
 
