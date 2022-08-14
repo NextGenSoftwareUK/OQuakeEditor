@@ -44,10 +44,13 @@ public:
 
   virtual bool collateWith(UndoableCommand& command);
 
-private:
+protected:
   virtual std::unique_ptr<CommandResult> doPerformUndo(MapDocumentCommandFacade* document) = 0;
 
   virtual bool doCollateWith(UndoableCommand& command);
+
+  void setModificationCount(MapDocumentCommandFacade* document);
+  void resetModificationCount(MapDocumentCommandFacade* document);
 
   deleteCopyAndMove(UndoableCommand);
 };
