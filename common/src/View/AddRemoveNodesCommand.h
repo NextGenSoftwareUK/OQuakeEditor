@@ -20,8 +20,7 @@
 #pragma once
 
 #include "Macros.h"
-#include "View/UndoableCommand.h"
-#include "View/UpdateLinkedGroupsHelper.h"
+#include "View/UpdateLinkedGroupsCommandBase.h"
 
 #include <map>
 #include <memory>
@@ -29,12 +28,11 @@
 
 namespace TrenchBroom {
 namespace Model {
-class GroupNode;
 class Node;
 } // namespace Model
 
 namespace View {
-class AddRemoveNodesCommand : public UndoableCommand {
+class AddRemoveNodesCommand : public UpdateLinkedGroupsCommandBase {
 private:
   enum class Action {
     Add,
@@ -44,22 +42,17 @@ private:
   Action m_action;
   std::map<Model::Node*, std::vector<Model::Node*>> m_nodesToAdd;
   std::map<Model::Node*, std::vector<Model::Node*>> m_nodesToRemove;
-  UpdateLinkedGroupsHelper m_updateLinkedGroupsHelper;
 
 public:
   static std::unique_ptr<AddRemoveNodesCommand> add(
-    Model::Node* parent, const std::vector<Model::Node*>& children,
-    std::vector<const Model::GroupNode*> changedLinkedGroups);
+    Model::Node* parent, const std::vector<Model::Node*>& children);
   static std::unique_ptr<AddRemoveNodesCommand> add(
-    const std::map<Model::Node*, std::vector<Model::Node*>>& nodes,
-    std::vector<const Model::GroupNode*> changedLinkedGroups);
+    const std::map<Model::Node*, std::vector<Model::Node*>>& nodes);
   static std::unique_ptr<AddRemoveNodesCommand> remove(
-    const std::map<Model::Node*, std::vector<Model::Node*>>& nodes,
-    std::vector<const Model::GroupNode*> changedLinkedGroups);
+    const std::map<Model::Node*, std::vector<Model::Node*>>& nodes);
 
   AddRemoveNodesCommand(
-    Action action, const std::map<Model::Node*, std::vector<Model::Node*>>& nodes,
-    std::vector<const Model::GroupNode*> changedLinkedGroups);
+    Action action, const std::map<Model::Node*, std::vector<Model::Node*>>& nodes);
   ~AddRemoveNodesCommand() override;
 
 private:
