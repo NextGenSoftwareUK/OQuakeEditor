@@ -21,6 +21,7 @@
 
 #include "FloatType.h"
 #include "View/CreateBrushesToolBase.h"
+#include "View/DrawShapeToolExtension.h"
 
 #include "vm/util.h"
 
@@ -35,5 +36,10 @@ class DrawShapeTool : public CreateBrushesToolBase
 public:
   explicit DrawShapeTool(std::weak_ptr<MapDocument> document);
   void update(const vm::bbox3& bounds, vm::axis::type axis);
+
+private:
+  DrawShapeToolExtensionManager m_extensionManager;
+
+  QWidget* doCreatePage(QWidget* parent) override;
 };
 } // namespace TrenchBroom::View
