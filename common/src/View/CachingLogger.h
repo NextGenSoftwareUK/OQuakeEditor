@@ -20,11 +20,10 @@
 #pragma once
 
 #include "Logger.h"
+#include "LoggerCache.h"
 
 #include <mutex>
-#include <string>
 #include <string_view>
-#include <vector>
 
 namespace TrenchBroom::View
 {
@@ -32,13 +31,7 @@ namespace TrenchBroom::View
 class CachingLogger : public Logger
 {
 private:
-  struct Message
-  {
-    LogLevel level;
-    std::string str;
-  };
-
-  std::vector<Message> m_cachedMessages;
+  LoggerCache m_cache;
   std::mutex m_cacheMutex;
 
   Logger* m_parentLogger = nullptr;
