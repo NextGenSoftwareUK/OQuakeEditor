@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "EL/EL_Forward.h"
 #include "Macros.h"
+#include "el/EL_Forward.h"
 
 #include <iosfwd>
 #include <string>
@@ -46,10 +46,10 @@ public:
   void writeConfig();
 
 private:
-  EL::Value writeProfiles(const Model::CompilationConfig& config) const;
-  EL::Value writeProfile(const Model::CompilationProfile& profile) const;
+  el::Value writeProfiles(const Model::CompilationConfig& config) const;
+  el::Value writeProfile(const Model::CompilationProfile& profile) const;
 
-  EL::Value writeTasks(const Model::CompilationProfile& profile) const;
+  el::Value writeTasks(const Model::CompilationProfile& profile) const;
 
   std::string escape(const std::string& str) const;
 
