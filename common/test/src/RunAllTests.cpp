@@ -22,6 +22,7 @@
 #include "Ensure.h"
 #include "TestPreferenceManager.h"
 #include "TrenchBroomApp.h"
+#include "ui/CrashReporter.h"
 
 #include <catch2/catch_session.hpp>
 
