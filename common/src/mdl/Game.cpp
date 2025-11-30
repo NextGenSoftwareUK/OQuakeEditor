@@ -24,6 +24,8 @@
 namespace tb::mdl
 {
 
+Game::~Game() = default;
+
 bool Game::isGamePathPreference(const std::filesystem::path& prefPath) const
 {
   const auto& gameFactory = GameFactory::instance();
