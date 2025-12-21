@@ -21,8 +21,8 @@
 #include "Matchers.h"
 #include "fs/DiskFileSystem.h"
 #include "fs/TestEnvironment.h"
+#include "io/LoadFreeImageTexture.h"
 #include "io/MaterialUtils.h"
-#include "io/ReadFreeImageTexture.h"
 
 #include "kd/result.h"
 #include "kd/result_io.h" // IWYU pragma: keep
@@ -93,7 +93,7 @@ TEST_CASE("makeReadTextureErrorHandler")
 
   const auto file = diskFS.openFile("textures/corruptPngTest.png") | kdl::value();
   auto reader = file->reader().buffer();
-  auto result = readFreeImageTexture(reader);
+  auto result = loadFreeImageTexture(reader);
   REQUIRE(result.is_error());
 
   const auto defaultTexture = std::move(result)
