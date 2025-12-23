@@ -19,8 +19,8 @@
 
 #include "Sphere.h"
 
+#include "gl/PrimType.h"
 #include "gl/VertexType.h"
-#include "render/PrimType.h"
 #include "render/RenderUtils.h"
 
 namespace tb::render
@@ -31,7 +31,8 @@ Sphere::Sphere(const float radius, const size_t iterations)
   using Vertex = gl::VertexTypes::P3::Vertex;
 
   const auto positions = sphere(radius, iterations);
-  m_array = VertexArray::move(Vertex::toList(positions.size(), std::begin(positions)));
+  m_array =
+    gl::VertexArray::move(Vertex::toList(positions.size(), std::begin(positions)));
 }
 
 bool Sphere::prepared() const
@@ -46,7 +47,7 @@ void Sphere::prepare(gl::VboManager& vboManager)
 
 void Sphere::render()
 {
-  m_array.render(PrimType::Triangles);
+  m_array.render(gl::PrimType::Triangles);
 }
 
 } // namespace tb::render

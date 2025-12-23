@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include "gl/VertexArray.h"
 #include "gl/VertexType.h"
 #include "render/Renderable.h"
-#include "render/VertexArray.h"
 
 #include "vm/bbox.h"
 
@@ -43,7 +43,7 @@ class GridRenderer : public DirectRenderable
 {
 private:
   using Vertex = gl::VertexTypes::P3::Vertex;
-  VertexArray m_vertexArray;
+  gl::VertexArray m_vertexArray;
 
 public:
   GridRenderer(const OrthographicCamera& camera, const vm::bbox3d& worldBounds);
