@@ -72,8 +72,5 @@ void deleteChildWidgetsLaterAndDeleteLayout(QWidget* widget);
 
 void showModelessDialog(QDialog* dialog);
 
-QString mapStringToUnicode(mdl::MapTextEncoding encoding, const std::string& string);
-std::string mapStringFromUnicode(mdl::MapTextEncoding encoding, const QString& string);
-
 } // namespace ui
 } // namespace tb
