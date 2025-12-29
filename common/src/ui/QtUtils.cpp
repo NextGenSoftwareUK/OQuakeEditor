@@ -54,15 +54,5 @@
 namespace tb::ui
 {
 
-void deleteChildWidgetsLaterAndDeleteLayout(QWidget* widget)
-{
-  const auto children = widget->findChildren<QWidget*>("", Qt::FindDirectChildrenOnly);
-  for (auto* childWidget : children)
-  {
-    childWidget->deleteLater();
-  }
-
-  delete widget->layout();
-}
 
 } // namespace tb::ui
