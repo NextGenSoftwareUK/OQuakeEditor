@@ -24,6 +24,7 @@
 #include <QString>
 #include <QWidget>
 
+#include "ui/QStyleUtils.h"
 #include "ui/QtUtils.h"
 
 namespace tb::ui
@@ -35,7 +36,7 @@ QWidget* createEmptyWidget(const QString& message, QWidget* parent)
   auto* layout = new QVBoxLayout{};
 
   auto* messageLabel = new QLabel{message};
-  makeEmphasized(messageLabel);
+  setEmphasizedStyle(messageLabel);
   layout->addWidget(messageLabel, 0, Qt::AlignHCenter | Qt::AlignTop);
   container->setLayout(layout);
 
