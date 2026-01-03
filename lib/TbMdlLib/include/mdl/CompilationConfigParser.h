@@ -21,7 +21,6 @@
 
 #include "Macros.h"
 #include "Result.h"
-#include "el/ELParser.h"
 #include "mdl/CompilationConfig.h"
 
 #include <string_view>
@@ -32,8 +31,7 @@ namespace tb::mdl
 
 class CompilationConfigParser
 {
-private:
-  el::ELParser m_elParser;
+  std::string_view m_str;
 
 public:
   explicit CompilationConfigParser(std::string_view str);
