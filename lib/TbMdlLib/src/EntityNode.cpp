@@ -100,9 +100,9 @@ Node* EntityNode::doClone(const vm::bbox3d& /* worldBounds */) const
   return result.release();
 }
 
-bool EntityNode::doCanAddChild(const Node* child) const
+bool EntityNode::doCanAddChild(const Node& child) const
 {
-  return child->accept(kdl::overload(
+  return child.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [](const LayerNode*) { return false; },
     [](const GroupNode*) { return false; },
@@ -111,7 +111,7 @@ bool EntityNode::doCanAddChild(const Node* child) const
     [](const PatchNode*) { return true; }));
 }
 
-bool EntityNode::doCanRemoveChild(const Node* /* child */) const
+bool EntityNode::doCanRemoveChild(const Node&) const
 {
   return true;
 }
@@ -126,13 +126,13 @@ bool EntityNode::doShouldAddToSpacialIndex() const
   return true;
 }
 
-void EntityNode::doChildWasAdded(Node* /* node */)
+void EntityNode::doChildWasAdded(Node&)
 {
   m_entity.setPointEntity(!hasChildren());
   nodePhysicalBoundsDidChange();
 }
 
-void EntityNode::doChildWasRemoved(Node* /* node */)
+void EntityNode::doChildWasRemoved(Node&)
 {
   m_entity.setPointEntity(!hasChildren());
   nodePhysicalBoundsDidChange();

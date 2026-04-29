@@ -195,9 +195,9 @@ bool checkRecursiveLinkedGroups(const Node& parentNode, const GroupNode& groupNo
 }
 } // namespace
 
-bool GroupNode::doCanAddChild(const Node* child) const
+bool GroupNode::doCanAddChild(const Node& child) const
 {
-  return child->accept(kdl::overload(
+  return child.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [](const LayerNode*) { return false; },
     [&](const GroupNode* groupNode) {
@@ -208,7 +208,7 @@ bool GroupNode::doCanAddChild(const Node* child) const
     [](const PatchNode*) { return true; }));
 }
 
-bool GroupNode::doCanRemoveChild(const Node* /* child */) const
+bool GroupNode::doCanRemoveChild(const Node&) const
 {
   return true;
 }
@@ -223,12 +223,12 @@ bool GroupNode::doShouldAddToSpacialIndex() const
   return false;
 }
 
-void GroupNode::doChildWasAdded(Node* /* node */)
+void GroupNode::doChildWasAdded(Node&)
 {
   nodePhysicalBoundsDidChange();
 }
 
-void GroupNode::doChildWasRemoved(Node* /* node */)
+void GroupNode::doChildWasRemoved(Node&)
 {
   nodePhysicalBoundsDidChange();
 }

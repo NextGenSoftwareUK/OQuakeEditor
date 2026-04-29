@@ -31,10 +31,10 @@ void ObjectRenderer::addNode(mdl::Node& node)
   node.accept(kdl::overload(
     [](mdl::WorldNode*) {},
     [](mdl::LayerNode*) {},
-    [&](mdl::GroupNode* group) { m_groupRenderer.addGroup(group); },
-    [&](mdl::EntityNode* entity) { m_entityRenderer.addEntity(entity); },
-    [&](mdl::BrushNode* brush) { m_brushRenderer.addBrush(brush); },
-    [&](mdl::PatchNode* patch) { m_patchRenderer.addPatch(patch); }));
+    [&](mdl::GroupNode* groupNode) { m_groupRenderer.addGroup(*groupNode); },
+    [&](mdl::EntityNode* entityNode) { m_entityRenderer.addEntity(*entityNode); },
+    [&](mdl::BrushNode* brushNode) { m_brushRenderer.addBrush(*brushNode); },
+    [&](mdl::PatchNode* patchNode) { m_patchRenderer.addPatch(*patchNode); }));
 }
 
 void ObjectRenderer::removeNode(mdl::Node& node)
@@ -42,10 +42,10 @@ void ObjectRenderer::removeNode(mdl::Node& node)
   node.accept(kdl::overload(
     [](mdl::WorldNode*) {},
     [](mdl::LayerNode*) {},
-    [&](mdl::GroupNode* group) { m_groupRenderer.removeGroup(group); },
-    [&](mdl::EntityNode* entity) { m_entityRenderer.removeEntity(entity); },
-    [&](mdl::BrushNode* brush) { m_brushRenderer.removeBrush(brush); },
-    [&](mdl::PatchNode* patch) { m_patchRenderer.removePatch(patch); }));
+    [&](mdl::GroupNode* groupNode) { m_groupRenderer.removeGroup(*groupNode); },
+    [&](mdl::EntityNode* entityNode) { m_entityRenderer.removeEntity(*entityNode); },
+    [&](mdl::BrushNode* brushNode) { m_brushRenderer.removeBrush(*brushNode); },
+    [&](mdl::PatchNode* patchNode) { m_patchRenderer.removePatch(*patchNode); }));
 }
 
 void ObjectRenderer::invalidateMaterials(
@@ -66,10 +66,10 @@ void ObjectRenderer::invalidateNode(mdl::Node& node)
   node.accept(kdl::overload(
     [](mdl::WorldNode*) {},
     [](mdl::LayerNode*) {},
-    [&](mdl::GroupNode* group) { m_groupRenderer.invalidateGroup(group); },
-    [&](mdl::EntityNode* entity) { m_entityRenderer.invalidateEntity(entity); },
-    [&](mdl::BrushNode* brush) { m_brushRenderer.invalidateBrush(brush); },
-    [&](mdl::PatchNode* patch) { m_patchRenderer.invalidatePatch(patch); }));
+    [&](mdl::GroupNode* groupNode) { m_groupRenderer.invalidateGroup(*groupNode); },
+    [&](mdl::EntityNode* entityNode) { m_entityRenderer.invalidateEntity(*entityNode); },
+    [&](mdl::BrushNode* brushNode) { m_brushRenderer.invalidateBrush(*brushNode); },
+    [&](mdl::PatchNode* patchNode) { m_patchRenderer.invalidatePatch(*patchNode); }));
 }
 
 void ObjectRenderer::invalidate()

@@ -158,20 +158,20 @@ auto setLinkIdsForReparentingNodes(
           // group nodes can keep their ID because they should remain in their link set
         },
         [&, newParent = newParent_](auto&& thisLambda, EntityNode* entityNode) {
-          if (newParent->isAncestorOf(entityNode->parent()))
+          if (newParent->isAncestorOf(*entityNode->parent()))
           {
             result.emplace_back(entityNode, generateUuid());
             entityNode->visitChildren(thisLambda);
           }
         },
         [&, newParent = newParent_](BrushNode* brushNode) {
-          if (newParent->isAncestorOf(brushNode->parent()))
+          if (newParent->isAncestorOf(*brushNode->parent()))
           {
             result.emplace_back(brushNode, generateUuid());
           }
         },
         [&, newParent = newParent_](PatchNode* patchNode) {
-          if (newParent->isAncestorOf(patchNode->parent()))
+          if (newParent->isAncestorOf(*patchNode->parent()))
           {
             result.emplace_back(patchNode, generateUuid());
           }
@@ -188,7 +188,7 @@ std::vector<Node*> removeImplicitelyRemovedNodes(std::vector<Node*> nodes)
   }
 
   nodes = kdl::vec_sort(std::move(nodes), [](const auto* lhs, const auto* rhs) {
-    return lhs->isAncestorOf(rhs);
+    return lhs->isAncestorOf(*rhs);
   });
 
   auto result = std::vector<Node*>{};
@@ -270,7 +270,7 @@ std::vector<Node*> addNodes(Map& map, const std::map<Node*, std::vector<Node*>>&
 {
   contract_assert(std::ranges::all_of(nodes, [&](const auto& parentAndChildren) {
     const auto& [parent, children] = parentAndChildren;
-    return parent == &map.worldNode() || parent->isDescendantOf(&map.worldNode());
+    return parent == &map.worldNode() || parent->isDescendantOf(map.worldNode());
   }));
 
   auto transaction = Transaction{map, "Add Objects"};

@@ -148,17 +148,17 @@ private: // implement Node interface
 
   double doGetProjectedArea(const vm::axis::type) const override { return double(0); }
 
-  bool doCanAddChild(const Node* child) const override
+  bool doCanAddChild(const Node& child) const override
   {
     auto call = popCall<DoCanAddChild>();
-    CHECK(child == call.expectedChild);
+    CHECK(&child == call.expectedChild);
     return call.valueToReturn;
   }
 
-  bool doCanRemoveChild(const Node* child) const override
+  bool doCanRemoveChild(const Node& child) const override
   {
     auto call = popCall<DoCanRemoveChild>();
-    CHECK(child == call.expectedChild);
+    CHECK(&child == call.expectedChild);
     return call.valueToReturn;
   }
 
@@ -222,9 +222,9 @@ private: // implement Node interface
 
   double doGetProjectedArea(const vm::axis::type) const override { return double(0); }
 
-  bool doCanAddChild(const Node* /* child */) const override { return true; }
+  bool doCanAddChild(const Node&) const override { return true; }
 
-  bool doCanRemoveChild(const Node* /* child */) const override { return true; }
+  bool doCanRemoveChild(const Node&) const override { return true; }
 
   bool doRemoveIfEmpty() const override { return false; }
 
@@ -445,35 +445,35 @@ TEST_CASE("NodeTest.isAncestorOf")
   childNode1->addChild(grandChildNode1_1);
   childNode1->addChild(grandChildNode1_2);
 
-  CHECK_FALSE(rootNode.isAncestorOf(&rootNode));
-  CHECK(rootNode.isAncestorOf(childNode1));
-  CHECK(rootNode.isAncestorOf(childNode2));
-  CHECK(rootNode.isAncestorOf(grandChildNode1_1));
-  CHECK(rootNode.isAncestorOf(grandChildNode1_2));
+  CHECK_FALSE(rootNode.isAncestorOf(rootNode));
+  CHECK(rootNode.isAncestorOf(*childNode1));
+  CHECK(rootNode.isAncestorOf(*childNode2));
+  CHECK(rootNode.isAncestorOf(*grandChildNode1_1));
+  CHECK(rootNode.isAncestorOf(*grandChildNode1_2));
 
-  CHECK_FALSE(childNode1->isAncestorOf(&rootNode));
-  CHECK_FALSE(childNode1->isAncestorOf(childNode1));
-  CHECK_FALSE(childNode1->isAncestorOf(childNode2));
-  CHECK(childNode1->isAncestorOf(grandChildNode1_1));
-  CHECK(childNode1->isAncestorOf(grandChildNode1_2));
+  CHECK_FALSE(childNode1->isAncestorOf(rootNode));
+  CHECK_FALSE(childNode1->isAncestorOf(*childNode1));
+  CHECK_FALSE(childNode1->isAncestorOf(*childNode2));
+  CHECK(childNode1->isAncestorOf(*grandChildNode1_1));
+  CHECK(childNode1->isAncestorOf(*grandChildNode1_2));
 
-  CHECK_FALSE(childNode2->isAncestorOf(&rootNode));
-  CHECK_FALSE(childNode2->isAncestorOf(childNode1));
-  CHECK_FALSE(childNode2->isAncestorOf(childNode2));
-  CHECK_FALSE(childNode2->isAncestorOf(grandChildNode1_1));
-  CHECK_FALSE(childNode2->isAncestorOf(grandChildNode1_2));
+  CHECK_FALSE(childNode2->isAncestorOf(rootNode));
+  CHECK_FALSE(childNode2->isAncestorOf(*childNode1));
+  CHECK_FALSE(childNode2->isAncestorOf(*childNode2));
+  CHECK_FALSE(childNode2->isAncestorOf(*grandChildNode1_1));
+  CHECK_FALSE(childNode2->isAncestorOf(*grandChildNode1_2));
 
-  CHECK_FALSE(grandChildNode1_1->isAncestorOf(&rootNode));
-  CHECK_FALSE(grandChildNode1_1->isAncestorOf(childNode1));
-  CHECK_FALSE(grandChildNode1_1->isAncestorOf(childNode2));
-  CHECK_FALSE(grandChildNode1_1->isAncestorOf(grandChildNode1_1));
-  CHECK_FALSE(grandChildNode1_1->isAncestorOf(grandChildNode1_2));
+  CHECK_FALSE(grandChildNode1_1->isAncestorOf(rootNode));
+  CHECK_FALSE(grandChildNode1_1->isAncestorOf(*childNode1));
+  CHECK_FALSE(grandChildNode1_1->isAncestorOf(*childNode2));
+  CHECK_FALSE(grandChildNode1_1->isAncestorOf(*grandChildNode1_1));
+  CHECK_FALSE(grandChildNode1_1->isAncestorOf(*grandChildNode1_2));
 
-  CHECK_FALSE(grandChildNode1_2->isAncestorOf(&rootNode));
-  CHECK_FALSE(grandChildNode1_2->isAncestorOf(childNode1));
-  CHECK_FALSE(grandChildNode1_2->isAncestorOf(childNode2));
-  CHECK_FALSE(grandChildNode1_2->isAncestorOf(grandChildNode1_1));
-  CHECK_FALSE(grandChildNode1_2->isAncestorOf(grandChildNode1_2));
+  CHECK_FALSE(grandChildNode1_2->isAncestorOf(rootNode));
+  CHECK_FALSE(grandChildNode1_2->isAncestorOf(*childNode1));
+  CHECK_FALSE(grandChildNode1_2->isAncestorOf(*childNode2));
+  CHECK_FALSE(grandChildNode1_2->isAncestorOf(*grandChildNode1_1));
+  CHECK_FALSE(grandChildNode1_2->isAncestorOf(*grandChildNode1_2));
 
   CHECK(rootNode.isAncestorOf(std::vector<Node*>{
     &rootNode, childNode1, childNode2, grandChildNode1_1, grandChildNode1_2}));
@@ -500,35 +500,35 @@ TEST_CASE("NodeTest.isDescendantOf")
   childNode1->addChild(grandChildNode1_1);
   childNode1->addChild(grandChildNode1_2);
 
-  CHECK_FALSE(rootNode.isDescendantOf(&rootNode));
-  CHECK_FALSE(rootNode.isDescendantOf(childNode1));
-  CHECK_FALSE(rootNode.isDescendantOf(childNode2));
-  CHECK_FALSE(rootNode.isDescendantOf(grandChildNode1_1));
-  CHECK_FALSE(rootNode.isDescendantOf(grandChildNode1_2));
+  CHECK_FALSE(rootNode.isDescendantOf(rootNode));
+  CHECK_FALSE(rootNode.isDescendantOf(*childNode1));
+  CHECK_FALSE(rootNode.isDescendantOf(*childNode2));
+  CHECK_FALSE(rootNode.isDescendantOf(*grandChildNode1_1));
+  CHECK_FALSE(rootNode.isDescendantOf(*grandChildNode1_2));
 
-  CHECK(childNode1->isDescendantOf(&rootNode));
-  CHECK_FALSE(childNode1->isDescendantOf(childNode1));
-  CHECK_FALSE(childNode1->isDescendantOf(childNode2));
-  CHECK_FALSE(childNode1->isDescendantOf(grandChildNode1_1));
-  CHECK_FALSE(childNode1->isDescendantOf(grandChildNode1_2));
+  CHECK(childNode1->isDescendantOf(rootNode));
+  CHECK_FALSE(childNode1->isDescendantOf(*childNode1));
+  CHECK_FALSE(childNode1->isDescendantOf(*childNode2));
+  CHECK_FALSE(childNode1->isDescendantOf(*grandChildNode1_1));
+  CHECK_FALSE(childNode1->isDescendantOf(*grandChildNode1_2));
 
-  CHECK(childNode2->isDescendantOf(&rootNode));
-  CHECK_FALSE(childNode2->isDescendantOf(childNode1));
-  CHECK_FALSE(childNode2->isDescendantOf(childNode2));
-  CHECK_FALSE(childNode2->isDescendantOf(grandChildNode1_1));
-  CHECK_FALSE(childNode2->isDescendantOf(grandChildNode1_2));
+  CHECK(childNode2->isDescendantOf(rootNode));
+  CHECK_FALSE(childNode2->isDescendantOf(*childNode1));
+  CHECK_FALSE(childNode2->isDescendantOf(*childNode2));
+  CHECK_FALSE(childNode2->isDescendantOf(*grandChildNode1_1));
+  CHECK_FALSE(childNode2->isDescendantOf(*grandChildNode1_2));
 
-  CHECK(grandChildNode1_1->isDescendantOf(&rootNode));
-  CHECK(grandChildNode1_1->isDescendantOf(childNode1));
-  CHECK_FALSE(grandChildNode1_1->isDescendantOf(childNode2));
-  CHECK_FALSE(grandChildNode1_1->isDescendantOf(grandChildNode1_1));
-  CHECK_FALSE(grandChildNode1_1->isDescendantOf(grandChildNode1_2));
+  CHECK(grandChildNode1_1->isDescendantOf(rootNode));
+  CHECK(grandChildNode1_1->isDescendantOf(*childNode1));
+  CHECK_FALSE(grandChildNode1_1->isDescendantOf(*childNode2));
+  CHECK_FALSE(grandChildNode1_1->isDescendantOf(*grandChildNode1_1));
+  CHECK_FALSE(grandChildNode1_1->isDescendantOf(*grandChildNode1_2));
 
-  CHECK(grandChildNode1_2->isDescendantOf(&rootNode));
-  CHECK(grandChildNode1_2->isDescendantOf(childNode1));
-  CHECK_FALSE(grandChildNode1_2->isDescendantOf(childNode2));
-  CHECK_FALSE(grandChildNode1_2->isDescendantOf(grandChildNode1_1));
-  CHECK_FALSE(grandChildNode1_2->isDescendantOf(grandChildNode1_2));
+  CHECK(grandChildNode1_2->isDescendantOf(rootNode));
+  CHECK(grandChildNode1_2->isDescendantOf(*childNode1));
+  CHECK_FALSE(grandChildNode1_2->isDescendantOf(*childNode2));
+  CHECK_FALSE(grandChildNode1_2->isDescendantOf(*grandChildNode1_1));
+  CHECK_FALSE(grandChildNode1_2->isDescendantOf(*grandChildNode1_2));
 
   CHECK_FALSE(rootNode.isDescendantOf(std::vector<Node*>{
     &rootNode, childNode1, childNode2, grandChildNode1_1, grandChildNode1_2}));

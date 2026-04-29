@@ -617,7 +617,7 @@ protected:
         [](const mdl::LayerNode*) {},
         [](const mdl::GroupNode*) {},
         [](const mdl::EntityNode*) {},
-        [&](const mdl::BrushNode* brush) { handleManager.addHandles(brush); },
+        [&](const mdl::BrushNode* brushNode) { handleManager.addHandles(*brushNode); },
         [](const mdl::PatchNode*) {}));
     }
   }
@@ -634,7 +634,7 @@ protected:
         [](const mdl::LayerNode*) {},
         [](const mdl::GroupNode*) {},
         [](const mdl::EntityNode*) {},
-        [&](const mdl::BrushNode* brush) { handleManager.removeHandles(brush); },
+        [&](const mdl::BrushNode* brushNode) { handleManager.removeHandles(*brushNode); },
         [](const mdl::PatchNode*) {}));
     }
   }

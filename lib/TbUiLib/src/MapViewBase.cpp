@@ -1551,7 +1551,8 @@ mdl::GroupNode* MapViewBase::findGroupToMergeGroupsInto(
 
 bool MapViewBase::canReparentNode(const mdl::Node* node, const mdl::Node* newParent) const
 {
-  return newParent != node && newParent != node->parent() && newParent->canAddChild(node);
+  return newParent != node && newParent != node->parent()
+         && newParent->canAddChild(*node);
 }
 
 void MapViewBase::moveSelectedBrushesToEntity()
@@ -1676,7 +1677,7 @@ std::vector<mdl::Node*> MapViewBase::collectReparentableNodes(
 {
   return nodes | std::views::filter([&](const auto* node) {
            return newParent != node && newParent != node->parent()
-                  && !newParent->isDescendantOf(node);
+                  && !newParent->isDescendantOf(*node);
          })
          | kdl::ranges::to<std::vector>();
 }

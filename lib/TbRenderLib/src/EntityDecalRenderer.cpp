@@ -245,7 +245,8 @@ void EntityDecalRenderer::updateBrush(const mdl::BrushNode& brushNode)
 
     // if the brush is not visible, then it doesn't (currently) intersect
     const auto& editorContext = m_map.editorContext();
-    const auto intersects = editorContext.visible(brushNode) && brushNode.intersects(ent);
+    const auto intersects =
+      editorContext.visible(brushNode) && brushNode.intersects(*ent);
     const auto tracked =
       std::ranges::find(data.brushes, &brushNode) != data.brushes.end();
 

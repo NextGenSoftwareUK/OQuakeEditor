@@ -153,9 +153,9 @@ static bool containsPatch(const Brush& brush, const PatchGrid& grid)
   return true;
 }
 
-bool BrushNode::contains(const Node* node) const
+bool BrushNode::contains(const Node& node) const
 {
-  return node->accept(kdl::overload(
+  return node.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [](const LayerNode*) { return false; },
     [&](const GroupNode* group) { return m_brush.contains(group->logicalBounds()); },
@@ -227,9 +227,9 @@ static bool intersectsPatch(const Brush& brush, const PatchGrid& grid)
   return false;
 }
 
-bool BrushNode::intersects(const Node* node) const
+bool BrushNode::intersects(const Node& node) const
 {
-  return node->accept(kdl::overload(
+  return node.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [](const LayerNode*) { return false; },
     [&](const GroupNode* group) { return m_brush.intersects(group->logicalBounds()); },
@@ -303,12 +303,12 @@ Node* BrushNode::doClone(const vm::bbox3d& /* worldBounds */) const
   return result.release();
 }
 
-bool BrushNode::doCanAddChild(const Node* /* child */) const
+bool BrushNode::doCanAddChild(const Node&) const
 {
   return false;
 }
 
-bool BrushNode::doCanRemoveChild(const Node* /* child */) const
+bool BrushNode::doCanRemoveChild(const Node&) const
 {
   return false;
 }

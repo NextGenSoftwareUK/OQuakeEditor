@@ -398,12 +398,12 @@ Node* PatchNode::doClone(const vm::bbox3d&) const
   return result.release();
 }
 
-bool PatchNode::doCanAddChild(const Node*) const
+bool PatchNode::doCanAddChild(const Node&) const
 {
   return false;
 }
 
-bool PatchNode::doCanRemoveChild(const Node*) const
+bool PatchNode::doCanRemoveChild(const Node&) const
 {
   return false;
 }

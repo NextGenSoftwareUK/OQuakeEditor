@@ -61,11 +61,11 @@ void doWriteNodes(
     node->accept(kdl::overload(
       [](const WorldNode*) {},
       [](const LayerNode*) {},
-      [&](auto&& thisLambda, const GroupNode* group) {
-        serializer.group(group, parentProperties());
+      [&](auto&& thisLambda, const GroupNode* groupNode) {
+        serializer.group(*groupNode, parentProperties());
 
-        parentStack.push_back(group);
-        group->visitChildren(thisLambda);
+        parentStack.push_back(groupNode);
+        groupNode->visitChildren(thisLambda);
         parentStack.pop_back();
       },
       [&](const EntityNode* entityNode) {
@@ -83,7 +83,7 @@ void doWriteNodes(
             kdl::str_join(escapedProperties, ";"));
         }
         serializer.entity(
-          entityNode, entityNode->entity().properties(), extraProperties, entityNode);
+          *entityNode, entityNode->entity().properties(), extraProperties, *entityNode);
       },
       [](const BrushNode*) {},
       [](const PatchNode*) {}));
@@ -135,19 +135,18 @@ void NodeWriter::writeDefaultLayer()
 
 void NodeWriter::writeCustomLayers()
 {
-  const std::vector<const LayerNode*> customLayers = m_world.customLayers();
-  for (auto* layer : customLayers)
+  for (auto* layerNode : m_world.customLayers())
   {
-    writeCustomLayer(layer);
+    writeCustomLayer(*layerNode);
   }
 }
 
-void NodeWriter::writeCustomLayer(const LayerNode* layerNode)
+void NodeWriter::writeCustomLayer(const LayerNode& layerNode)
 {
-  if (!(m_serializer->exporting() && layerNode->layer().omitFromExport()))
+  if (!(m_serializer->exporting() && layerNode.layer().omitFromExport()))
   {
     m_serializer->customLayer(layerNode);
-    doWriteNodes(*m_serializer, layerNode->children(), layerNode);
+    doWriteNodes(*m_serializer, layerNode.children(), &layerNode);
   }
 }
 
@@ -168,16 +167,16 @@ void NodeWriter::writeNodes(
     node->accept(kdl::overload(
       [](WorldNode*) {},
       [](LayerNode*) {},
-      [&](GroupNode* group) { groups.push_back(group); },
-      [&](EntityNode* entity) { entities.push_back(entity); },
-      [&](BrushNode* brush) {
-        if (auto* entity = dynamic_cast<EntityNode*>(brush->parent()))
+      [&](GroupNode* groupNode) { groups.push_back(groupNode); },
+      [&](EntityNode* entityNode) { entities.push_back(entityNode); },
+      [&](BrushNode* brushNode) {
+        if (auto* entity = dynamic_cast<EntityNode*>(brushNode->parent()))
         {
-          entityBrushes[entity].push_back(brush);
+          entityBrushes[entity].push_back(brushNode);
         }
         else
         {
-          worldBrushes.push_back(brush);
+          worldBrushes.push_back(brushNode);
         }
       },
       [](PatchNode*) {}));
@@ -196,7 +195,7 @@ void NodeWriter::writeWorldBrushes(const std::vector<BrushNode*>& brushes)
 {
   if (!brushes.empty())
   {
-    m_serializer->entity(&m_world, m_world.entity().properties(), {}, brushes);
+    m_serializer->entity(m_world, m_world.entity().properties(), {}, brushes);
   }
 }
 
@@ -204,7 +203,7 @@ void NodeWriter::writeEntityBrushes(const EntityBrushesMap& entityBrushes)
 {
   for (const auto& [entityNode, brushes] : entityBrushes)
   {
-    m_serializer->entity(entityNode, entityNode->entity().properties(), {}, brushes);
+    m_serializer->entity(*entityNode, entityNode->entity().properties(), {}, brushes);
   }
 }
 

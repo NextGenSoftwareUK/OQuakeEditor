@@ -299,9 +299,9 @@ Node* WorldNode::doCloneRecursively(const vm::bbox3d& worldBounds) const
   return worldNode;
 }
 
-bool WorldNode::doCanAddChild(const Node* child) const
+bool WorldNode::doCanAddChild(const Node& child) const
 {
-  return child->accept(kdl::overload(
+  return child.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [](const LayerNode*) { return true; },
     [](const GroupNode*) { return false; },
@@ -310,9 +310,9 @@ bool WorldNode::doCanAddChild(const Node* child) const
     [](const PatchNode*) { return false; }));
 }
 
-bool WorldNode::doCanRemoveChild(const Node* child) const
+bool WorldNode::doCanRemoveChild(const Node& child) const
 {
-  return child->accept(kdl::overload(
+  return child.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [&](const LayerNode* layer) { return (layer != defaultLayer()); },
     [](const GroupNode*) { return false; },
@@ -331,7 +331,7 @@ bool WorldNode::doShouldAddToSpacialIndex() const
   return false;
 }
 
-void WorldNode::doDescendantWasAdded(Node* node, const size_t /* depth */)
+void WorldNode::doDescendantWasAdded(Node& node, const size_t /* depth */)
 {
   // NOTE: `node` is just the root of a subtree that is being connected to this World.
   // In some cases, (e.g. if `node` is a Group), `node` will not be added to the spatial
@@ -339,7 +339,7 @@ void WorldNode::doDescendantWasAdded(Node* node, const size_t /* depth */)
   // being connected and add it or any descendants that need to be added.
   if (m_updateNodeTree)
   {
-    node->accept(kdl::overload(
+    node.accept(kdl::overload(
       [&](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
       [&](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
       [&](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
@@ -367,7 +367,7 @@ void WorldNode::doDescendantWasAdded(Node* node, const size_t /* depth */)
     }
   };
 
-  node->accept(kdl::overload(
+  node.accept(kdl::overload(
     [&](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
     [&](auto&& thisLambda, LayerNode* layer) {
       layer->visitChildren(thisLambda);
@@ -385,11 +385,11 @@ void WorldNode::doDescendantWasAdded(Node* node, const size_t /* depth */)
     [&](PatchNode*) {}));
 }
 
-void WorldNode::doDescendantWillBeRemoved(Node* node, const size_t /* depth */)
+void WorldNode::doDescendantWillBeRemoved(Node& node, const size_t /* depth */)
 {
   if (m_updateNodeTree)
   {
-    node->accept(kdl::overload(
+    node.accept(kdl::overload(
       [&](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
       [&](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
       [&](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
@@ -402,11 +402,11 @@ void WorldNode::doDescendantWillBeRemoved(Node* node, const size_t /* depth */)
   }
 }
 
-void WorldNode::doDescendantPhysicalBoundsDidChange(Node* node)
+void WorldNode::doDescendantPhysicalBoundsDidChange(Node& node)
 {
   if (m_updateNodeTree)
   {
-    node->accept(kdl::overload(
+    node.accept(kdl::overload(
       [](WorldNode*) {},
       [](LayerNode*) {},
       [](GroupNode*) {},

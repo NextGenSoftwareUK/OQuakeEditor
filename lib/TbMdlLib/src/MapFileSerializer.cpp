@@ -352,7 +352,7 @@ void MapFileSerializer::doBeginFile(
 
 void MapFileSerializer::doEndFile() {}
 
-void MapFileSerializer::doBeginEntity(const Node* /* node */)
+void MapFileSerializer::doBeginEntity(const Node& /* node */)
 {
   fmt::format_to(std::ostreambuf_iterator<char>{m_stream}, "// entity {}\n", entityNo());
   ++m_line;
@@ -361,7 +361,7 @@ void MapFileSerializer::doBeginEntity(const Node* /* node */)
   ++m_line;
 }
 
-void MapFileSerializer::doEndEntity(const Node* node)
+void MapFileSerializer::doEndEntity(const Node& node)
 {
   fmt::format_to(std::ostreambuf_iterator<char>{m_stream}, "}}\n");
   ++m_line;
@@ -378,7 +378,7 @@ void MapFileSerializer::doEntityProperty(const EntityProperty& attribute)
   ++m_line;
 }
 
-void MapFileSerializer::doBrush(const BrushNode* brush)
+void MapFileSerializer::doBrush(const BrushNode& brushNode)
 {
   fmt::format_to(std::ostreambuf_iterator<char>{m_stream}, "// brush {}\n", brushNo());
   ++m_line;
@@ -387,7 +387,7 @@ void MapFileSerializer::doBrush(const BrushNode* brush)
   ++m_line;
 
   // write pre-serialized brush faces
-  auto it = m_nodeToPrecomputedString.find(brush);
+  auto it = m_nodeToPrecomputedString.find(&brushNode);
   contract_assert(it != std::end(m_nodeToPrecomputedString));
 
   const auto& precomputedString = it->second;
@@ -396,7 +396,7 @@ void MapFileSerializer::doBrush(const BrushNode* brush)
 
   fmt::format_to(std::ostreambuf_iterator<char>{m_stream}, "}}\n");
   ++m_line;
-  setFilePosition(brush);
+  setFilePosition(brushNode);
 }
 
 void MapFileSerializer::doBrushFace(const BrushFace& face)
@@ -407,14 +407,14 @@ void MapFileSerializer::doBrushFace(const BrushFace& face)
   m_line += lines;
 }
 
-void MapFileSerializer::doPatch(const PatchNode* patchNode)
+void MapFileSerializer::doPatch(const PatchNode& patchNode)
 {
   fmt::format_to(std::ostreambuf_iterator<char>{m_stream}, "// brush {}\n", brushNo());
   ++m_line;
   m_startLineStack.push_back(m_line);
 
   // write pre-serialized patch
-  auto it = m_nodeToPrecomputedString.find(patchNode);
+  auto it = m_nodeToPrecomputedString.find(&patchNode);
   contract_assert(it != std::end(m_nodeToPrecomputedString));
 
   const auto& precomputedString = it->second;
@@ -424,10 +424,10 @@ void MapFileSerializer::doPatch(const PatchNode* patchNode)
   setFilePosition(patchNode);
 }
 
-void MapFileSerializer::setFilePosition(const Node* node)
+void MapFileSerializer::setFilePosition(const Node& node)
 {
   const auto start = startLine();
-  node->setFilePosition(start, m_line - start);
+  node.setFilePosition(start, m_line - start);
 }
 
 size_t MapFileSerializer::startLine()

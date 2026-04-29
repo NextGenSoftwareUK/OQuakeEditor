@@ -377,7 +377,7 @@ auto makeSetEntityDefinitionsVisitor(EntityDefinitionManager& manager)
 {
   // this helper lambda must be captured by value
   const auto setEntityDefinition = [&](auto* node) {
-    const auto* definition = manager.definition(node);
+    const auto* definition = manager.definition(*node);
     node->setDefinition(definition);
   };
 

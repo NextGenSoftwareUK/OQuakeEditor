@@ -120,9 +120,9 @@ Node* LayerNode::doClone(const vm::bbox3d&) const
   return result.release();
 }
 
-bool LayerNode::doCanAddChild(const Node* child) const
+bool LayerNode::doCanAddChild(const Node& child) const
 {
-  return child->accept(kdl::overload(
+  return child.accept(kdl::overload(
     [](const WorldNode*) { return false; },
     [](const LayerNode*) { return false; },
     [](const GroupNode*) { return true; },
@@ -131,7 +131,7 @@ bool LayerNode::doCanAddChild(const Node* child) const
     [](const PatchNode*) { return true; }));
 }
 
-bool LayerNode::doCanRemoveChild(const Node* /* child */) const
+bool LayerNode::doCanRemoveChild(const Node&) const
 {
   return true;
 }

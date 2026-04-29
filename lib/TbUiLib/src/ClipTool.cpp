@@ -938,7 +938,7 @@ void ClipTool::addBrushesToRenderer(
         [](const mdl::LayerNode*) {},
         [](const mdl::GroupNode*) {},
         [](const mdl::EntityNode*) {},
-        [&](mdl::BrushNode* brush) { renderer.addBrush(brush); },
+        [&](mdl::BrushNode* brushNode) { renderer.addBrush(*brushNode); },
         [](mdl::PatchNode*) {}));
     }
   }
