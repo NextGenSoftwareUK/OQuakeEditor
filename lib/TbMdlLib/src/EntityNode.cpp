@@ -103,12 +103,12 @@ Node* EntityNode::doClone(const vm::bbox3d& /* worldBounds */) const
 bool EntityNode::doCanAddChild(const Node& child) const
 {
   return child.accept(kdl::overload(
-    [](const WorldNode*) { return false; },
-    [](const LayerNode*) { return false; },
-    [](const GroupNode*) { return false; },
-    [](const EntityNode*) { return false; },
-    [](const BrushNode*) { return true; },
-    [](const PatchNode*) { return true; }));
+    [](const WorldNode&) { return false; },
+    [](const LayerNode&) { return false; },
+    [](const GroupNode&) { return false; },
+    [](const EntityNode&) { return false; },
+    [](const BrushNode&) { return true; },
+    [](const PatchNode&) { return true; }));
 }
 
 bool EntityNode::doCanRemoveChild(const Node&) const
@@ -213,12 +213,12 @@ void EntityNode::doFindNodesContaining(const vm::vec3d& point, std::vector<Node*
 
 void EntityNode::doAccept(NodeVisitor& visitor)
 {
-  visitor.visit(this);
+  visitor.visit(*this);
 }
 
 void EntityNode::doAccept(ConstNodeVisitor& visitor) const
 {
-  visitor.visit(this);
+  visitor.visit(*this);
 }
 
 std::vector<Node*> EntityNode::nodesRequiredForViewSelection()

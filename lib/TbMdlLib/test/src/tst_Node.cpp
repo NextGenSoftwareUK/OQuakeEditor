@@ -575,20 +575,20 @@ enum class Visited
 }
 
 const auto nodeTestVisitor = kdl::overload(
-  [](WorldNode*) { return Visited::World; },
-  [](LayerNode*) { return Visited::Layer; },
-  [](GroupNode*) { return Visited::Group; },
-  [](EntityNode*) { return Visited::Entity; },
-  [](BrushNode*) { return Visited::Brush; },
-  [](PatchNode*) { return Visited::Patch; });
+  [](WorldNode&) { return Visited::World; },
+  [](LayerNode&) { return Visited::Layer; },
+  [](GroupNode&) { return Visited::Group; },
+  [](EntityNode&) { return Visited::Entity; },
+  [](BrushNode&) { return Visited::Brush; },
+  [](PatchNode&) { return Visited::Patch; });
 
 const auto constNodeTestVisitor = kdl::overload(
-  [](const WorldNode*) { return Visited::World; },
-  [](const LayerNode*) { return Visited::Layer; },
-  [](const GroupNode*) { return Visited::Group; },
-  [](const EntityNode*) { return Visited::Entity; },
-  [](const BrushNode*) { return Visited::Brush; },
-  [](const PatchNode*) { return Visited::Patch; });
+  [](const WorldNode&) { return Visited::World; },
+  [](const LayerNode&) { return Visited::Layer; },
+  [](const GroupNode&) { return Visited::Group; },
+  [](const EntityNode&) { return Visited::Entity; },
+  [](const BrushNode&) { return Visited::Brush; },
+  [](const PatchNode&) { return Visited::Patch; });
 
 } // namespace
 
@@ -674,24 +674,24 @@ TEST_CASE("NodeTest.acceptAndVisitChildren")
   const auto collectRecursively = [](auto& node) {
     auto result = std::vector<Node*>{};
     node.accept(kdl::overload(
-      [&](auto&& thisLambda, WorldNode* w) {
-        result.push_back(w);
-        w->visitChildren(thisLambda);
+      [&](auto&& thisLambda, WorldNode& w) {
+        result.push_back(&w);
+        w.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, LayerNode* l) {
-        result.push_back(l);
-        l->visitChildren(thisLambda);
+      [&](auto&& thisLambda, LayerNode& l) {
+        result.push_back(&l);
+        l.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, GroupNode* g) {
-        result.push_back(g);
-        g->visitChildren(thisLambda);
+      [&](auto&& thisLambda, GroupNode& g) {
+        result.push_back(&g);
+        g.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, EntityNode* e) {
-        result.push_back(e);
-        e->visitChildren(thisLambda);
+      [&](auto&& thisLambda, EntityNode& e) {
+        result.push_back(&e);
+        e.visitChildren(thisLambda);
       },
-      [&](BrushNode* b) { result.push_back(b); },
-      [&](PatchNode* p) { result.push_back(p); }));
+      [&](BrushNode& b) { result.push_back(&b); },
+      [&](PatchNode& p) { result.push_back(&p); }));
     return result;
   };
 
@@ -726,12 +726,12 @@ namespace
 auto makeCollectVisitedNodesVisitor(std::vector<Node*>& visited)
 {
   return kdl::overload(
-    [&](WorldNode* worldNode) { visited.push_back(worldNode); },
-    [&](LayerNode* layerNode) { visited.push_back(layerNode); },
-    [&](GroupNode* groupNode) { visited.push_back(groupNode); },
-    [&](EntityNode* entityNode) { visited.push_back(entityNode); },
-    [&](BrushNode* brushNode) { visited.push_back(brushNode); },
-    [&](PatchNode* patchNode) { visited.push_back(patchNode); });
+    [&](WorldNode& worldNode) { visited.push_back(&worldNode); },
+    [&](LayerNode& layerNode) { visited.push_back(&layerNode); },
+    [&](GroupNode& groupNode) { visited.push_back(&groupNode); },
+    [&](EntityNode& entityNode) { visited.push_back(&entityNode); },
+    [&](BrushNode& brushNode) { visited.push_back(&brushNode); },
+    [&](PatchNode& patchNode) { visited.push_back(&patchNode); });
 }
 
 } // namespace

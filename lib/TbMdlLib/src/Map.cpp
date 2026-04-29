@@ -287,153 +287,153 @@ auto findEntityDefinitionFile(
 auto makeInitializeNodeTagsVisitor(TagManager& tagManager)
 {
   return kdl::overload(
-    [&](auto&& thisLambda, WorldNode* world) {
-      world->initializeTags(tagManager);
-      world->visitChildren(thisLambda);
+    [&](auto&& thisLambda, WorldNode& worldNode) {
+      worldNode.initializeTags(tagManager);
+      worldNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, LayerNode* layer) {
-      layer->initializeTags(tagManager);
-      layer->visitChildren(thisLambda);
+    [&](auto&& thisLambda, LayerNode& layerNode) {
+      layerNode.initializeTags(tagManager);
+      layerNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, GroupNode* group) {
-      group->initializeTags(tagManager);
-      group->visitChildren(thisLambda);
+    [&](auto&& thisLambda, GroupNode& groupNode) {
+      groupNode.initializeTags(tagManager);
+      groupNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, EntityNode* entity) {
-      entity->initializeTags(tagManager);
-      entity->visitChildren(thisLambda);
+    [&](auto&& thisLambda, EntityNode& entityNode) {
+      entityNode.initializeTags(tagManager);
+      entityNode.visitChildren(thisLambda);
     },
-    [&](BrushNode* brush) { brush->initializeTags(tagManager); },
-    [&](PatchNode* patch) { patch->initializeTags(tagManager); });
+    [&](BrushNode& brushNode) { brushNode.initializeTags(tagManager); },
+    [&](PatchNode& patchNode) { patchNode.initializeTags(tagManager); });
 }
 
 auto makeClearNodeTagsVisitor()
 {
   return kdl::overload(
-    [](auto&& thisLambda, WorldNode* world) {
-      world->clearTags();
-      world->visitChildren(thisLambda);
+    [](auto&& thisLambda, WorldNode& worldNode) {
+      worldNode.clearTags();
+      worldNode.visitChildren(thisLambda);
     },
-    [](auto&& thisLambda, LayerNode* layer) {
-      layer->clearTags();
-      layer->visitChildren(thisLambda);
+    [](auto&& thisLambda, LayerNode& layerNode) {
+      layerNode.clearTags();
+      layerNode.visitChildren(thisLambda);
     },
-    [](auto&& thisLambda, GroupNode* group) {
-      group->clearTags();
-      group->visitChildren(thisLambda);
+    [](auto&& thisLambda, GroupNode& groupNode) {
+      groupNode.clearTags();
+      groupNode.visitChildren(thisLambda);
     },
-    [](auto&& thisLambda, EntityNode* entity) {
-      entity->clearTags();
-      entity->visitChildren(thisLambda);
+    [](auto&& thisLambda, EntityNode& entityNode) {
+      entityNode.clearTags();
+      entityNode.visitChildren(thisLambda);
     },
-    [](BrushNode* brush) { brush->clearTags(); },
-    [](PatchNode* patch) { patch->clearTags(); });
+    [](BrushNode& brushNode) { brushNode.clearTags(); },
+    [](PatchNode& patchNode) { patchNode.clearTags(); });
 }
 
 auto makeSetMaterialsVisitor(gl::MaterialManager& manager)
 {
   return kdl::overload(
-    [](auto&& thisLambda, WorldNode* worldNode) { worldNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, LayerNode* layerNode) { layerNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* groupNode) { groupNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, EntityNode* entityNode) {
-      entityNode->visitChildren(thisLambda);
+    [](auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, EntityNode& entityNode) {
+      entityNode.visitChildren(thisLambda);
     },
-    [&](BrushNode* brushNode) {
-      const auto& brush = brushNode->brush();
+    [&](BrushNode& brushNode) {
+      const auto& brush = brushNode.brush();
       for (size_t i = 0u; i < brush.faceCount(); ++i)
       {
         const auto& face = brush.face(i);
         auto* material = manager.material(face.attributes().materialName());
-        brushNode->setFaceMaterial(i, material);
+        brushNode.setFaceMaterial(i, material);
       }
     },
-    [&](PatchNode* patchNode) {
-      auto* material = manager.material(patchNode->patch().materialName());
-      patchNode->setMaterial(material);
+    [&](PatchNode& patchNode) {
+      auto* material = manager.material(patchNode.patch().materialName());
+      patchNode.setMaterial(material);
     });
 }
 
 auto makeUnsetMaterialsVisitor()
 {
   return kdl::overload(
-    [](auto&& thisLambda, WorldNode* worldNode) { worldNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, LayerNode* layerNode) { layerNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* groupNode) { groupNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, EntityNode* entityNode) {
-      entityNode->visitChildren(thisLambda);
+    [](auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, EntityNode& entityNode) {
+      entityNode.visitChildren(thisLambda);
     },
-    [](BrushNode* brushNode) {
-      const auto& brush = brushNode->brush();
+    [](BrushNode& brushNode) {
+      const auto& brush = brushNode.brush();
       for (size_t i = 0u; i < brush.faceCount(); ++i)
       {
-        brushNode->setFaceMaterial(i, nullptr);
+        brushNode.setFaceMaterial(i, nullptr);
       }
     },
-    [](PatchNode* patchNode) { patchNode->setMaterial(nullptr); });
+    [](PatchNode& patchNode) { patchNode.setMaterial(nullptr); });
 }
 
 auto makeSetEntityDefinitionsVisitor(EntityDefinitionManager& manager)
 {
   // this helper lambda must be captured by value
-  const auto setEntityDefinition = [&](auto* node) {
-    const auto* definition = manager.definition(*node);
-    node->setDefinition(definition);
+  const auto setEntityDefinition = [&](auto& node) {
+    const auto* definition = manager.definition(node);
+    node.setDefinition(definition);
   };
 
   return kdl::overload(
-    [=](auto&& thisLambda, WorldNode* worldNode) {
+    [=](auto&& thisLambda, WorldNode& worldNode) {
       setEntityDefinition(worldNode);
-      worldNode->visitChildren(thisLambda);
+      worldNode.visitChildren(thisLambda);
     },
-    [](auto&& thisLambda, LayerNode* layerNode) { layerNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* groupNode) { groupNode->visitChildren(thisLambda); },
-    [=](EntityNode* entityNode) { setEntityDefinition(entityNode); },
-    [](BrushNode*) {},
-    [](PatchNode*) {});
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [=](EntityNode& entityNode) { setEntityDefinition(entityNode); },
+    [](BrushNode&) {},
+    [](PatchNode&) {});
 }
 
 auto makeUnsetEntityDefinitionsVisitor()
 {
   return kdl::overload(
-    [](auto&& thisLambda, WorldNode* worldNode) {
-      worldNode->setDefinition(nullptr);
-      worldNode->visitChildren(thisLambda);
+    [](auto&& thisLambda, WorldNode& worldNode) {
+      worldNode.setDefinition(nullptr);
+      worldNode.visitChildren(thisLambda);
     },
-    [](auto&& thisLambda, LayerNode* layerNode) { layerNode->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* groupNode) { groupNode->visitChildren(thisLambda); },
-    [](EntityNode* entityNode) { entityNode->setDefinition(nullptr); },
-    [](BrushNode*) {},
-    [](PatchNode*) {});
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [](EntityNode& entityNode) { entityNode.setDefinition(nullptr); },
+    [](BrushNode&) {},
+    [](PatchNode&) {});
 }
 
 auto makeSetEntityModelsVisitor(EntityModelManager& manager, Logger& logger)
 {
   return kdl::overload(
-    [](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-    [](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
-    [&](EntityNode* entityNode) {
+    [](auto&& thisLambda, WorldNode& world) { world.visitChildren(thisLambda); },
+    [](auto&& thisLambda, LayerNode& layer) { layer.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& group) { group.visitChildren(thisLambda); },
+    [&](EntityNode& entityNode) {
       const auto modelSpec =
-        safeGetModelSpecification(logger, entityNode->entity().classname(), [&]() {
-          return entityNode->entity().modelSpecification();
+        safeGetModelSpecification(logger, entityNode.entity().classname(), [&]() {
+          return entityNode.entity().modelSpecification();
         });
       const auto* model = manager.model(modelSpec.path);
-      entityNode->setModel(model);
+      entityNode.setModel(model);
     },
-    [](BrushNode*) {},
-    [](PatchNode*) {});
+    [](BrushNode&) {},
+    [](PatchNode&) {});
 }
 
 auto makeUnsetEntityModelsVisitor()
 {
   return kdl::overload(
-    [](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-    [](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
-    [](EntityNode* entity) { entity->setModel(nullptr); },
-    [](BrushNode*) {},
-    [](PatchNode*) {});
+    [](auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [](EntityNode& entityNode) { entityNode.setModel(nullptr); },
+    [](BrushNode&) {},
+    [](PatchNode&) {});
 }
 
 std::vector<GroupNode*> collectGroupsWithPendingChanges(Node& node)
@@ -441,22 +441,22 @@ std::vector<GroupNode*> collectGroupsWithPendingChanges(Node& node)
   auto result = std::vector<GroupNode*>{};
 
   node.accept(kdl::overload(
-    [](auto&& thisLambda, const WorldNode* worldNode) {
-      worldNode->visitChildren(thisLambda);
+    [](auto&& thisLambda, const WorldNode& worldNode) {
+      worldNode.visitChildren(thisLambda);
     },
-    [](auto&& thisLambda, const LayerNode* layerNode) {
-      layerNode->visitChildren(thisLambda);
+    [](auto&& thisLambda, const LayerNode& layerNode) {
+      layerNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, GroupNode* groupNode) {
-      if (groupNode->hasPendingChanges())
+    [&](auto&& thisLambda, GroupNode& groupNode) {
+      if (groupNode.hasPendingChanges())
       {
-        result.push_back(groupNode);
+        result.push_back(&groupNode);
       }
-      groupNode->visitChildren(thisLambda);
+      groupNode.visitChildren(thisLambda);
     },
-    [](const EntityNode*) {},
-    [](const BrushNode*) {},
-    [](const PatchNode*) {}));
+    [](const EntityNode&) {},
+    [](const BrushNode&) {},
+    [](const PatchNode&) {}));
 
   return result;
 }
@@ -1069,12 +1069,14 @@ void Map::updateFaceTags(const std::vector<BrushFaceHandle>& faceHandles)
 void Map::updateAllFaceTags()
 {
   m_worldNode->accept(kdl::overload(
-    [](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-    [](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
-    [](auto&& thisLambda, EntityNode* entity) { entity->visitChildren(thisLambda); },
-    [&](BrushNode* brush) { brush->initializeTags(*m_tagManager); },
-    [](PatchNode*) {}));
+    [](auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, EntityNode& entityNode) {
+      entityNode.visitChildren(thisLambda);
+    },
+    [&](BrushNode& brushNode) { brushNode.initializeTags(*m_tagManager); },
+    [](PatchNode&) {}));
 }
 
 void Map::updateFaceTagsAfterResourcesWhereProcessed(
@@ -1088,24 +1090,26 @@ void Map::updateFaceTagsAfterResourcesWhereProcessed(
     std::unordered_set<const gl::Material*>{materials.begin(), materials.end()};
 
   worldNode().accept(kdl::overload(
-    [](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-    [](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
-    [](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
-    [](auto&& thisLambda, EntityNode* entity) { entity->visitChildren(thisLambda); },
-    [&](BrushNode* brushNode) {
-      const auto& faces = brushNode->brush().faces();
+    [](auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+    [](auto&& thisLambda, EntityNode& entityNode) {
+      entityNode.visitChildren(thisLambda);
+    },
+    [&](BrushNode& brushNode) {
+      const auto& faces = brushNode.brush().faces();
       for (size_t i = 0; i < faces.size(); ++i)
       {
         {
           const auto& face = faces[i];
           if (materialSet.contains(face.material()))
           {
-            brushNode->updateFaceTags(i, *m_tagManager);
+            brushNode.updateFaceTags(i, *m_tagManager);
           }
         }
       }
     },
-    [](PatchNode*) {}));
+    [](PatchNode&) {}));
 }
 
 void Map::registerValidators()
@@ -1403,12 +1407,12 @@ void Map::addEntityLinks(const std::vector<Node*>& nodes, const bool recurse)
   for (auto* node : nodes)
   {
     node->accept(kdl::overload(
-      [&](WorldNode* worldNode) { m_entityLinkManager->addEntityNode(*worldNode); },
-      [](LayerNode*) {},
-      [](GroupNode*) {},
-      [&](EntityNode* entityNode) { m_entityLinkManager->addEntityNode(*entityNode); },
-      [](BrushNode*) {},
-      [](PatchNode*) {}));
+      [&](WorldNode& worldNode) { m_entityLinkManager->addEntityNode(worldNode); },
+      [](LayerNode&) {},
+      [](GroupNode&) {},
+      [&](EntityNode& entityNode) { m_entityLinkManager->addEntityNode(entityNode); },
+      [](BrushNode&) {},
+      [](PatchNode&) {}));
 
     if (recurse)
     {
@@ -1422,12 +1426,12 @@ void Map::removeEntityLinks(const std::vector<Node*>& nodes, const bool recurse)
   for (auto* node : nodes)
   {
     node->accept(kdl::overload(
-      [&](WorldNode* worldNode) { m_entityLinkManager->removeEntityNode(*worldNode); },
-      [](LayerNode*) {},
-      [](GroupNode*) {},
-      [&](EntityNode* entityNode) { m_entityLinkManager->removeEntityNode(*entityNode); },
-      [](BrushNode*) {},
-      [](PatchNode*) {}));
+      [&](WorldNode& worldNode) { m_entityLinkManager->removeEntityNode(worldNode); },
+      [](LayerNode&) {},
+      [](GroupNode&) {},
+      [&](EntityNode& entityNode) { m_entityLinkManager->removeEntityNode(entityNode); },
+      [](BrushNode&) {},
+      [](PatchNode&) {}));
 
 
     if (recurse)

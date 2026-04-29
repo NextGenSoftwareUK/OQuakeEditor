@@ -174,23 +174,23 @@ void EntityDecalRenderer::clear()
 void EntityDecalRenderer::updateNode(mdl::Node& node)
 {
   node.accept(kdl::overload(
-    [](mdl::WorldNode*) {},
-    [](mdl::LayerNode*) {},
-    [](mdl::GroupNode*) {},
-    [&](const mdl::EntityNode* entity) { updateEntity(*entity); },
-    [&](const mdl::BrushNode* brush) { updateBrush(*brush); },
-    [](mdl::PatchNode*) {}));
+    [](mdl::WorldNode&) {},
+    [](mdl::LayerNode&) {},
+    [](mdl::GroupNode&) {},
+    [&](const mdl::EntityNode& entityNode) { updateEntity(entityNode); },
+    [&](const mdl::BrushNode& brushNode) { updateBrush(brushNode); },
+    [](mdl::PatchNode&) {}));
 }
 
 void EntityDecalRenderer::removeNode(mdl::Node& node)
 {
   node.accept(kdl::overload(
-    [](mdl::WorldNode*) {},
-    [](mdl::LayerNode*) {},
-    [](mdl::GroupNode*) {},
-    [&](const mdl::EntityNode* entity) { removeEntity(*entity); },
-    [&](const mdl::BrushNode* brush) { removeBrush(*brush); },
-    [](mdl::PatchNode*) {}));
+    [](mdl::WorldNode&) {},
+    [](mdl::LayerNode&) {},
+    [](mdl::GroupNode&) {},
+    [&](const mdl::EntityNode& entityNode) { removeEntity(entityNode); },
+    [&](const mdl::BrushNode& brushNode) { removeBrush(brushNode); },
+    [](mdl::PatchNode&) {}));
 }
 
 void EntityDecalRenderer::updateEntity(const mdl::EntityNode& entityNode)

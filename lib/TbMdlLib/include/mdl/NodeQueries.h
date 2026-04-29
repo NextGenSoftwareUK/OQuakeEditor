@@ -39,20 +39,20 @@ namespace tb::mdl
 
 struct TrueNodePredicate
 {
-  bool operator()(WorldNode*) const { return true; }
-  bool operator()(LayerNode*) const { return true; }
-  bool operator()(GroupNode*) const { return true; }
-  bool operator()(EntityNode*) const { return true; }
-  bool operator()(BrushNode*) const { return true; }
-  bool operator()(PatchNode*) const { return true; }
+  bool operator()(WorldNode&) const { return true; }
+  bool operator()(LayerNode&) const { return true; }
+  bool operator()(GroupNode&) const { return true; }
+  bool operator()(EntityNode&) const { return true; }
+  bool operator()(BrushNode&) const { return true; }
+  bool operator()(PatchNode&) const { return true; }
 };
 
 template <typename N, typename T = Node*>
-N* findNode(const std::vector<T>& nodes, const std::function<bool(const N*)>& predicate)
+N* findNode(const std::vector<T>& nodes, const std::function<bool(const N&)>& predicate)
 {
   for (auto* node : nodes)
   {
-    if (auto* tNode = dynamic_cast<N*>(node); tNode && predicate(tNode))
+    if (auto* tNode = dynamic_cast<N*>(node); tNode && predicate(*tNode))
     {
       return tNode;
     }
@@ -63,11 +63,11 @@ N* findNode(const std::vector<T>& nodes, const std::function<bool(const N*)>& pr
 
 template <typename N, typename T = Node*>
 N* findNodeOrDescendant(
-  const std::vector<T>& nodes, const std::function<bool(const N*)>& predicate)
+  const std::vector<T>& nodes, const std::function<bool(const N&)>& predicate)
 {
   for (auto* node : nodes)
   {
-    if (auto* tNode = dynamic_cast<N*>(node); tNode && predicate(tNode))
+    if (auto* tNode = dynamic_cast<N*>(node); tNode && predicate(*tNode))
     {
       return tNode;
     }
@@ -85,57 +85,57 @@ auto collectNodes(const std::vector<T>& nodes, const Predicate& predicate = Pred
 {
   auto result = std::vector<Node*>{};
   auto visitor = kdl::overload(
-    [&]([[maybe_unused]] WorldNode* worldNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode*>)
+    [&]([[maybe_unused]] WorldNode& worldNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode&>)
       {
         if (predicate(worldNode))
         {
-          result.push_back(worldNode);
+          result.push_back(&worldNode);
         }
       }
     },
-    [&]([[maybe_unused]] LayerNode* layerNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode*>)
+    [&]([[maybe_unused]] LayerNode& layerNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode&>)
       {
         if (predicate(layerNode))
         {
-          result.push_back(layerNode);
+          result.push_back(&layerNode);
         }
       }
     },
-    [&]([[maybe_unused]] GroupNode* groupNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode*>)
+    [&]([[maybe_unused]] GroupNode& groupNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode&>)
       {
         if (predicate(groupNode))
         {
-          result.push_back(groupNode);
+          result.push_back(&groupNode);
         }
       }
     },
-    [&]([[maybe_unused]] EntityNode* entityNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode*>)
+    [&]([[maybe_unused]] EntityNode& entityNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode&>)
       {
         if (predicate(entityNode))
         {
-          result.push_back(entityNode);
+          result.push_back(&entityNode);
         }
       }
     },
-    [&]([[maybe_unused]] BrushNode* brushNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode*>)
+    [&]([[maybe_unused]] BrushNode& brushNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode&>)
       {
         if (predicate(brushNode))
         {
-          result.push_back(brushNode);
+          result.push_back(&brushNode);
         }
       }
     },
-    [&]([[maybe_unused]] PatchNode* patchNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode*>)
+    [&]([[maybe_unused]] PatchNode& patchNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode&>)
       {
         if (predicate(patchNode))
         {
-          result.push_back(patchNode);
+          result.push_back(&patchNode);
         }
       }
     });
@@ -153,64 +153,64 @@ auto collectAncestors(
 {
   auto result = std::vector<Node*>{};
   auto visitor = kdl::overload(
-    [&]([[maybe_unused]] WorldNode* worldNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode*>)
+    [&]([[maybe_unused]] WorldNode& worldNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode&>)
       {
         if (predicate(worldNode))
         {
-          result.push_back(worldNode);
+          result.push_back(&worldNode);
         }
       }
     },
-    [&](auto&& thisLambda, [[maybe_unused]] LayerNode* layerNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] LayerNode& layerNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode&>)
       {
         if (predicate(layerNode))
         {
-          result.push_back(layerNode);
+          result.push_back(&layerNode);
         }
       }
-      layerNode->visitParent(thisLambda);
+      layerNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] GroupNode* groupNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] GroupNode& groupNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode&>)
       {
         if (predicate(groupNode))
         {
-          result.push_back(groupNode);
+          result.push_back(&groupNode);
         }
       }
-      groupNode->visitParent(thisLambda);
+      groupNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] EntityNode* entityNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] EntityNode& entityNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode&>)
       {
         if (predicate(entityNode))
         {
-          result.push_back(entityNode);
+          result.push_back(&entityNode);
         }
       }
-      entityNode->visitParent(thisLambda);
+      entityNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] BrushNode* brushNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] BrushNode& brushNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode&>)
       {
         if (predicate(brushNode))
         {
-          result.push_back(brushNode);
+          result.push_back(&brushNode);
         }
       }
-      brushNode->visitParent(thisLambda);
+      brushNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] PatchNode* patchNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] PatchNode& patchNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode&>)
       {
         if (predicate(patchNode))
         {
-          result.push_back(patchNode);
+          result.push_back(&patchNode);
         }
       }
-      patchNode->visitParent(thisLambda);
+      patchNode.visitParent(thisLambda);
     });
 
   for (auto* node : nodes)
@@ -226,64 +226,64 @@ auto collectNodesAndAncestors(
 {
   auto result = std::vector<Node*>{};
   auto visitor = kdl::overload(
-    [&]([[maybe_unused]] WorldNode* worldNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode*>)
+    [&]([[maybe_unused]] WorldNode& worldNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode&>)
       {
         if (predicate(worldNode))
         {
-          result.push_back(worldNode);
+          result.push_back(&worldNode);
         }
       }
     },
-    [&](auto&& thisLambda, [[maybe_unused]] LayerNode* layerNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] LayerNode& layerNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode&>)
       {
         if (predicate(layerNode))
         {
-          result.push_back(layerNode);
+          result.push_back(&layerNode);
         }
       }
-      layerNode->visitParent(thisLambda);
+      layerNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] GroupNode* groupNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] GroupNode& groupNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode&>)
       {
         if (predicate(groupNode))
         {
-          result.push_back(groupNode);
+          result.push_back(&groupNode);
         }
       }
-      groupNode->visitParent(thisLambda);
+      groupNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] EntityNode* entityNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] EntityNode& entityNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode&>)
       {
         if (predicate(entityNode))
         {
-          result.push_back(entityNode);
+          result.push_back(&entityNode);
         }
       }
-      entityNode->visitParent(thisLambda);
+      entityNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] BrushNode* brushNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] BrushNode& brushNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode&>)
       {
         if (predicate(brushNode))
         {
-          result.push_back(brushNode);
+          result.push_back(&brushNode);
         }
       }
-      brushNode->visitParent(thisLambda);
+      brushNode.visitParent(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] PatchNode* patchNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] PatchNode& patchNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode&>)
       {
         if (predicate(patchNode))
         {
-          result.push_back(patchNode);
+          result.push_back(&patchNode);
         }
       }
-      patchNode->visitParent(thisLambda);
+      patchNode.visitParent(thisLambda);
     });
 
   Node::visitAll(nodes, visitor);
@@ -296,65 +296,65 @@ auto collectDescendants(
 {
   auto result = std::vector<Node*>{};
   auto visitor = kdl::overload(
-    [&](auto&& thisLambda, [[maybe_unused]] WorldNode* worldNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] WorldNode& worldNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode&>)
       {
         if (predicate(worldNode))
         {
-          result.push_back(worldNode);
+          result.push_back(&worldNode);
         }
       }
-      worldNode->visitChildren(thisLambda);
+      worldNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] LayerNode* layerNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] LayerNode& layerNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode&>)
       {
         if (predicate(layerNode))
         {
-          result.push_back(layerNode);
+          result.push_back(&layerNode);
         }
       }
-      layerNode->visitChildren(thisLambda);
+      layerNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] GroupNode* groupNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] GroupNode& groupNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode&>)
       {
         if (predicate(groupNode))
         {
-          result.push_back(groupNode);
+          result.push_back(&groupNode);
         }
       }
-      groupNode->visitChildren(thisLambda);
+      groupNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] EntityNode* entityNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] EntityNode& entityNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode&>)
       {
         if (predicate(entityNode))
         {
-          result.push_back(entityNode);
+          result.push_back(&entityNode);
         }
       }
-      entityNode->visitChildren(thisLambda);
+      entityNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] BrushNode* brushNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] BrushNode& brushNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode&>)
       {
         if (predicate(brushNode))
         {
-          result.push_back(brushNode);
+          result.push_back(&brushNode);
         }
       }
-      brushNode->visitChildren(thisLambda);
+      brushNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] PatchNode* patchNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] PatchNode& patchNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode&>)
       {
         if (predicate(patchNode))
         {
-          result.push_back(patchNode);
+          result.push_back(&patchNode);
         }
       }
-      patchNode->visitChildren(thisLambda);
+      patchNode.visitChildren(thisLambda);
     });
 
   for (auto* node : nodes)
@@ -370,65 +370,65 @@ auto collectNodesAndDescendants(
 {
   auto result = std::vector<Node*>{};
   auto visitor = kdl::overload(
-    [&](auto&& thisLambda, [[maybe_unused]] WorldNode* worldNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] WorldNode& worldNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, WorldNode&>)
       {
         if (predicate(worldNode))
         {
-          result.push_back(worldNode);
+          result.push_back(&worldNode);
         }
       }
-      worldNode->visitChildren(thisLambda);
+      worldNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] LayerNode* layerNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] LayerNode& layerNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, LayerNode&>)
       {
         if (predicate(layerNode))
         {
-          result.push_back(layerNode);
+          result.push_back(&layerNode);
         }
       }
-      layerNode->visitChildren(thisLambda);
+      layerNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] GroupNode* groupNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] GroupNode& groupNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, GroupNode&>)
       {
         if (predicate(groupNode))
         {
-          result.push_back(groupNode);
+          result.push_back(&groupNode);
         }
       }
-      groupNode->visitChildren(thisLambda);
+      groupNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] EntityNode* entityNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] EntityNode& entityNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, EntityNode&>)
       {
         if (predicate(entityNode))
         {
-          result.push_back(entityNode);
+          result.push_back(&entityNode);
         }
       }
-      entityNode->visitChildren(thisLambda);
+      entityNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] BrushNode* brushNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] BrushNode& brushNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, BrushNode&>)
       {
         if (predicate(brushNode))
         {
-          result.push_back(brushNode);
+          result.push_back(&brushNode);
         }
       }
-      brushNode->visitChildren(thisLambda);
+      brushNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, [[maybe_unused]] PatchNode* patchNode) {
-      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode*>)
+    [&](auto&& thisLambda, [[maybe_unused]] PatchNode& patchNode) {
+      if constexpr (std::is_invocable_r_v<bool, Predicate, PatchNode&>)
       {
         if (predicate(patchNode))
         {
-          result.push_back(patchNode);
+          result.push_back(&patchNode);
         }
       }
-      patchNode->visitChildren(thisLambda);
+      patchNode.visitChildren(thisLambda);
     });
 
   Node::visitAll(nodes, visitor);
@@ -448,30 +448,30 @@ std::vector<BrushFaceHandle> collectBrushFaces(
   Node::visitAll(
     nodes,
     kdl::overload(
-      [&](auto&& thisLambda, const WorldNode* worldNode) {
-        worldNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, const WorldNode& worldNode) {
+        worldNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, const LayerNode* layerNode) {
-        layerNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, const LayerNode& layerNode) {
+        layerNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, const GroupNode* groupNode) {
-        groupNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, const GroupNode& groupNode) {
+        groupNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, const EntityNode* entityNode) {
-        entityNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, const EntityNode& entityNode) {
+        entityNode.visitChildren(thisLambda);
       },
-      [&](BrushNode* brushNode) {
-        const auto& brush = brushNode->brush();
+      [&](BrushNode& brushNode) {
+        const auto& brush = brushNode.brush();
         for (size_t i = 0; i < brush.faceCount(); ++i)
         {
           const auto& face = brush.face(i);
-          if (predicate(*brushNode, face))
+          if (predicate(brushNode, face))
           {
-            result.emplace_back(brushNode, i);
+            result.emplace_back(&brushNode, i);
           }
         }
       },
-      [&](const PatchNode*) {}));
+      [&](const PatchNode&) {}));
   return kdl::vec_sort_and_remove_duplicates(std::move(result));
 }
 

@@ -1299,12 +1299,12 @@ void MapViewBase::showPopupMenuLater()
     moveToWorldAction->setEnabled(canMakeStructural());
 
     const auto isEntity = newBrushParent->accept(kdl::overload(
-      [](const mdl::WorldNode*) { return false; },
-      [](const mdl::LayerNode*) { return false; },
-      [](const mdl::GroupNode*) { return false; },
-      [](const mdl::EntityNode*) { return true; },
-      [](const mdl::BrushNode*) { return false; },
-      [](const mdl::PatchNode*) { return false; }));
+      [](const mdl::WorldNode&) { return false; },
+      [](const mdl::LayerNode&) { return false; },
+      [](const mdl::GroupNode&) { return false; },
+      [](const mdl::EntityNode&) { return true; },
+      [](const mdl::BrushNode&) { return false; },
+      [](const mdl::PatchNode&) { return false; }));
 
     if (isEntity)
     {
@@ -1622,26 +1622,29 @@ static std::vector<mdl::Node*> collectEntitiesForNodes(
   const std::vector<mdl::Node*>& selectedNodes, const mdl::WorldNode& worldNode)
 {
   auto result = std::vector<mdl::Node*>{};
-  const auto addNode = [&](auto&& thisLambda, auto* node) {
-    if (node->entity() == &worldNode)
+  const auto addNode = [&](auto&& thisLambda, auto& node) {
+    if (node.entity() == &worldNode)
     {
-      result.push_back(node);
+      result.push_back(&node);
     }
     else
     {
-      node->visitParent(thisLambda);
+      node.visitParent(thisLambda);
     }
   };
 
   mdl::Node::visitAll(
     selectedNodes,
     kdl::overload(
-      [](mdl::WorldNode*) {},
-      [](mdl::LayerNode*) {},
-      [&](mdl::GroupNode* group) { result.push_back(group); },
-      [&](mdl::EntityNode* entity) { result.push_back(entity); },
-      [&](auto&& thisLambda, mdl::BrushNode* brush) { addNode(thisLambda, brush); },
-      [&](auto&& thisLambda, mdl::PatchNode* patch) { addNode(thisLambda, patch); }));
+      [](mdl::WorldNode&) {},
+      [](mdl::LayerNode&) {},
+      [&](mdl::GroupNode& groupNode) { result.push_back(&groupNode); },
+      [&](mdl::EntityNode& entityNode) { result.push_back(&entityNode); },
+      [&](
+        auto&& thisLambda, mdl::BrushNode& brushNode) { addNode(thisLambda, brushNode); },
+      [&](auto&& thisLambda, mdl::PatchNode& patchNode) {
+        addNode(thisLambda, patchNode);
+      }));
   return kdl::vec_sort_and_remove_duplicates(std::move(result));
 }
 

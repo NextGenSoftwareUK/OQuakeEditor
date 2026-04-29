@@ -107,12 +107,12 @@ std::vector<const LayerNode*> WorldNode::allLayers() const
 {
   auto layers = std::vector<const LayerNode*>{};
   visitChildren(kdl::overload(
-    [](const WorldNode*) {},
-    [&](const LayerNode* layer) { layers.push_back(layer); },
-    [](const GroupNode*) {},
-    [](const EntityNode*) {},
-    [](const BrushNode*) {},
-    [](const PatchNode*) {}));
+    [](const WorldNode&) {},
+    [&](const LayerNode& layerNode) { layers.push_back(&layerNode); },
+    [](const GroupNode&) {},
+    [](const EntityNode&) {},
+    [](const BrushNode&) {},
+    [](const PatchNode&) {}));
   return layers;
 }
 
@@ -129,12 +129,12 @@ std::vector<const LayerNode*> WorldNode::customLayers() const
   for (auto it = std::next(std::begin(children)); it != std::end(children); ++it)
   {
     (*it)->accept(kdl::overload(
-      [](const WorldNode*) {},
-      [&](const LayerNode* layer) { layers.push_back(layer); },
-      [](const GroupNode*) {},
-      [](const EntityNode*) {},
-      [](const BrushNode*) {},
-      [](const PatchNode*) {}));
+      [](const WorldNode&) {},
+      [&](const LayerNode& layerNode) { layers.push_back(&layerNode); },
+      [](const GroupNode&) {},
+      [](const EntityNode&) {},
+      [](const BrushNode&) {},
+      [](const PatchNode&) {}));
   }
 
   return layers;
@@ -207,32 +207,32 @@ void WorldNode::enableNodeTreeUpdates()
 void WorldNode::rebuildNodeTree()
 {
   auto nodes = std::vector<Node*>{};
-  const auto addNode = [&](auto* node) {
-    if (node->shouldAddToSpacialIndex())
+  const auto addNode = [&](auto& node) {
+    if (node.shouldAddToSpacialIndex())
     {
-      nodes.push_back(node);
+      nodes.push_back(&node);
     }
   };
 
   accept(kdl::overload(
-    [&](auto&& thisLambda, WorldNode* world) {
-      addNode(world);
-      world->visitChildren(thisLambda);
+    [&](auto&& thisLambda, WorldNode& worldNode) {
+      addNode(worldNode);
+      worldNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, LayerNode* layer) {
-      addNode(layer);
-      layer->visitChildren(thisLambda);
+    [&](auto&& thisLambda, LayerNode& layerNode) {
+      addNode(layerNode);
+      layerNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, GroupNode* group) {
-      addNode(group);
-      group->visitChildren(thisLambda);
+    [&](auto&& thisLambda, GroupNode& groupNode) {
+      addNode(groupNode);
+      groupNode.visitChildren(thisLambda);
     },
-    [&](auto&& thisLambda, EntityNode* entity) {
-      addNode(entity);
-      entity->visitChildren(thisLambda);
+    [&](auto&& thisLambda, EntityNode& entityNode) {
+      addNode(entityNode);
+      entityNode.visitChildren(thisLambda);
     },
-    [&](BrushNode* brush) { addNode(brush); },
-    [&](PatchNode* patch) { addNode(patch); }));
+    [&](BrushNode& brushNode) { addNode(brushNode); },
+    [&](PatchNode& patchNode) { addNode(patchNode); }));
 
   m_nodeTree->clear();
   for (auto* node : nodes)
@@ -243,9 +243,9 @@ void WorldNode::rebuildNodeTree()
 
 void WorldNode::invalidateAllIssues()
 {
-  accept([](auto&& thisLambda, Node* node) {
-    node->invalidateIssues();
-    node->visitChildren(thisLambda);
+  accept([](auto&& thisLambda, Node& node) {
+    node.invalidateIssues();
+    node.visitChildren(thisLambda);
   });
 }
 
@@ -302,23 +302,23 @@ Node* WorldNode::doCloneRecursively(const vm::bbox3d& worldBounds) const
 bool WorldNode::doCanAddChild(const Node& child) const
 {
   return child.accept(kdl::overload(
-    [](const WorldNode*) { return false; },
-    [](const LayerNode*) { return true; },
-    [](const GroupNode*) { return false; },
-    [](const EntityNode*) { return false; },
-    [](const BrushNode*) { return false; },
-    [](const PatchNode*) { return false; }));
+    [](const WorldNode&) { return false; },
+    [](const LayerNode&) { return true; },
+    [](const GroupNode&) { return false; },
+    [](const EntityNode&) { return false; },
+    [](const BrushNode&) { return false; },
+    [](const PatchNode&) { return false; }));
 }
 
 bool WorldNode::doCanRemoveChild(const Node& child) const
 {
   return child.accept(kdl::overload(
-    [](const WorldNode*) { return false; },
-    [&](const LayerNode* layer) { return (layer != defaultLayer()); },
-    [](const GroupNode*) { return false; },
-    [](const EntityNode*) { return false; },
-    [](const BrushNode*) { return false; },
-    [](const PatchNode*) { return false; }));
+    [](const WorldNode&) { return false; },
+    [&](const LayerNode& layerNode) { return (&layerNode != defaultLayer()); },
+    [](const GroupNode&) { return false; },
+    [](const EntityNode&) { return false; },
+    [](const BrushNode&) { return false; },
+    [](const PatchNode&) { return false; }));
 }
 
 bool WorldNode::doRemoveIfEmpty() const
@@ -340,49 +340,52 @@ void WorldNode::doDescendantWasAdded(Node& node, const size_t /* depth */)
   if (m_updateNodeTree)
   {
     node.accept(kdl::overload(
-      [&](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-      [&](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
-      [&](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
-      [&](auto&& thisLambda, EntityNode* entity) {
-        contract_assert(m_nodeTree->insert(entity->physicalBounds(), entity));
-        entity->visitChildren(thisLambda);
+      [&](
+        auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+      [&](
+        auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+      [&](
+        auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+      [&](auto&& thisLambda, EntityNode& entityNode) {
+        contract_assert(m_nodeTree->insert(entityNode.physicalBounds(), &entityNode));
+        entityNode.visitChildren(thisLambda);
       },
-      [&](BrushNode* brush) {
-        contract_assert(m_nodeTree->insert(brush->physicalBounds(), brush));
+      [&](BrushNode& brushNode) {
+        contract_assert(m_nodeTree->insert(brushNode.physicalBounds(), &brushNode));
       },
-      [&](PatchNode* patch) {
-        contract_assert(m_nodeTree->insert(patch->physicalBounds(), patch));
+      [&](PatchNode& patchNode) {
+        contract_assert(m_nodeTree->insert(patchNode.physicalBounds(), &patchNode));
       }));
   }
 
-  const auto updatePersistentId = [&](auto* persistentNode) {
-    if (const auto persistentNodeId = persistentNode->persistentId())
+  const auto updatePersistentId = [&](auto& persistentNode) {
+    if (const auto persistentNodeId = persistentNode.persistentId())
     {
       contract_assert(*persistentNodeId < std::numeric_limits<IdType>::max());
       m_nextPersistentId = std::max(m_nextPersistentId, *persistentNodeId + 1u);
     }
     else
     {
-      persistentNode->setPersistentId(m_nextPersistentId++);
+      persistentNode.setPersistentId(m_nextPersistentId++);
     }
   };
 
   node.accept(kdl::overload(
-    [&](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-    [&](auto&& thisLambda, LayerNode* layer) {
-      layer->visitChildren(thisLambda);
-      if (layer != defaultLayer())
+    [&](auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+    [&](auto&& thisLambda, LayerNode& layerNode) {
+      layerNode.visitChildren(thisLambda);
+      if (&layerNode != defaultLayer())
       {
-        updatePersistentId(layer);
+        updatePersistentId(layerNode);
       }
     },
-    [&](auto&& thisLambda, GroupNode* group) {
-      group->visitChildren(thisLambda);
-      updatePersistentId(group);
+    [&](auto&& thisLambda, GroupNode& groupNode) {
+      groupNode.visitChildren(thisLambda);
+      updatePersistentId(groupNode);
     },
-    [&](EntityNode*) {},
-    [&](BrushNode*) {},
-    [&](PatchNode*) {}));
+    [&](EntityNode&) {},
+    [&](BrushNode&) {},
+    [&](PatchNode&) {}));
 }
 
 void WorldNode::doDescendantWillBeRemoved(Node& node, const size_t /* depth */)
@@ -390,15 +393,18 @@ void WorldNode::doDescendantWillBeRemoved(Node& node, const size_t /* depth */)
   if (m_updateNodeTree)
   {
     node.accept(kdl::overload(
-      [&](auto&& thisLambda, WorldNode* world) { world->visitChildren(thisLambda); },
-      [&](auto&& thisLambda, LayerNode* layer) { layer->visitChildren(thisLambda); },
-      [&](auto&& thisLambda, GroupNode* group) { group->visitChildren(thisLambda); },
-      [&](auto&& thisLambda, EntityNode* entity) {
-        contract_assert(m_nodeTree->remove(entity));
-        entity->visitChildren(thisLambda);
+      [&](
+        auto&& thisLambda, WorldNode& worldNode) { worldNode.visitChildren(thisLambda); },
+      [&](
+        auto&& thisLambda, LayerNode& layerNode) { layerNode.visitChildren(thisLambda); },
+      [&](
+        auto&& thisLambda, GroupNode& groupNode) { groupNode.visitChildren(thisLambda); },
+      [&](auto&& thisLambda, EntityNode& entityNode) {
+        contract_assert(m_nodeTree->remove(&entityNode));
+        entityNode.visitChildren(thisLambda);
       },
-      [&](BrushNode* brush) { contract_assert(m_nodeTree->remove(brush)); },
-      [&](PatchNode* patch) { contract_assert(m_nodeTree->remove(patch)); }));
+      [&](BrushNode& brushNode) { contract_assert(m_nodeTree->remove(&brushNode)); },
+      [&](PatchNode& patchNode) { contract_assert(m_nodeTree->remove(&patchNode)); }));
   }
 }
 
@@ -407,12 +413,18 @@ void WorldNode::doDescendantPhysicalBoundsDidChange(Node& node)
   if (m_updateNodeTree)
   {
     node.accept(kdl::overload(
-      [](WorldNode*) {},
-      [](LayerNode*) {},
-      [](GroupNode*) {},
-      [&](EntityNode* entity) { m_nodeTree->update(entity->physicalBounds(), entity); },
-      [&](BrushNode* brush) { m_nodeTree->update(brush->physicalBounds(), brush); },
-      [&](PatchNode* patch) { m_nodeTree->update(patch->physicalBounds(), patch); }));
+      [](WorldNode&) {},
+      [](LayerNode&) {},
+      [](GroupNode&) {},
+      [&](EntityNode& entityNode) {
+        m_nodeTree->update(entityNode.physicalBounds(), &entityNode);
+      },
+      [&](BrushNode& brushNode) {
+        m_nodeTree->update(brushNode.physicalBounds(), &brushNode);
+      },
+      [&](PatchNode& patchNode) {
+        m_nodeTree->update(patchNode.physicalBounds(), &patchNode);
+      }));
   }
 }
 
@@ -440,12 +452,12 @@ void WorldNode::doFindNodesContaining(const vm::vec3d& point, std::vector<Node*>
 
 void WorldNode::doAccept(NodeVisitor& visitor)
 {
-  visitor.visit(this);
+  visitor.visit(*this);
 }
 
 void WorldNode::doAccept(ConstNodeVisitor& visitor) const
 {
-  visitor.visit(this);
+  visitor.visit(*this);
 }
 
 const EntityPropertyConfig& WorldNode::doGetEntityPropertyConfig() const

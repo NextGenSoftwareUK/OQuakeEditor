@@ -85,27 +85,27 @@ TEST_CASE("Validation")
 
     auto issues = std::vector<const Issue*>{};
     map.worldNode().accept(kdl::overload(
-      [&](auto&& thisLambda, WorldNode* worldNode) {
-        issues = kdl::vec_concat(std::move(issues), worldNode->issues(validators));
-        worldNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, WorldNode& worldNode) {
+        issues = kdl::vec_concat(std::move(issues), worldNode.issues(validators));
+        worldNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, LayerNode* layerNode) {
-        issues = kdl::vec_concat(std::move(issues), layerNode->issues(validators));
-        layerNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, LayerNode& layerNode) {
+        issues = kdl::vec_concat(std::move(issues), layerNode.issues(validators));
+        layerNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, GroupNode* groupNode) {
-        issues = kdl::vec_concat(std::move(issues), groupNode->issues(validators));
-        groupNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, GroupNode& groupNode) {
+        issues = kdl::vec_concat(std::move(issues), groupNode.issues(validators));
+        groupNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, EntityNode* entityNode_) {
-        issues = kdl::vec_concat(std::move(issues), entityNode_->issues(validators));
-        entityNode_->visitChildren(thisLambda);
+      [&](auto&& thisLambda, EntityNode& entityNode_) {
+        issues = kdl::vec_concat(std::move(issues), entityNode_.issues(validators));
+        entityNode_.visitChildren(thisLambda);
       },
-      [&](BrushNode* brushNode) {
-        issues = kdl::vec_concat(std::move(issues), brushNode->issues(validators));
+      [&](BrushNode& brushNode) {
+        issues = kdl::vec_concat(std::move(issues), brushNode.issues(validators));
       },
-      [&](PatchNode* patchNode) {
-        issues = kdl::vec_concat(std::move(issues), patchNode->issues(validators));
+      [&](PatchNode& patchNode) {
+        issues = kdl::vec_concat(std::move(issues), patchNode.issues(validators));
       }));
 
     REQUIRE(issues.size() == 1);
@@ -136,27 +136,27 @@ TEST_CASE("Validation")
 
     auto issues = std::vector<const Issue*>{};
     map.worldNode().accept(kdl::overload(
-      [&](auto&& thisLambda, WorldNode* worldNode) {
-        issues = kdl::vec_concat(std::move(issues), worldNode->issues(validators));
-        worldNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, WorldNode& worldNode) {
+        issues = kdl::vec_concat(std::move(issues), worldNode.issues(validators));
+        worldNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, LayerNode* layerNode) {
-        issues = kdl::vec_concat(std::move(issues), layerNode->issues(validators));
-        layerNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, LayerNode& layerNode) {
+        issues = kdl::vec_concat(std::move(issues), layerNode.issues(validators));
+        layerNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, GroupNode* groupNode) {
-        issues = kdl::vec_concat(std::move(issues), groupNode->issues(validators));
-        groupNode->visitChildren(thisLambda);
+      [&](auto&& thisLambda, GroupNode& groupNode) {
+        issues = kdl::vec_concat(std::move(issues), groupNode.issues(validators));
+        groupNode.visitChildren(thisLambda);
       },
-      [&](auto&& thisLambda, EntityNode* entityNode_) {
-        issues = kdl::vec_concat(std::move(issues), entityNode_->issues(validators));
-        entityNode_->visitChildren(thisLambda);
+      [&](auto&& thisLambda, EntityNode& entityNode_) {
+        issues = kdl::vec_concat(std::move(issues), entityNode_.issues(validators));
+        entityNode_.visitChildren(thisLambda);
       },
-      [&](BrushNode* brushNode) {
-        issues = kdl::vec_concat(std::move(issues), brushNode->issues(validators));
+      [&](BrushNode& brushNode) {
+        issues = kdl::vec_concat(std::move(issues), brushNode.issues(validators));
       },
-      [&](PatchNode* patchNode) {
-        issues = kdl::vec_concat(std::move(issues), patchNode->issues(validators));
+      [&](PatchNode& patchNode) {
+        issues = kdl::vec_concat(std::move(issues), patchNode.issues(validators));
       }));
 
     REQUIRE(issues.size() == 1);

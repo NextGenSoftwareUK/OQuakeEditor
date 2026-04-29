@@ -172,12 +172,12 @@ void NodeSerializer::entity(
   beginEntity(node, properties, extraProperties);
 
   brushParent.visitChildren(kdl::overload(
-    [](const WorldNode*) {},
-    [](const LayerNode*) {},
-    [](const GroupNode*) {},
-    [](const EntityNode*) {},
-    [&](const BrushNode* b) { brush(*b); },
-    [&](const PatchNode* p) { patch(*p); }));
+    [](const WorldNode&) {},
+    [](const LayerNode&) {},
+    [](const GroupNode&) {},
+    [](const EntityNode&) {},
+    [&](const BrushNode& brushNode) { brush(brushNode); },
+    [&](const PatchNode& patchNode) { patch(patchNode); }));
 
   endEntity(node);
 }
@@ -275,18 +275,18 @@ std::vector<EntityProperty> NodeSerializer::parentProperties(const Node* node)
 
   auto properties = std::vector<EntityProperty>{};
   node->accept(kdl::overload(
-    [](const WorldNode*) {},
-    [&](const LayerNode* layerNode) {
+    [](const WorldNode&) {},
+    [&](const LayerNode& layerNode) {
       properties.emplace_back(
-        EntityPropertyKeys::TbLayer, kdl::str_to_string(*layerNode->persistentId()));
+        EntityPropertyKeys::TbLayer, kdl::str_to_string(*layerNode.persistentId()));
     },
-    [&](const GroupNode* groupNode) {
+    [&](const GroupNode& groupNode) {
       properties.emplace_back(
-        EntityPropertyKeys::TbGroup, kdl::str_to_string(*groupNode->persistentId()));
+        EntityPropertyKeys::TbGroup, kdl::str_to_string(*groupNode.persistentId()));
     },
-    [](const EntityNode*) {},
-    [](const BrushNode*) {},
-    [](const PatchNode*) {}));
+    [](const EntityNode&) {},
+    [](const BrushNode&) {},
+    [](const PatchNode&) {}));
 
   return properties;
 }

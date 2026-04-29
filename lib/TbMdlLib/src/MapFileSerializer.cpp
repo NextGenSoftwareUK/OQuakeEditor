@@ -318,14 +318,20 @@ void MapFileSerializer::doBeginFile(
   Node::visitAll(
     rootNodes,
     kdl::overload(
-      [](auto&& thisLambda, const WorldNode* world) { world->visitChildren(thisLambda); },
-      [](auto&& thisLambda, const LayerNode* layer) { layer->visitChildren(thisLambda); },
-      [](auto&& thisLambda, const GroupNode* group) { group->visitChildren(thisLambda); },
-      [](auto&& thisLambda, const EntityNode* entity) {
-        entity->visitChildren(thisLambda);
+      [](auto&& thisLambda, const WorldNode& worldNode) {
+        worldNode.visitChildren(thisLambda);
       },
-      [&](const BrushNode* brush) { nodesToSerialize.emplace_back(brush); },
-      [&](const PatchNode* patchNode) { nodesToSerialize.emplace_back(patchNode); }));
+      [](auto&& thisLambda, const LayerNode& layerNode) {
+        layerNode.visitChildren(thisLambda);
+      },
+      [](auto&& thisLambda, const GroupNode& groupNode) {
+        groupNode.visitChildren(thisLambda);
+      },
+      [](auto&& thisLambda, const EntityNode& entityNode) {
+        entityNode.visitChildren(thisLambda);
+      },
+      [&](const BrushNode& brushNode) { nodesToSerialize.emplace_back(&brushNode); },
+      [&](const PatchNode& patchNode) { nodesToSerialize.emplace_back(&patchNode); }));
 
   // serialize brushes to strings in parallel
   using Entry = std::pair<const Node*, PrecomputedString>;
