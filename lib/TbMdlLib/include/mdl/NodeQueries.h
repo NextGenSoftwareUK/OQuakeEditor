@@ -32,19 +32,42 @@
 #include "kd/overload.h"
 #include "kd/vector_utils.h"
 
+#include <concepts>
 #include <vector>
 
 namespace tb::mdl
 {
 
+// Concept: NodePredicate
+// True if Predicate is callable with any of the following:
+//   const WorldNode&, const LayerNode&, const GroupNode&,
+//   const EntityNode&, const BrushNode&, const PatchNode&
+// and returns bool.
+template <typename Predicate>
+concept NodePredicate = requires(Predicate pred, const WorldNode& w) {
+  { pred(w) } -> std::convertible_to<bool>;
+} || requires(Predicate pred, const LayerNode& l) {
+  { pred(l) } -> std::convertible_to<bool>;
+} || requires(Predicate pred, const GroupNode& g) {
+  { pred(g) } -> std::convertible_to<bool>;
+} || requires(Predicate pred, const EntityNode& e) {
+  { pred(e) } -> std::convertible_to<bool>;
+} || requires(Predicate pred, const BrushNode& b) {
+  { pred(b) } -> std::convertible_to<bool>;
+} || requires(Predicate pred, const PatchNode& p) {
+  { pred(p) } -> std::convertible_to<bool>;
+} || requires(Predicate pred, const Object& o) {
+  { pred(o) } -> std::convertible_to<bool>;
+};
+
 struct TrueNodePredicate
 {
-  bool operator()(WorldNode&) const { return true; }
-  bool operator()(LayerNode&) const { return true; }
-  bool operator()(GroupNode&) const { return true; }
-  bool operator()(EntityNode&) const { return true; }
-  bool operator()(BrushNode&) const { return true; }
-  bool operator()(PatchNode&) const { return true; }
+  bool operator()(const WorldNode&) const { return true; }
+  bool operator()(const LayerNode&) const { return true; }
+  bool operator()(const GroupNode&) const { return true; }
+  bool operator()(const EntityNode&) const { return true; }
+  bool operator()(const BrushNode&) const { return true; }
+  bool operator()(const PatchNode&) const { return true; }
 };
 
 template <typename N, typename T = Node*>
@@ -80,7 +103,7 @@ N* findNodeOrDescendant(
   return nullptr;
 }
 
-template <typename T = Node*, typename Predicate = TrueNodePredicate>
+template <typename T = Node*, NodePredicate Predicate = TrueNodePredicate>
 auto collectNodes(const std::vector<T>& nodes, const Predicate& predicate = Predicate{})
 {
   auto result = std::vector<Node*>{};
@@ -147,7 +170,7 @@ auto collectNodes(const std::vector<T>& nodes, const Predicate& predicate = Pred
   return result;
 }
 
-template <typename T = Node*, typename Predicate = TrueNodePredicate>
+template <typename T = Node*, NodePredicate Predicate = TrueNodePredicate>
 auto collectAncestors(
   const std::vector<T>& nodes, const Predicate& predicate = Predicate{})
 {
@@ -220,7 +243,7 @@ auto collectAncestors(
   return kdl::vec_sort_and_remove_duplicates(std::move(result));
 }
 
-template <typename T = Node*, typename Predicate = TrueNodePredicate>
+template <typename T = Node*, NodePredicate Predicate = TrueNodePredicate>
 auto collectNodesAndAncestors(
   const std::vector<T>& nodes, const Predicate& predicate = Predicate{})
 {
@@ -290,7 +313,7 @@ auto collectNodesAndAncestors(
   return kdl::vec_sort_and_remove_duplicates(std::move(result));
 }
 
-template <typename T = Node*, typename Predicate = TrueNodePredicate>
+template <typename T = Node*, NodePredicate Predicate = TrueNodePredicate>
 auto collectDescendants(
   const std::vector<T>& nodes, const Predicate& predicate = Predicate{})
 {
@@ -364,7 +387,7 @@ auto collectDescendants(
   return kdl::vec_sort_and_remove_duplicates(std::move(result));
 }
 
-template <typename T = Node*, typename Predicate = TrueNodePredicate>
+template <typename T = Node*, NodePredicate Predicate = TrueNodePredicate>
 auto collectNodesAndDescendants(
   const std::vector<T>& nodes, const Predicate& predicate = Predicate{})
 {
@@ -435,12 +458,22 @@ auto collectNodesAndDescendants(
   return kdl::vec_sort_and_remove_duplicates(std::move(result));
 }
 
+
+// Concept: BrushFacePredicate
+// True if Predicate is callable with (const BrushNode&, const BrushFace&) and returns
+// bool.
+template <typename Predicate>
+concept BrushFacePredicate =
+  requires(Predicate pred, const BrushNode& b, const BrushFace& f) {
+    { pred(b, f) } -> std::convertible_to<bool>;
+  };
+
 struct TrueBrushFacePredicate
 {
   bool operator()(const BrushNode&, const BrushFace&) const { return true; }
 };
 
-template <typename T = Node, typename Predicate = TrueBrushFacePredicate>
+template <typename T = Node, BrushFacePredicate Predicate = TrueBrushFacePredicate>
 std::vector<BrushFaceHandle> collectBrushFaces(
   const std::vector<T*>& nodes, const Predicate& predicate = Predicate{})
 {
