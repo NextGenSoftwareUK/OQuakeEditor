@@ -238,6 +238,7 @@
 	radius(integer) : "Light radius" : 300
 	color(string) : "Light color as 3 decimal values from 0.0 - 1.0" : "1 1 1"
 	intensity(float) : "Light intensity as a positive scalar value" : "1"
+	drift(float) : "Phase offset (0-1) for style animation. Use different values on nearby lights with the same style to prevent synchronized flickering." : "0"
 	team(string) : "Specifies what 'team' the light is on to get key/values from" : ""
 	team_master(string) : "Setting this value makes this light the 'master' of the specified team. Can be any value." : ""
 	style(choices) : "String of A(0.0) to Z(1.0) that modulates over time as a defined style. Each additional character adds 100ms to the sequence" : "m" =
@@ -298,11 +299,6 @@
 	hz(float) : "The emission rate, in events-per-second" : "10"
 	radius(float) : "The flame radius" : "16"
 	sound(string) : "The looping sound to play, or 'none' to disable" : "world/fire"
-]
-
-@SolidClass color(230 230 230) = misc_fog : "Fog volumes. When compiled, fog brushes are merged into the world. Fog volumes are processed during the lighting compile phase. These are typically contents atmospheric, but can be contents water, etc."
-[
-	density(float) : "The fog density, or thickness" : "1"
 ]
 
 @PointClass color(80 180 80) size(-16 -16 -16, 16 16 16) = misc_model : "Client-side emission of static models (non-interactive map objects). These are useful for placing trees, torches, and other non-brush scenery."
@@ -543,4 +539,6 @@
 	capturelimit(integer) : "The capture limit" : 8
 	timelimit(integer) : "The time limit in minutes" : 20
 	give(string) : "A comma-delimited item string to give each player on spawn"
+	author(string) : "Creator of this map and other misc info"
+	version(string) : "Version string in 'major.minor.build' format"
 ]
