@@ -87,9 +87,11 @@ target_sources(TbMdlLib
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadDkmModel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadEntityDefinitions.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadEntityModel.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadFmModel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadFreeImageTexture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadImageSpriteModel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadM8Texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadM32Texture.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadMaterialCollections.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadMd2Model.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/LoadMd3Model.cpp
