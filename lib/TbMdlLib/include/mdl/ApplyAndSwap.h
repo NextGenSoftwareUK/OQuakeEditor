@@ -190,10 +190,8 @@ bool applyAndSwap(
 
   auto changedLinkedGroups =
     collectContainingGroups(newNodes | std::views::keys | kdl::ranges::to<std::vector>());
-  updateNodeContents(
+  return updateNodeContents(
     map, commandName, std::move(newNodes), std::move(changedLinkedGroups));
-
-  return true;
 }
 
 } // namespace tb::mdl
