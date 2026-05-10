@@ -23,6 +23,7 @@
 #include "detail/range_utils.h"
 #include "detail/tuple_common_reference.h" // IWYU pragma: keep
 
+#include <algorithm>
 #include <ranges>
 #include <tuple>
 
