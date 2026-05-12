@@ -280,6 +280,10 @@ TEST_CASE("Map_Assets")
         "cr8_czg.wad;folder/cr8_a_excerpt.wad",
         {"cr8_a_excerpt.wad", "cr8_czg.wad"},
       },
+      {
+        "cr8_czg.wad;folder\\cr8_a_excerpt.wad",
+        {"cr8_a_excerpt.wad", "cr8_czg.wad"},
+      },
     }));
 
     CAPTURE(wadPropertyValue);
