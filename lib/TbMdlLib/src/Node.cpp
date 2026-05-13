@@ -804,6 +804,11 @@ size_t Node::lineNumber() const
   return m_lineNumber;
 }
 
+size_t Node::lineCount() const
+{
+  return m_lineCount;
+}
+
 void Node::setFilePosition(const size_t lineNumber, const size_t lineCount) const
 {
   m_lineNumber = lineNumber;

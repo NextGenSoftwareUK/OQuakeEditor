@@ -64,7 +64,7 @@ template <typename T>
 auto getFilePosition(const T& info)
 {
   const auto startLine = info.startLocation.line;
-  const auto lineCount = info.endLocation->line - startLine;
+  const auto lineCount = info.endLocation->line - startLine + 1;
   return std::tuple{startLine, lineCount};
 }
 
