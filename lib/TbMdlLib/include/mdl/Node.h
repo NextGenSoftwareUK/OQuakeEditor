@@ -345,6 +345,7 @@ public: // picking
 
 public: // file position
   size_t lineNumber() const;
+  size_t lineCount() const;
   void setFilePosition(size_t lineNumber, size_t lineCount) const;
   bool containsLine(size_t lineNumber) const;
 
