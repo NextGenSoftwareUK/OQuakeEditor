@@ -19,12 +19,10 @@
 
 #pragma once
 
-#include "base/Color.h"
+#include "mdl/SurfaceAttributes.h"
 #include "mdl/UvAttributes.h"
 
 #include "kd/reflection_decl.h"
-
-#include <optional>
 
 namespace tb::mdl
 {
@@ -33,39 +31,21 @@ class BrushFaceAttributes
 {
 private:
   UvAttributes m_uvAttributes;
-
-  std::optional<int> m_surfaceContents;
-  std::optional<int> m_surfaceFlags;
-  std::optional<float> m_surfaceValue;
-
-  std::optional<Color> m_color;
+  SurfaceAttributes m_surfaceAttributes;
 
 public:
-  kdl_reflect_decl(
-    BrushFaceAttributes,
-    m_uvAttributes,
-    m_surfaceContents,
-    m_surfaceFlags,
-    m_surfaceValue,
-    m_color);
+  kdl_reflect_decl(BrushFaceAttributes, m_uvAttributes, m_surfaceAttributes);
 
   const UvAttributes& uvAttributes() const;
+  const SurfaceAttributes& surfaceAttributes() const;
 
   bool hasSurfaceAttributes() const;
-  const std::optional<int>& surfaceContents() const;
-  const std::optional<int>& surfaceFlags() const;
-  const std::optional<float>& surfaceValue() const;
-
   bool hasColor() const;
-  const std::optional<Color>& color() const;
 
   bool valid() const;
 
   bool setUvAttributes(const UvAttributes& uvAttributes);
-  bool setSurfaceContents(const std::optional<int>& surfaceContents);
-  bool setSurfaceFlags(const std::optional<int>& surfaceFlags);
-  bool setSurfaceValue(const std::optional<float>& surfaceValue);
-  bool setColor(const std::optional<Color>& color);
+  bool setSurfaceAttributes(const SurfaceAttributes& surfaceAttributes);
 };
 
 } // namespace tb::mdl
