@@ -21,13 +21,6 @@
     angle(integer)            : "Spawn angle" : 0 : "Direction the player faces on arrival (0=east, 90=north, 180=west, 270=south)"
 ]
 
-@PointClass color(0 192 255) size(-12 -12 -12, 12 12 12) = oasis_portal : "OASIS Omniverse legacy portal point. Prefer oasis_portal_enter + oasis_portal_exit for new maps. OASIS thing type 5900."
-[
-    oasis_game_id(string)       : "Target OGame ID" : "" : "The OGame this portal leads to (e.g. oquake, odoom, oquake3, oduke3d)"
-    targetname(target_source)   : "Portal name"
-    target(target_destination)  : "Portal target"
-]
-
 // ---------------------------------------------------------------------------
 // KEYS
 // ---------------------------------------------------------------------------
