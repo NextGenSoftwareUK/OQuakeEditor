@@ -2,12 +2,35 @@
 // Thing type range: 6001–6899 (OQuake2 / OQuake2-RTX shared)
 // Portal: 5900 (shared cross-game)
 
-@PointClass color(0 192 255) size(-12 -12 -12, 12 12 12) = oasis_portal : "OASIS Omniverse cross-game portal. Connects this map to other OASIS Omniverse games. OASIS thing type 5900."
+// ---------------------------------------------------------------------------
+// PORTAL ENTITIES
+// ---------------------------------------------------------------------------
+
+@SolidClass color(0 192 255) = oasis_portal_enter : "OASIS teleport source — brush trigger the player walks into to be sent to another OASIS game or map. Draw this brush around the portal frame or doorway. OASIS thing type 5900."
 [
-    oasis_game_id(string) : "Target OGame ID" : "" : "The OGame this portal leads to (e.g. oquake, odoom, oquake3, oduke3d)"
+    oasis_game_id(string)   : "Target OGame ID"  : ""  : "Destination game (e.g. oquake, odoom, oquake3, oduke3d, owolf3d)"
+    oasis_map(string)       : "Target map"        : ""  : "Destination map name in the target game (e.g. e1m1, start)"
+    oasis_exit_name(string) : "Exit name"         : ""  : "targetname of the oasis_portal_exit in the destination map where the player will spawn"
+    message(string)         : "Approach message"  : ""  : "Optional text shown to the player when they enter this portal"
     targetname(target_source) : "Portal name"
-    target(target_destination) : "Portal target"
 ]
+
+@PointClass color(0 255 192) size(-16 -16 -24, 16 16 24) = oasis_portal_exit : "OASIS teleport destination — point entity marking where players arrive from another OASIS game or map. Place at the exit of the portal frame. OASIS thing type 5900."
+[
+    targetname(target_source) : "Exit name" : "" : "Must match the oasis_exit_name on the corresponding oasis_portal_enter in the source map"
+    angle(integer)            : "Spawn angle" : 0 : "Direction the player faces on arrival (0=east, 90=north, 180=west, 270=south)"
+]
+
+@PointClass color(0 192 255) size(-12 -12 -12, 12 12 12) = oasis_portal : "OASIS Omniverse legacy portal point. Prefer oasis_portal_enter + oasis_portal_exit for new maps. OASIS thing type 5900."
+[
+    oasis_game_id(string)       : "Target OGame ID" : "" : "The OGame this portal leads to (e.g. oquake, odoom, oquake3, oduke3d)"
+    targetname(target_source)   : "Portal name"
+    target(target_destination)  : "Portal target"
+]
+
+// ---------------------------------------------------------------------------
+// KEYS
+// ---------------------------------------------------------------------------
 
 @PointClass color(0 128 255) size(-8 -8 -8, 8 8 8) = oasis_key_blue : "OASIS blue keycard — unlocks blue key doors cross-game. OASIS thing type 6001. Classname: item_key_blue_key"
 [
