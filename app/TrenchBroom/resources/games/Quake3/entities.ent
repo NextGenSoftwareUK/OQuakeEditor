@@ -2462,4 +2462,23 @@ Entity, which stores regular static map primitives (brushes and patches).
 <integer key="_layers" name="Terrain Layers">Number of unique root shaders that will be used on the terrain.</integer>
 <texture key="_shader" name="Terrain MetaShader">Path to the metashader used to assign textures to the terrain entity. Note: Omit the "textures/" prefix.</texture>
 </group>
+
+<!--
+=============================================================================
+
+ OASIS OMNIVERSE ENTITIES
+
+=============================================================================
+-->
+<group name="OASIS Omniverse" color="0 0.75 1">
+-------- OASIS OMNIVERSE --------
+Cross-game entities for the OASIS Omniverse hub. These entities require the OQuake3 STAR API integration to function.
+<point name="oasis_portal" color="0 0.75 1" box="-12 -12 -12 12 12 12">
+-------- OASIS PORTAL --------
+OASIS Omniverse cross-game portal. Connects this Quake 3 map to other OASIS Omniverse games. OASIS thing type 5900.
+<string key="oasis_game_id" name="Target OGame">The OGame this portal leads to (e.g. oquake, oquake2, odoom, oduke3d, owolf3d).</string>
+<string key="targetname" name="Portal name">Name used by other entities to reference this portal.</string>
+<string key="target" name="Portal target">Name of the target entity this portal connects to.</string>
+</point>
+</group>
 </classes>
